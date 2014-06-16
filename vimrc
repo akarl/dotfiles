@@ -17,6 +17,8 @@ Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 
+Bundle 'rodjek/vim-puppet'
+Bundle 'tpope/vim-surround'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'flazz/vim-colorschemes'
 Bundle 'hynek/vim-python-pep8-indent'
@@ -28,6 +30,9 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'digitaltoad/vim-jade'
 
+" Some procrastination :)
+Bundle 'AshyIsMe/2048'
+
 call vundle#end()
 
 " =======================
@@ -38,6 +43,7 @@ filetype plugin indent on
 colorscheme Monokai
 syntax on
 
+set backspace=indent,eol,start
 set nobackup
 set noswapfile
 set autoread
@@ -86,7 +92,7 @@ let mapleader = ","
 map <C-n> :NERDTreeToggle<CR>
 map ä :
 noremap <Leader>s :wa<CR>
-imap jj <Esc>
+imap kj <Esc>
 
 " Match braces and stuff
 inoremap { {}<Esc>i

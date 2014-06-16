@@ -54,4 +54,4 @@ export PROJECT_HOME=/workspace
 source /usr/local/bin/virtualenvwrapper.sh
 
 # Docker
-export DOCKER_HOST=tcp://localhost:4243
+export DOCKER_HOST=tcp://localhost:2375

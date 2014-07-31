@@ -16,6 +16,10 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'majutsushi/tagbar'
+Plugin 'tonchis/vim-to-github'
+Plugin 'JarrodCTaylor/vim-python-test-runner'
+Plugin 'Raimondi/delimitMate'
 
 Bundle 'rodjek/vim-puppet'
 Bundle 'tpope/vim-surround'
@@ -50,7 +54,7 @@ set autoread
 set number
 set incsearch
 set laststatus=2  " airline
-set smartindent
+set nosmartindent
 set tabstop=4
 set shiftwidth=4
 set expandtab
@@ -63,18 +67,32 @@ set cursorline
 set wildignore+=*.pyc,*.git
 set encoding=utf8
 
-" ignore som stuff in ctrl-p
-let g:ctrlp_custom_ignore = '\v[\/](\.git|\.hg|\.svn|bower_components|node_modules|dist)$'
-
 " auto remove trailing whitespace
 autocmd BufWritePre * :%s/\s\+$//e
 
-" configure NERDTree
+
+" =======================
+" Plugin settings
+" =======================
+
+" ctrl-p
+let g:ctrlp_custom_ignore = '\v[\/](\.git|\.hg|\.svn|bower_components|node_modules|dist)$'
+inoremap <F11> <C-p>
+
+" tagbar
+nnoremap <silent> <F9> :TagbarToggle<CR>
+let g:tagbar_left = 1
+let g:tagbar_autoclose = 1
+let g:tagbar_autofocus = 1
+let g:tagbar_foldlevel = 0
+
+" NERDTree
+nnoremap <silent> <F10> :NERDTreeToggle<CR>
 let NERDTreeQuitOnOpen=1
 let NERDTreeHighlightCursorline=1
 let g:NERDTreeDirArrows=0
 
-" configure indent guides
+" indent_guides
 let g:indent_guides_auto_colors = 0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#121212 ctermbg=233
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#121212 ctermbg=233
@@ -83,32 +101,16 @@ let g:indent_guides_default_mapping = 0
 let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 2
 
+
 " ======================
 " Key mappings
 " ======================
 
 let mapleader = ","
 
-map <C-n> :NERDTreeToggle<CR>
-map ä :
+map ö [
+map ä ]
 noremap <Leader>s :wa<CR>
-imap kj <Esc>
-
-" Match braces and stuff
-inoremap { {}<Esc>i
-inoremap ( ()<Esc>i
-inoremap " ""<Esc>i
-inoremap ' ''<Esc>i
-
-inoremap {<CR> {<CR>}<Esc>O
-inoremap (<CR> (<CR>)<Esc>O
-inoremap "<CR> "<CR>"<Esc>O
-inoremap '<CR> '<CR>'<Esc>O
-
-inoremap {} {}
-inoremap () ()
-inoremap "" ""
-inoremap '' ''
 
 " unmap arrow keys from moving the cursor
 no <up> <Nop>

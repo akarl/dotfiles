@@ -20,14 +20,18 @@ Plugin 'majutsushi/tagbar'
 Plugin 'tonchis/vim-to-github'
 Plugin 'JarrodCTaylor/vim-python-test-runner'
 Plugin 'Raimondi/delimitMate'
+Plugin 'tpope/vim-haml'
+Plugin 'Valloric/YouCompleteMe'
+"Plugin 'fatih/vim-go'
 
+Bundle 'justinmk/vim-sneak'
 Bundle 'rodjek/vim-puppet'
 Bundle 'tpope/vim-surround'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'flazz/vim-colorschemes'
 Bundle 'hynek/vim-python-pep8-indent'
 Bundle 'jelera/vim-javascript-syntax'
-Bundle 'davidhalter/jedi-vim'
+"Bundle 'davidhalter/jedi-vim'
 Bundle 'jmcantrell/vim-virtualenv'
 Bundle 'scrooloose/syntastic'
 Bundle 'kien/ctrlp.vim'
@@ -101,6 +105,11 @@ let g:indent_guides_default_mapping = 0
 let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 2
 
+" sneak
+let g:sneak#streak = 1
+
+" YCM
+nnoremap <leader>g :YcmCompleter GoTo<CR>
 
 " ======================
 " Key mappings

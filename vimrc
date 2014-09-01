@@ -22,8 +22,9 @@ Plugin 'JarrodCTaylor/vim-python-test-runner'
 Plugin 'Raimondi/delimitMate'
 Plugin 'tpope/vim-haml'
 Plugin 'Valloric/YouCompleteMe'
-"Plugin 'fatih/vim-go'
+Plugin 'fatih/vim-go'
 
+Bundle 'mileszs/ack.vim'
 Bundle 'justinmk/vim-sneak'
 Bundle 'rodjek/vim-puppet'
 Bundle 'tpope/vim-surround'
@@ -57,6 +58,8 @@ set noswapfile
 set autoread
 set number
 set incsearch
+set ignorecase
+set smartcase
 set laststatus=2  " airline
 set nosmartindent
 set tabstop=4
@@ -109,7 +112,9 @@ let g:indent_guides_start_level = 2
 let g:sneak#streak = 1
 
 " YCM
-nnoremap <leader>g :YcmCompleter GoTo<CR>
+nnoremap <leader>g :YcmCompleter GoToDefinition<CR>
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_goto_buffer_command = 'new-tab'
 
 " ======================
 " Key mappings
@@ -120,6 +125,9 @@ let mapleader = ","
 map ö [
 map ä ]
 noremap <Leader>s :wa<CR>
+
+autocmd FileType python map <F5> Oimport pdb; pdb.set_trace()<ESC>
+autocmd FileType javascript map <F5> Odebugger;<ESC>
 
 " unmap arrow keys from moving the cursor
 no <up> <Nop>

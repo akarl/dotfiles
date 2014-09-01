@@ -6,10 +6,11 @@ ZSH=$HOME/.oh-my-zsh
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 # ZSH_THEME="robbyrussell"
-ZSH_THEME="arrow"
+ZSH_THEME="bira"
 
 # Aliases
 alias truecrypt='/Applications/TrueCrypt.app/Contents/MacOS/Truecrypt --text'
+alias tmux='tmux -u'
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
@@ -44,8 +45,10 @@ plugins=(git pip osx wd)
 
 source $ZSH/oh-my-zsh.sh
 
+export GOPATH=/workspace/Go
+
 # Customize to your needs...
-export PATH=/usr/local/bin:$PATH:/usr/local/share/npm/bin:/usr/bin:/bin:/usr/sbin:/usr/local/sbin:/sbin
+export PATH=/usr/local/bin:$PATH:/usr/local/share/npm/bin:/usr/bin:/bin:/usr/sbin:/usr/local/sbin:/sbin:$GOPATH/bin
 
 # Virtualenvwrapper
 export WORKON_HOME=$HOME/.virtualenvs
@@ -54,3 +57,6 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 # Docker
 export DOCKER_HOST=tcp://localhost:2375
+
+# List all tmux sessions when starting.
+tmux ls

@@ -113,7 +113,6 @@ let g:sneak#streak = 1
 
 " YCM
 nnoremap <leader>g :YcmCompleter GoToDefinition<CR>
-let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_goto_buffer_command = 'new-tab'
 
 " ======================

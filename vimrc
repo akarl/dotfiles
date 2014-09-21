@@ -12,35 +12,26 @@ call vundle#begin()
 " Keep Plugin commands between vundle#begin/end.
 
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-Plugin 'bling/vim-airline'
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'majutsushi/tagbar'
-Plugin 'tonchis/vim-to-github'
-Plugin 'JarrodCTaylor/vim-python-test-runner'
-Plugin 'Raimondi/delimitMate'
-Plugin 'tpope/vim-haml'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'fatih/vim-go'
+Plugin 'gmarik/Vundle.vim'                    " The plugin manager.. dah..
 
-Bundle 'mileszs/ack.vim'
-Bundle 'justinmk/vim-sneak'
-Bundle 'rodjek/vim-puppet'
-Bundle 'tpope/vim-surround'
-Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'flazz/vim-colorschemes'
-Bundle 'hynek/vim-python-pep8-indent'
-Bundle 'jelera/vim-javascript-syntax'
-"Bundle 'davidhalter/jedi-vim'
-Bundle 'jmcantrell/vim-virtualenv'
-Bundle 'scrooloose/syntastic'
-Bundle 'kien/ctrlp.vim'
-Bundle 'scrooloose/nerdtree'
-Bundle 'digitaltoad/vim-jade'
-
-" Some procrastination :)
-Bundle 'AshyIsMe/2048'
+Plugin 'bling/vim-airline'                    " Way nicer status bar
+Plugin 'tpope/vim-fugitive'                   " Essential git integration
+Plugin 'airblade/vim-gitgutter'               " Show git changes in gutter
+Plugin 'majutsushi/tagbar'                    " Navigate the code structure
+Plugin 'Raimondi/delimitMate'                 " Automaticly add matching parenthesis etc.
+Plugin 'Valloric/YouCompleteMe'               " Awesome autocomplete
+Plugin 'mileszs/ack.vim'                      " Search code fast and easy
+Plugin 'justinmk/vim-sneak'                   " Jump around in text faster
+Plugin 'rodjek/vim-puppet'                    " Puppet syntax
+Plugin 'tpope/vim-surround'                   " Quickly surrund stuff
+Plugin 'nathanaelkane/vim-indent-guides'      " Shows how much I have indented
+Plugin 'flazz/vim-colorschemes'               " Bunch of nice colors
+Plugin 'hynek/vim-python-pep8-indent'         " Makes python indent behave like it should
+Plugin 'jmcantrell/vim-virtualenv'            " Virtualenv integration!
+Plugin 'scrooloose/syntastic'                 " Syntax errors
+Plugin 'kien/ctrlp.vim'                       " Quickly open files
+Plugin 'scrooloose/nerdtree'                  " Browse files with a file tree
+Plugin 'digitaltoad/vim-jade'                 " Jade syntax
 
 call vundle#end()
 
@@ -60,7 +51,6 @@ set number
 set incsearch
 set ignorecase
 set smartcase
-set laststatus=2  " airline
 set nosmartindent
 set tabstop=4
 set shiftwidth=4
@@ -83,18 +73,16 @@ autocmd BufWritePre * :%s/\s\+$//e
 " =======================
 
 " ctrl-p
-let g:ctrlp_custom_ignore = '\v[\/](\.git|\.hg|\.svn|bower_components|node_modules|dist)$'
+let g:ctrlp_custom_ignore = '\v[\/](\.git|\.hg|\.svn|bower_components|node_modules|dist|build)$'
 inoremap <F11> <C-p>
 
 " tagbar
-nnoremap <silent> <F9> :TagbarToggle<CR>
 let g:tagbar_left = 1
 let g:tagbar_autoclose = 1
 let g:tagbar_autofocus = 1
 let g:tagbar_foldlevel = 0
 
 " NERDTree
-nnoremap <silent> <F10> :NERDTreeToggle<CR>
 let NERDTreeQuitOnOpen=1
 let NERDTreeHighlightCursorline=1
 let g:NERDTreeDirArrows=0
@@ -112,19 +100,30 @@ let g:indent_guides_start_level = 2
 let g:sneak#streak = 1
 
 " YCM
-nnoremap <leader>g :YcmCompleter GoToDefinition<CR>
 let g:ycm_goto_buffer_command = 'new-tab'
+
+" Airline
+set laststatus=2
+let g:airline_left_sep=''
+let g:airline_right_sep=''
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#tab_nr_type = 1
+let g:airline#extensions#tabline#show_tab_type = 0
+let g:airline#extensions#tabline#show_close_button = 0
 
 " ======================
 " Key mappings
 " ======================
 
-let mapleader = ","
+let mapleader = ','
 
-map ö [
-map ä ]
 noremap <Leader>s :wa<CR>
+nnoremap <silent> <F10> :NERDTreeToggle<CR>
+nnoremap <leader>g :YcmCompleter GoTo<CR>
+nnoremap <silent> <F9> :TagbarToggle<CR>
 
+" Breakpoints
 autocmd FileType python map <F5> Oimport pdb; pdb.set_trace()<ESC>
 autocmd FileType javascript map <F5> Odebugger;<ESC>
 

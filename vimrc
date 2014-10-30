@@ -33,7 +33,8 @@ Plugin 'scrooloose/nerdtree'                  " Browse files with a file tree
 Plugin 'digitaltoad/vim-jade'                 " Jade syntax
 Plugin 'jelera/vim-javascript-syntax'         " Better javascript syntax and indentation
 Plugin 'marijnh/tern_for_vim'                 " Amazing javascript autocomplete - adds to YCM
-Plugin 'JarrodCTaylor/vim-python-test-runner' " Python test runner
+Plugin 'christoomey/vim-tmux-navigator'       " Easy navigation between vim and tmux splits
+Plugin 'rizzatti/dash.vim'                    " Dash<3 integration
 
 call vundle#end()
 
@@ -63,17 +64,30 @@ set hidden
 set cursorline
 set lazyredraw
 set ttyfast
-
+set foldcolumn=2
 set ttimeoutlen=0
+
+set foldmethod=syntax
 
 " make vim ignore som stuff
 set wildignore+=*.pyc,*.git
 set encoding=utf8
 
+" Open new split panes to right and bottom, which feels more natural
+set splitbelow
+set splitright
+
+" Reselect block after indent
+vnoremap < <gv
+vnoremap > >gv
+
 " auto remove trailing whitespace
 autocmd BufWritePre * :%s/\s\+$//e
 
-" setup cursor
+" Highlight the current word under the cursor
+autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+
+" setup cursor. block in normal mode and line in insert mode
 let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
 let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 
@@ -81,6 +95,9 @@ let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 highlight  CursorLine ctermbg=234 ctermfg=None
 autocmd InsertEnter * set nocursorline
 autocmd InsertLeave * set cursorline
+
+" Python uses indent folding
+autocmd FileType python setlocal foldmethod=indent
 
 " =======================
 " Plugin settings

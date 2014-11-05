@@ -64,7 +64,7 @@ set hidden
 set cursorline
 set lazyredraw
 set ttyfast
-set foldcolumn=2
+set foldcolumn=0
 set ttimeoutlen=0
 
 set foldmethod=syntax
@@ -90,6 +90,11 @@ autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<c
 " setup cursor. block in normal mode and line in insert mode
 let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
 let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+
+" gutter splits and folds in a darker color
+highlight SignColumn ctermbg=234
+highlight VertSplit ctermfg=234 ctermbg=234
+highlight Folded ctermbg=234 ctermfg=249
 
 " Default Colors for CursorLine
 highlight  CursorLine ctermbg=234 ctermfg=None
@@ -128,6 +133,7 @@ let g:indent_guides_start_level = 2
 
 " YCM
 let g:ycm_goto_buffer_command = 'new-tab'
+let g:ycm_autoclose_preview_window_after_insertion = 1
 
 " Airline
 set laststatus=2
@@ -143,12 +149,23 @@ let g:airline#extensions#tabline#show_close_button = 0
 " Key mappings
 " ======================
 
-let mapleader = ','
+let mapleader = ' '
 
 noremap <Leader>s :wa<CR>
 nnoremap <silent> <F10> :NERDTreeToggle<CR>
 nnoremap <leader>g :YcmCompleter GoTo<CR>
 nnoremap <silent> <F9> :TagbarToggle<CR>
+
+" Easier way to switch tabs
+nmap <leader>1 1gt
+nmap <leader>2 2gt
+nmap <leader>3 3gt
+nmap <leader>4 4gt
+nmap <leader>5 5gt
+nmap <leader>6 6gt
+nmap <leader>7 7gt
+nmap <leader>8 8gt
+nmap <leader>9 9gt
 
 " Breakpoints
 autocmd FileType python map <F5> Oimport pdb; pdb.set_trace()<ESC>

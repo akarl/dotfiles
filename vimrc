@@ -20,7 +20,7 @@ Plugin 'airblade/vim-gitgutter'               " Show git changes in gutter
 Plugin 'majutsushi/tagbar'                    " Navigate the code structure
 Plugin 'Raimondi/delimitMate'                 " Automaticly add matching parenthesis etc.
 Plugin 'Valloric/YouCompleteMe'               " Awesome autocomplete
-Plugin 'mileszs/ack.vim'                      " Search code fast and easy
+Plugin 'rking/ag.vim'                         " Silver searcher
 Plugin 'rodjek/vim-puppet'                    " Puppet syntax
 Plugin 'tpope/vim-surround'                   " Quickly surrund stuff
 Plugin 'nathanaelkane/vim-indent-guides'      " Shows how much I have indented

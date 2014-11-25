@@ -64,10 +64,10 @@ set hidden
 set cursorline
 set lazyredraw
 set ttyfast
-set foldcolumn=0
+set foldcolumn=1
 set ttimeoutlen=0
 
-set foldmethod=syntax
+set foldmethod=manual
 
 " make vim ignore som stuff
 set wildignore+=*.pyc,*.git
@@ -87,10 +87,6 @@ autocmd BufWritePre * :%s/\s\+$//e
 " Highlight the current word under the cursor
 autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
-" setup cursor. block in normal mode and line in insert mode
-let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-
 " gutter splits and folds in a darker color
 highlight SignColumn ctermbg=234
 highlight VertSplit ctermfg=234 ctermbg=234
@@ -103,6 +99,7 @@ autocmd InsertLeave * set cursorline
 
 " Python uses indent folding
 autocmd FileType python setlocal foldmethod=indent
+autocmd BufRead,BufNewFile *.md set filetype=markdown
 
 " =======================
 " Plugin settings
@@ -132,7 +129,6 @@ let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 2
 
 " YCM
-let g:ycm_goto_buffer_command = 'new-tab'
 let g:ycm_autoclose_preview_window_after_insertion = 1
 
 " Airline
@@ -140,10 +136,10 @@ set laststatus=2
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline#extensions#tabline#show_tab_type = 0
-let g:airline#extensions#tabline#show_close_button = 0
+let g:ctrlp_open_multiple_files = '1ri'  " When opening multiple files, open them in hidden buffers
 
 " ======================
 " Key mappings
@@ -156,23 +152,15 @@ nnoremap <silent> <F10> :NERDTreeToggle<CR>
 nnoremap <leader>g :YcmCompleter GoTo<CR>
 nnoremap <silent> <F9> :TagbarToggle<CR>
 
-" Easier way to switch tabs
-nmap <leader>1 1gt
-nmap <leader>2 2gt
-nmap <leader>3 3gt
-nmap <leader>4 4gt
-nmap <leader>5 5gt
-nmap <leader>6 6gt
-nmap <leader>7 7gt
-nmap <leader>8 8gt
-nmap <leader>9 9gt
-
 " Breakpoints
 autocmd FileType python map <F5> Oimport pdb; pdb.set_trace()<ESC>
 autocmd FileType javascript map <F5> Odebugger;<ESC>
 
+" Buffers
+no <leader>q :bd<cr>
+no <left> :bp<cr>
+no <right> :bn<cr>
+
 " unmap arrow keys from moving the cursor
 no <up> <Nop>
 no <down> <Nop>
-no <left> <Nop>
-no <right> <Nop>

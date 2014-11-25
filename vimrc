@@ -101,6 +101,14 @@ autocmd InsertLeave * set cursorline
 autocmd FileType python setlocal foldmethod=indent
 autocmd BufRead,BufNewFile *.md set filetype=markdown
 
+" Setup xterm mappings even though the TERM is screen
+if &term =~ '^screen'
+    " tmux will send xterm-style keys when its xterm-keys option is on
+    execute "set <xUp>=\e[1;*A"
+    execute "set <xDown>=\e[1;*B"
+    execute "set <xRight>=\e[1;*C"
+    execute "set <xLeft>=\e[1;*D"
+endif
 " =======================
 " Plugin settings
 " =======================
@@ -155,6 +163,12 @@ nnoremap <silent> <F9> :TagbarToggle<CR>
 " Breakpoints
 autocmd FileType python map <F5> Oimport pdb; pdb.set_trace()<ESC>
 autocmd FileType javascript map <F5> Odebugger;<ESC>
+
+" Splits
+nmap <C-Right> <C-w>>
+nmap <C-Left>  <C-w><
+nmap <C-Up> <C-w>+
+nmap <C-Down> <C-w>-
 
 " Buffers
 no <leader>q :bd<cr>

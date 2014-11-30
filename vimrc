@@ -109,12 +109,15 @@ if &term =~ '^screen'
     execute "set <xRight>=\e[1;*C"
     execute "set <xLeft>=\e[1;*D"
 endif
+
 " =======================
 " Plugin settings
 " =======================
 
 " ctrl-p
 let g:ctrlp_custom_ignore = '\v[\/](\.git|\.hg|\.svn|bower_components|node_modules|dist|build)$'
+let g:ctrlp_follow_symlinks = 1
+let g:ctrlp_open_multiple_files = '1ri'  " When opening multiple files, open them in hidden buffers
 
 " tagbar
 let g:tagbar_left = 1
@@ -141,13 +144,12 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 
 " Airline
 set laststatus=2
-let g:airline_left_sep=''
-let g:airline_right_sep=''
+let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline#extensions#tabline#show_tab_type = 0
-let g:ctrlp_open_multiple_files = '1ri'  " When opening multiple files, open them in hidden buffers
+let g:airline_theme='wombat'
 
 " ======================
 " Key mappings

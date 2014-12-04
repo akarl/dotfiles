@@ -14,6 +14,7 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'                    " The plugin manager.. dah..
 
+Plugin 'fatih/vim-go'                         " Go support in vim
 Plugin 'bling/vim-airline'                    " Way nicer status bar
 Plugin 'tpope/vim-fugitive'                   " Essential git integration
 Plugin 'airblade/vim-gitgutter'               " Show git changes in gutter

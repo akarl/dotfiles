@@ -67,11 +67,10 @@ set lazyredraw
 set ttyfast
 set foldcolumn=1
 set ttimeoutlen=0
-
 set foldmethod=manual
 
 " make vim ignore som stuff
-set wildignore+=*.pyc,*.git
+set wildignore+=*.pyc,*.git,tags
 set encoding=utf8
 
 " Open new split panes to right and bottom, which feels more natural
@@ -119,6 +118,8 @@ endif
 let g:ctrlp_custom_ignore = '\v[\/](\.git|\.hg|\.svn|bower_components|node_modules|dist|build)$'
 let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_open_multiple_files = '1ri'  " When opening multiple files, open them in hidden buffers
+let g:ctrlp_follow_symlinks = 1
+let g:ctrlp_working_path_mode = 0
 
 " tagbar
 let g:tagbar_left = 1
@@ -161,7 +162,6 @@ let mapleader = ' '
 noremap <Leader>s :wa<CR>
 nnoremap <silent> <F10> :NERDTreeToggle<CR>
 nnoremap <leader>g :YcmCompleter GoTo<CR>
-nnoremap <silent> <F9> :TagbarToggle<CR>
 
 " Breakpoints
 autocmd FileType python map <F5> Oimport pdb; pdb.set_trace()<ESC>
@@ -177,6 +177,13 @@ nmap <C-Down> <C-w>-
 no <leader>q :bd<cr>
 no <left> :bp<cr>
 no <right> :bn<cr>
+no <leader>f :CtrlPBuffer<cr>
+
+" Tags
+nnoremap <silent> <F9> :TagbarToggle<CR>
+no <leader>t :CtrlPTag<cr>
+command! BuildTags :!ctags -R .
+
 
 " unmap arrow keys from moving the cursor
 no <up> <Nop>

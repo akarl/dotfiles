@@ -1,0 +1,6 @@
+--python-kinds=-i
+--recurse=yes
+--tag-relative=yes
+--exclude=.git
+--exclude=public_static
+--exclude=build

@@ -36,6 +36,7 @@ Plugin 'jelera/vim-javascript-syntax'         " Better javascript syntax and ind
 Plugin 'marijnh/tern_for_vim'                 " Amazing javascript autocomplete - adds to YCM
 Plugin 'christoomey/vim-tmux-navigator'       " Easy navigation between vim and tmux splits
 Plugin 'rizzatti/dash.vim'                    " Dash<3 integration
+Plugin 'd11wtq/ctrlp_bdelete.vim'
 
 call vundle#end()
 
@@ -65,9 +66,9 @@ set hidden
 set cursorline
 set lazyredraw
 set ttyfast
-set foldcolumn=1
 set ttimeoutlen=0
 set foldmethod=manual
+set scrolloff=5
 
 " make vim ignore som stuff
 set wildignore+=*.pyc,*.git,tags
@@ -91,6 +92,10 @@ autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<c
 highlight SignColumn ctermbg=234
 highlight VertSplit ctermfg=234 ctermbg=234
 highlight Folded ctermbg=234 ctermfg=249
+
+" Fix MacVim to have dark background and correct font.
+hi normal guibg=black
+set guifont=Inconsolata\ for\ Powerline:h16
 
 " Default Colors for CursorLine
 highlight  CursorLine ctermbg=234 ctermfg=None
@@ -120,6 +125,7 @@ let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_open_multiple_files = '1ri'  " When opening multiple files, open them in hidden buffers
 let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_working_path_mode = 0
+call ctrlp_bdelete#init()
 
 " tagbar
 let g:tagbar_left = 1
@@ -131,6 +137,7 @@ let g:tagbar_foldlevel = 0
 let NERDTreeQuitOnOpen=1
 let NERDTreeHighlightCursorline=1
 let g:NERDTreeDirArrows=0
+let NERDTreeIgnore = ['\.pyc$']
 
 " indent_guides
 let g:indent_guides_auto_colors = 0
@@ -159,6 +166,10 @@ let g:airline_theme='wombat'
 
 let mapleader = ' '
 
+vmap <leader>y "*y
+
+set pastetoggle=<F2>
+
 noremap <Leader>s :wa<CR>
 nnoremap <silent> <F10> :NERDTreeToggle<CR>
 nnoremap <leader>g :YcmCompleter GoTo<CR>
@@ -177,10 +188,10 @@ nmap <C-Down> <C-w>-
 no <leader>q :bd<cr>
 no <left> :bp<cr>
 no <right> :bn<cr>
-no <leader>f :CtrlPBuffer<cr>
+no <leader>f :ls<cr>:b
 
 " Tags
-nnoremap <silent> <F9> :TagbarToggle<CR>
+nnoremap <F9> :TagbarToggle<CR>
 no <leader>t :CtrlPTag<cr>
 command! BuildTags :!ctags -R .
 

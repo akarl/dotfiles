@@ -7,6 +7,8 @@
 --exclude=bower_components
 --exclude=node_modules
 --exclude=*.min.js
+--exclude=tests
+--exclude=dist
 --langdef=js
 --langmap=js:.js
 --regex-js=/(,|(;|^)[ \t]*(var|let|([A-Za-z_$][A-Za-z0-9_$.]+\.)*))[ \t]*([A-Za-z0-9_$]+)[ \t]*=[ \t]*\{/\5/,object/

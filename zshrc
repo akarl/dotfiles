@@ -12,6 +12,7 @@ ZSH_THEME="my-theme"
 alias truecrypt='/Applications/TrueCrypt.app/Contents/MacOS/Truecrypt --text'
 alias tmux='tmux -u'
 alias mux=tmuxinator
+alias vi=nvim
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"

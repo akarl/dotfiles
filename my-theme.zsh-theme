@@ -1,10 +1,11 @@
-NCOLOR="red"
+NCOLOR="yellow"
+DCOLOR="black"
 
 VIRTUAL_ENV_DISABLE_PROMPT=1
 
 PROMPT='
-%K{$NCOLOR}%F{232} %d %K{234}%F{$NCOLOR}%F{$NCOLOR}$(git_prompt_info)%k%F{234} %F{$NCOLOR}$(echo `basename "$VIRTUAL_ENV"`)
-%K{234}%F{$NCOLOR} #%(1j.%j.) %k%F{234} %f'
+%K{$NCOLOR}%F{$DCOLOR} %d %K{$DCOLOR}%F{$NCOLOR}%F{$NCOLOR}$(git_prompt_info)%k%F{$DCOLOR} %F{$NCOLOR}$(echo `basename "$VIRTUAL_ENV"`)
+%K{$DCOLOR}%F{$NCOLOR} #%(1j.%j.) %k%F{$DCOLOR} %f'
 
 ZSH_THEME_GIT_PROMPT_PREFIX=" "
 ZSH_THEME_GIT_PROMPT_SUFFIX=" "

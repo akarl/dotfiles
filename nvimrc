@@ -14,6 +14,7 @@ Plug 'rking/ag.vim', { 'on': 'Ag' }
 Plug 'tpope/vim-surround'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'scrooloose/syntastic'
+Plug 'rizzatti/dash.vim'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'jmcantrell/vim-virtualenv', { 'for': ['python'] }
@@ -114,7 +115,7 @@ set cursorcolumn
 set lazyredraw
 set ttyfast
 set ttimeoutlen=0
-set foldmethod=manual
+set foldmethod=indent
 set scrolloff=5
 
 " make vim ignore som stuff
@@ -129,15 +130,14 @@ set splitright
 vnoremap < <gv
 vnoremap > >gv
 
+nmap K <Plug>DashSearch
+
 " auto remove trailing whitespace
 autocmd BufWritePre * :%s/\s\+$//e
 
 " Highlight the current word under the cursor
 autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
-autocmd FileType javascript setlocal foldmethod=indent
-autocmd FileType python setlocal makeprg=echo\ %\ "expand(substitute(%,\ p,\ .,\ g))"
-autocmd FileType jade setlocal foldmethod=indent
 autocmd BufRead,BufNewFile *.md set filetype=markdown
 
 " Setup xterm mappings even though the TERM is screen
@@ -187,3 +187,5 @@ command! BuildTags :!ctags -R .
 " unmap arrow keys from moving the cursor
 no <up> <Nop>
 no <down> <Nop>
+
+autocmd FileType python command! -range ToDict :<line1>,<line2>s/\(\w\+\)/'\1': \1,/g

@@ -6,7 +6,7 @@
     Plug 'edkolev/tmuxline.vim'
     Plug 'kien/ctrlp.vim'
     Plug 'd11wtq/ctrlp_bdelete.vim'
-    Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+    Plug 'scrooloose/nerdtree'
     Plug 'altercation/vim-colors-solarized'
     Plug 'tpope/vim-fugitive'
     Plug 'airblade/vim-gitgutter'
@@ -15,7 +15,6 @@
     Plug 'tpope/vim-surround'
     Plug 'nathanaelkane/vim-indent-guides'
     Plug 'scrooloose/syntastic'
-    Plug 'rizzatti/dash.vim'
     Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'jmcantrell/vim-virtualenv', { 'for': ['python'] }
@@ -39,7 +38,10 @@
     let g:ctrlp_open_new_file = 'r'
     let g:ctrlp_follow_symlinks = 1
     let g:ctrlp_working_path_mode = 0
-    let g:ctrlp_lazy_update = 250
+    let g:ctrlp_lazy_update = 150
+    let g:ctrlp_switch_buffer = 0
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+    let g:ctrlp_use_caching = 0
 
     " Tagbar
     let g:tagbar_autoclose = 1
@@ -54,10 +56,12 @@
     let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
     " NERDTree
-    let NERDTreeQuitOnOpen=1
-    let NERDTreeHighlightCursorline=1
+    let g:NERDTreeQuitOnOpen=1
+    let g:NERDTreeHighlightCursorline=1
     let g:NERDTreeDirArrows=0
-    let NERDTreeIgnore = ['\.pyc$', 'node_modules', 'bower_components', 'dist', 'build', 'tags', 'other_components']
+    let g:NERDTreeIgnore = ['\.pyc$', 'node_modules', 'bower_components', 'dist', 'build', 'tags', 'other_components']
+    let g:NERDTreeHijackNetrw = 1
+    let g:NERDTreeShowLineNumbers = 1
 
     " indent_guides
     let g:indent_guides_auto_colors = 0
@@ -141,6 +145,9 @@
     set relativenumber
     set listchars=tab:▸\ ,eol:¬
     set wildignore+=*.pyc,*.git,tags
+    set splitright
+    set grepprg=ag\ --nogroup\ --nocolor
+
 
     " Setup xterm mappings even though the TERM is screen
     if &term =~ '^screen'
@@ -160,7 +167,8 @@
     vnoremap < <gv
     vnoremap > >gv
 
-    noremap K <Plug>DashSearch
+    " Search for word under cursor
+    noremap K :Ag!\ <C-r><C-w><CR>
 
     " Copy and past using system clipboard
     vnoremap <leader>y "*y
@@ -170,11 +178,9 @@
     noremap Y y$
 
     noremap <Leader>s :wa<CR>
-    nnoremap <silent> <F10> :NERDTreeToggle<CR>
-    nnoremap <leader>g :YcmCompleter GoTo<CR>
 
     " Tagbar
-    noremap <f9> :TagbarToggle<cr>
+    noremap <f9> :TagbarToggle<CR>
 
     " Splits
     noremap <C-Right> :vertical resize +20<CR>:AirlineRefresh<CR>
@@ -186,15 +192,17 @@
     noremap <tab> :CtrlPBuffer<CR>
 
     " Tags
-    noremap <leader>tt :CtrlPTag<cr>
-    noremap <leader>t :CtrlPBufTag<cr>
+    noremap <leader>tt :CtrlPTag<CR>
+    noremap <leader>t :CtrlPBufTag<CR>
     command! BuildTags :!ctags -R .
 
-    " unmap arrow keys from moving the cursor
-    noremap <up> <Nop>
-    noremap <down> <Nop>
-    noremap <left> <Nop>
-    noremap <right> <Nop>
+    " Reload vimrc
+    command! ReloadNvimrc :source $MYVIMRC
+
+    nmap <up> <nop>
+    nmap <down> <nop>
+    nmap <left> <nop>
+    nmap <right> <nop>
 
 " ======================
     " Autocommands

@@ -59,7 +59,7 @@
     let g:NERDTreeQuitOnOpen=1
     let g:NERDTreeHighlightCursorline=1
     let g:NERDTreeDirArrows=0
-    let g:NERDTreeIgnore = ['\.pyc$', 'node_modules', 'bower_components', 'dist', 'build', 'tags', 'other_components']
+    let g:NERDTreeIgnore = ['\.pyc$', '.git', 'node_modules', 'bower_components', 'dist', 'build', 'tags', 'other_components']
     let g:NERDTreeHijackNetrw = 1
     let g:NERDTreeShowLineNumbers = 1
 

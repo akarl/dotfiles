@@ -97,7 +97,7 @@
 
     " gutter splits and folds in a darker color
     highlight SignColumn ctermbg=black
-    highlight VertSplit ctermfg=black ctermbg=11
+    highlight VertSplit ctermfg=11 ctermbg=11
     highlight Folded cterm=NONE ctermbg=8 ctermfg=11
 
     highlight GitGutterAdd ctermbg=black ctermfg=2

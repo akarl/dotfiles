@@ -13,6 +13,7 @@ alias truecrypt='/Applications/TrueCrypt.app/Contents/MacOS/Truecrypt --text'
 alias tmux='tmux -u'
 alias mux=tmuxinator
 alias vi=nvim
+alias pyclean='find . -name "*.pyc" -delete'
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"

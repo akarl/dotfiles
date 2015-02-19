@@ -40,8 +40,6 @@
     let g:ctrlp_working_path_mode = 0
     let g:ctrlp_lazy_update = 150
     let g:ctrlp_switch_buffer = 0
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-    let g:ctrlp_use_caching = 0
 
     " Tagbar
     let g:tagbar_autoclose = 1
@@ -147,6 +145,7 @@
     set wildignore+=*.pyc,*.git,tags
     set splitright
     set grepprg=ag\ --nogroup\ --nocolor
+    set wildmenu
 
 
     " Setup xterm mappings even though the TERM is screen
@@ -163,12 +162,10 @@
 
     let mapleader = ' '
 
-    " Reselect block after indent
-    vnoremap < <gv
-    vnoremap > >gv
-
     " Search for word under cursor
     noremap K :Ag!\ <C-r><C-w><CR>
+
+    noremap <leader>g :YcmCompleter GoTo<CR>
 
     " Copy and past using system clipboard
     vnoremap <leader>y "*y
@@ -183,8 +180,8 @@
     noremap <f9> :TagbarToggle<CR>
 
     " Splits
-    noremap <C-Right> :vertical resize +20<CR>:AirlineRefresh<CR>
-    noremap <C-Left> :vertical resize -20<CR>:AirlineRefresh<CR>
+    noremap <C-Right> :vertical resize +10<CR>:AirlineRefresh<CR>
+    noremap <C-Left> :vertical resize -10<CR>:AirlineRefresh<CR>
     noremap <C-Up> :resize +5<CR>
     noremap <C-Down> :resize -5<CR>
 
@@ -209,6 +206,9 @@
 
     augroup misc
         autocmd!
+
+        " update diff when moving the cursor
+        autocmd CursorMoved,CursorMovedI * if &diff == 1 | diffupdate | endif
 
         " auto remove trailing whitespace
         autocmd BufWritePre * :%s/\s\+$//e

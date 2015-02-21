@@ -6,7 +6,6 @@
     Plug 'edkolev/tmuxline.vim'
     Plug 'kien/ctrlp.vim'
     Plug 'd11wtq/ctrlp_bdelete.vim'
-    Plug 'scrooloose/nerdtree'
     Plug 'altercation/vim-colors-solarized'
     Plug 'tpope/vim-fugitive'
     Plug 'airblade/vim-gitgutter'
@@ -224,6 +223,11 @@
         autocmd!
 
         autocmd BufRead,BufNewFile *.md set filetype=markdown
+
+        autocmd FileType python command! -nargs=1 ExtractToVar :call ExtractToVar__python('<args>')
+        autocmd FileType python command! MultiLineDict :call MultiLineDict__python()
+        autocmd FileType python command! IntractToVar :call IntractToVar__python()
+        autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
     augroup END
 
     augroup active_window
@@ -271,4 +275,39 @@
                 execute 'vertical resize 126'
             endif
         endif
+    endfunction
+
+    function! ExtractToVar__python(name)
+        execute('normal! cib' . a:name . '')
+        execute('normal! O' . a:name . ' = p^')
+    endfunction
+
+    function! MultiLineDict__python()
+        let origLine = line('.')
+
+        execute('s/{/{\r/g')
+
+        execute(origLine . ' normal! f{vaB')
+        silent! execute(line('v') . ',' . line('.') . ' s/}/\r}/g')
+        execute('normal! ')
+
+        execute(origLine . ' normal! f{vaB')
+        silent! execute(line('v') . ',' . line('.') . ' s/,/,\r/g')
+        execute('normal! ')
+
+        silent! execute(origLine . ' normal! f{vaB=')
+        execute('normal! ')
+    endfunction
+
+    function! IntractToVar__python()
+        " Find the definition
+        execute('normal! ? =')
+        " Cut the function
+        execute('normal! wwvf(/)d')
+        " Go back to the var name and search for next occurence
+        execute('normal! bb*')
+        " Paste over the existing var
+        execute('normal! viwp')
+        " Go back to the original var and delete it
+        execute('normal! Ndd')
     endfunction

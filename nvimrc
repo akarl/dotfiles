@@ -4,7 +4,7 @@
 
     Plug 'bling/vim-airline'
     Plug 'edkolev/tmuxline.vim'
-    Plug 'kien/ctrlp.vim'
+    Plug 'ctrlpvim/ctrlp.vim'
     Plug 'd11wtq/ctrlp_bdelete.vim'
     Plug 'altercation/vim-colors-solarized'
     Plug 'tpope/vim-fugitive'
@@ -22,7 +22,9 @@
     Plug 'marijnh/tern_for_vim', { 'for': ['javascript'], 'do': 'npm install' }
     Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
     Plug 'SirVer/ultisnips'
-    Plug 'majutsushi/tagbar'
+    Plug 'michaeljsmith/vim-indent-object'
+    Plug 'tmhedberg/matchit'
+    Plug 'voithos/vim-python-matchit'
 
     call plug#end()
 
@@ -39,6 +41,9 @@
     let g:ctrlp_working_path_mode = 0
     let g:ctrlp_lazy_update = 150
     let g:ctrlp_switch_buffer = 0
+    let g:ctrlp_cmd = 'CtrlP'
+    let g:ctrlp_map = ''
+    let g:ctrlp_extensions = []
 
     " Tagbar
     let g:tagbar_autoclose = 1
@@ -146,24 +151,10 @@
     set grepprg=ag\ --nogroup\ --nocolor
     set wildmenu
 
-
-    " Setup xterm mappings even though the TERM is screen
-    if &term =~ '^screen'
-        " tmux will send xterm-style keys when its xterm-keys option is on
-        execute "set <xUp>=\e[1;*A"
-        execute "set <xDown>=\e[1;*B"
-        execute "set <xRight>=\e[1;*C"
-        execute "set <xLeft>=\e[1;*D"
-    endif
-
 " ======================
     " Key mappings
 
     let mapleader = ' '
-
-    " Search for word under cursor
-    noremap K :Ag!\ <C-r><C-w><CR>
-
     noremap <leader>g :YcmCompleter GoTo<CR>
 
     " Copy and past using system clipboard
@@ -175,8 +166,10 @@
 
     noremap <Leader>s :wa<CR>
 
-    " Tagbar
-    noremap <f9> :TagbarToggle<CR>
+    " Jump list navigation
+    " I have <tab> (CTRL-i) mapped to :CtrlPBuffer
+    " My terminal is set to send <S-Right> when I press <C-i>
+    nnoremap <S-Right> <C-i>
 
     " Splits
     noremap <C-Right> :vertical resize +10<CR>:AirlineRefresh<CR>
@@ -186,11 +179,11 @@
 
     " Buffers
     noremap <tab> :CtrlPBuffer<CR>
+    noremap <C-p> :CtrlP<CR>
 
     " Tags
-    noremap <leader>tt :CtrlPTag<CR>
-    noremap <leader>t :CtrlPBufTag<CR>
-    command! BuildTags :!ctags -R .
+    command! BuildTags :call BuildTags()
+    noremap <leader>t :tjump
 
     " Reload vimrc
     command! ReloadNvimrc :source $MYVIMRC
@@ -212,6 +205,8 @@
         " auto remove trailing whitespace
         autocmd BufWritePre * :%s/\s\+$//e
 
+        autocmd BufWritePost * :call UpdateTags()
+
         " Delete fugetive buffers when hidden
         autocmd BufReadPost fugitive://* set bufhidden=delete
 
@@ -228,6 +223,7 @@
         autocmd FileType python command! MultiLineDict :call MultiLineDict__python()
         autocmd FileType python command! IntractToVar :call IntractToVar__python()
         autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
+        autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
     augroup END
 
     augroup active_window
@@ -244,19 +240,13 @@
         autocmd WinLeave * set nowrap
 
         " Resize window when entered
-        autocmd WinEnter * call s:AutoResizeWindow()
-
-        " Set width of tagbar here because it apparently has
-        " filetype=python before it gets filetype=tagbar...
-        " that makes AutoResizeWindow to resize the tagbar
-        autocmd FileType tagbar vertical resize 40
+        autocmd WinEnter * call AutoResizeWindow()
     augroup END
 
     augroup commands
         autocmd!
 
         autocmd FileType python command! -range ToDict :<line1>,<line2>s/\(\w\+\)/'\1': \1,/g
-        " autocmd FileType python command! -range RemoveMultipleSpacesBeforeEqualSign :<line1>,<line2>s/\( \+\)=/ =/
     augroup END
 
     augroup breakpoints
@@ -268,8 +258,18 @@
 
 " ======================
     " Functions
+    "
+    function! BuildTags()
+        call jobstart('build_tags', 'ctags',  ['-R', '.'])
+    endfunction
 
-    function! s:AutoResizeWindow()
+    function! UpdateTags()
+        if filereadable("tags")
+            call BuildTags()
+        endif
+    endfunction
+
+    function! AutoResizeWindow()
         if (&ft =~ 'python')
             if (winwidth(0) < 126)
                 execute 'vertical resize 126'

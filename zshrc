@@ -14,6 +14,7 @@ alias tmux='tmux -u'
 alias mux=tmuxinator
 alias vi=nvim
 alias pyclean='find . -name "*.pyc" -delete'
+alias irssi='TERM=screen-256color irssi'
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"

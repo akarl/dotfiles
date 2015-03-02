@@ -2,38 +2,35 @@
     " Plugins
     call plug#begin('~/.nvim/plugged')
 
+    Plug 'Raimondi/delimitMate'
+    Plug 'SirVer/ultisnips'
+    Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+    Plug 'airblade/vim-gitgutter'
+    Plug 'altercation/vim-colors-solarized'
     Plug 'bling/vim-airline'
-    Plug 'edkolev/tmuxline.vim'
+    Plug 'christoomey/vim-tmux-navigator'
     Plug 'ctrlpvim/ctrlp.vim'
     Plug 'd11wtq/ctrlp_bdelete.vim'
-    Plug 'altercation/vim-colors-solarized'
-    Plug 'tpope/vim-fugitive'
-    Plug 'airblade/vim-gitgutter'
-    Plug 'Raimondi/delimitMate'
-    Plug 'rking/ag.vim', { 'on': 'Ag' }
-    Plug 'tpope/vim-surround'
-    Plug 'nathanaelkane/vim-indent-guides'
-    Plug 'scrooloose/syntastic'
-    Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
-    Plug 'christoomey/vim-tmux-navigator'
-    Plug 'jmcantrell/vim-virtualenv', { 'for': ['python'] }
+    Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
+    Plug 'edkolev/tmuxline.vim'
     Plug 'hynek/vim-python-pep8-indent', { 'for': ['python'] }
     Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript'] }
+    Plug 'jmcantrell/vim-virtualenv', { 'for': ['python'] }
     Plug 'marijnh/tern_for_vim', { 'for': ['javascript'], 'do': 'npm install' }
-    Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
-    Plug 'SirVer/ultisnips'
-    Plug 'michaeljsmith/vim-indent-object'
+    Plug 'nathanaelkane/vim-indent-guides'
+    Plug 'scrooloose/syntastic'
     Plug 'tmhedberg/matchit'
-    Plug 'voithos/vim-python-matchit'
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-surround'
+    Plug 'ameade/qtpy-vim'
 
     call plug#end()
 
 " =======================
     " Plugin settings
 
-    " ctrl-p
+    " Ctrl-p
     call ctrlp_bdelete#init()
-    let g:ctrlp_custom_ignore = '\v[\/](\.git|\.hg|\.svn|bower_components|node_modules|dist|build|other_components)$'
     let g:ctrlp_follow_symlinks = 1
     let g:ctrlp_open_multiple_files = '2vjr'
     let g:ctrlp_open_new_file = 'r'
@@ -45,25 +42,17 @@
     let g:ctrlp_map = ''
     let g:ctrlp_extensions = []
 
-    " Tagbar
-    let g:tagbar_autoclose = 1
-    let g:tagbar_autofocus = 1
-    let g:tagbar_compact = 1
-    let g:tagbar_foldlevel = 0
-    let g:tagbar_iconchars = ['+', '-']
+    " Netrw
+    let g:netrw_liststyle = 1
+    let g:netrw_banner = 0
+    let g:netrw_fastbrowse = 0
+    let g:netrw_list_hide = '.git,.pyc'
+    let g:netrw_preview = 1
 
     " Ultisnips
     let g:UltiSnipsExpandTrigger="<c-j>"
     let g:UltiSnipsJumpForwardTrigger="<tab>"
     let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-
-    " NERDTree
-    let g:NERDTreeQuitOnOpen=1
-    let g:NERDTreeHighlightCursorline=1
-    let g:NERDTreeDirArrows=0
-    let g:NERDTreeIgnore = ['\.pyc$', '.git', 'node_modules', 'bower_components', 'dist', 'build', 'tags', 'other_components']
-    let g:NERDTreeHijackNetrw = 1
-    let g:NERDTreeShowLineNumbers = 1
 
     " indent_guides
     let g:indent_guides_auto_colors = 0
@@ -150,6 +139,8 @@
     set splitright
     set grepprg=ag\ --nogroup\ --nocolor
     set wildmenu
+    set shell=/bin/sh
+    set more
 
 " ======================
     " Key mappings
@@ -188,6 +179,14 @@
     " Reload vimrc
     command! ReloadNvimrc :source $MYVIMRC
 
+    " Rerun last :make including args
+    noremap <F2> :make<up>
+
+    noremap ]q :cn<CR>zv
+    noremap [q :cn<CR>zv
+    noremap ]Q :cla<CR>zv
+    noremap [Q :cfir<CR>zv
+
     nmap <up> <nop>
     nmap <down> <nop>
     nmap <left> <nop>
@@ -224,6 +223,8 @@
         autocmd FileType python command! IntractToVar :call IntractToVar__python()
         autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
         autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
+
+        autocmd FileType python call SetErrorFormat__python()
     augroup END
 
     augroup active_window
@@ -259,6 +260,42 @@
 " ======================
     " Functions
     "
+    function! SetErrorFormat__python()
+        " TODO: This should be moved into compiler file.
+
+        let &makeprg = 'clear && python ./manage.py test -v 0'
+
+        let &errorformat  = '%-GTraceback%.%#,'
+
+        " The error message itself starts with a line with 'File' in it. There
+        " are a couple of variations, and we need to process a line beginning
+        " with whitespace followed by File, the filename in "", a line number,
+        " and optional further text. %E here indicates the start of a multi-line
+        " error message. The %\C at the end means that a case-sensitive search is
+        " required.
+        let &errorformat .= '%E  File "%f"\, line %l\,%m%\C,'
+        let &errorformat .= '%E  File "%f"\, line %l%\C,'
+
+        " The possible continutation lines are idenitifed to Vim by %C. We deal
+        " with these in order of most to least specific to ensure a proper
+        " match. A pointer (^) identifies the column in which the error occurs
+        " (but will not be entirely accurate due to indention of Python code).
+        "let &errorformat .= '%C%p^,'
+
+        " Any text, indented by more than two spaces contain useful information.
+        " We want this to appear in the quickfix window, hence %+.
+        let &errorformat .= '%+C    %.%#,'
+        let &errorformat .= '%+C  %.%#,'
+
+        " The last line (%Z) does not begin with any whitespace. We use a zero
+        " width lookahead (\&) to check this. The line contains the error
+        " message itself (%m)
+        let &errorformat .= '%Z%\S%\&%m,'
+
+        " We can ignore any other lines (%-G)
+        let &errorformat .= '%-G%.%#'
+    endfunction
+
     function! BuildTags()
         call jobstart('build_tags', 'ctags',  ['-R', '.'])
     endfunction

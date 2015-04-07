@@ -15,6 +15,8 @@ alias mux=tmuxinator
 alias vi=nvim
 alias pyclean='find . -name "*.pyc" -delete'
 alias irssi='TERM=screen-256color irssi'
+alias profanity='TERM=screen-256color profanity'
+alias mutt='TERM=screen-256color mutt -y'
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"

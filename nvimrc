@@ -23,6 +23,7 @@
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-surround'
     Plug 'ameade/qtpy-vim'
+    Plug 'puppetlabs/puppet-syntax-vim'
 
     call plug#end()
 
@@ -64,6 +65,10 @@
     " YCM
     let g:ycm_autoclose_preview_window_after_insertion = 1
 
+    " SQL
+    let g:sql_type_default = 'mysql'
+    let g:dbext_default_profile_GAN = 'type=MYSQL:user=root:dbname=getanewsletter'
+
     " Airline
     set laststatus=2
     let g:airline_powerline_fonts = 1
@@ -76,6 +81,17 @@
     let g:airline#extensions#tabline#show_close_button = 0
     let g:airline_theme='solarized'
     let g:airline#extensions#default#section_truncate_width = { 'b': 80, 'x': 100, 'z': 120, 'y': 140}
+    let g:tmuxline_preset = {
+                \'a'       : '#S',
+                \'win'     : '#I  #W',
+                \'cwin'    : '#I  #W',
+                \'x'       : '#(find $HOME/.mail/*/INBOX/new/ -type f | wc -l | xargs) new email(s)',
+                \'y'       : '#(battery) ⌁',
+                \'z'       : '%a %e %b %H:%M',
+                \'options' : {
+                    \'status-justify' : 'left',
+                    \'status-interval' : '10'
+                \}}
 
 " =======================
     " Colors and highlighting
@@ -137,15 +153,21 @@
     set listchars=tab:▸\ ,eol:¬
     set wildignore+=*.pyc,*.git,tags
     set splitright
-    set grepprg=ag\ --nogroup\ --nocolor
+    set grepprg=ag\ --nogroup\ --nocolor\ --follow\ --skip-vcs-ignores
     set wildmenu
-    set shell=/bin/sh
+    set shell=/bin/bash
     set more
+    set sessionoptions=blank,buffers,folds,sesdir,tabpages,winsize
 
 " ======================
     " Key mappings
 
     let mapleader = ' '
+
+    " Workaround nvim bug. Removed when closed.
+    " https://github.com/neovim/neovim/issues/2048
+    nmap <BS> <C-W>h
+
     noremap <leader>g :YcmCompleter GoTo<CR>
 
     " Copy and past using system clipboard
@@ -206,8 +228,11 @@
 
         autocmd BufWritePost * :call UpdateTags()
 
-        " Delete fugetive buffers when hidden
+        " Delete fugitive buffers when hidden
         autocmd BufReadPost fugitive://* set bufhidden=delete
+
+        " Mark buffers from packages as nomodifiable
+        autocmd BufReadPost */site-packages/* setlocal nomodifiable
 
         " Highlight the current word under the cursor
         autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
@@ -225,6 +250,8 @@
         autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
 
         autocmd FileType python call SetErrorFormat__python()
+
+        autocmd FileType puppet set ts=2 sw=2 sts=2
     augroup END
 
     augroup active_window
@@ -259,7 +286,12 @@
 
 " ======================
     " Functions
-    "
+
+    function! MysqlPipe(database) range
+        let sql = shellescape(join(getline(a:firstline, a:lastline)))
+        execute '!clear && mysql -t --database=' . a:database . ' --user=root --execute=' . sql
+    endfunction
+
     function! SetErrorFormat__python()
         " TODO: This should be moved into compiler file.
 
@@ -276,7 +308,7 @@
         let &errorformat .= '%E  File "%f"\, line %l\,%m%\C,'
         let &errorformat .= '%E  File "%f"\, line %l%\C,'
 
-        " The possible continutation lines are idenitifed to Vim by %C. We deal
+        " The possible continuation lines are identified to Vim by %C. We deal
         " with these in order of most to least specific to ensure a proper
         " match. A pointer (^) identifies the column in which the error occurs
         " (but will not be entirely accurate due to indention of Python code).
@@ -341,7 +373,7 @@
         execute('normal! ? =')
         " Cut the function
         execute('normal! wwvf(/)d')
-        " Go back to the var name and search for next occurence
+        " Go back to the var name and search for next occurrence
         execute('normal! bb*')
         " Paste over the existing var
         execute('normal! viwp')

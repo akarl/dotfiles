@@ -23,8 +23,6 @@ set pipe_decode          # strip headers and eval mimes when piping
 set thorough_search      # strip headers and eval mimes before searching
 set &charset ?charset
 
-source ~/.mutt/mutt-colors-solarized-dark-16.muttrc
-
 # Compose View Options -------------------------------
 set realname = "Andreas Karlsson"          # who am i?
 set envelope_from                    # which from?

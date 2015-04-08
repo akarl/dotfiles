@@ -7,7 +7,7 @@
     Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
     Plug 'airblade/vim-gitgutter'
     Plug 'altercation/vim-colors-solarized'
-    Plug 'bling/vim-airline'
+    Plug 'vim-scripts/twilight256.vim'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'ctrlpvim/ctrlp.vim'
     Plug 'd11wtq/ctrlp_bdelete.vim'
@@ -69,43 +69,27 @@
     let g:sql_type_default = 'mysql'
     let g:dbext_default_profile_GAN = 'type=MYSQL:user=root:dbname=getanewsletter'
 
-    " Airline
-    set laststatus=2
-    let g:airline_powerline_fonts = 1
-    let g:airline#extensions#tabline#enabled = 1
-    let g:airline#extensions#tabline#show_buffers = 0
-    let g:airline#extensions#tabline#show_tabs = 1
-    let g:airline#extensions#tabline#show_tab_type = 0
-    let g:airline#extensions#tmuxline#enabled = 1
-    let g:airline#extensions#tabline#tab_min_count = 2
-    let g:airline#extensions#tabline#show_close_button = 0
-    let g:airline_theme='solarized'
-    let g:airline#extensions#default#section_truncate_width = { 'b': 80, 'x': 100, 'z': 120, 'y': 140}
-    let g:tmuxline_preset = {
-                \'a'       : '#S',
-                \'win'     : '#I  #W',
-                \'cwin'    : '#I  #W',
-                \'x'       : '#(find $HOME/.mail/*/INBOX/new/ -type f | wc -l | xargs) new email(s)',
-                \'y'       : '#(battery) ⌁',
-                \'z'       : '%a %e %b %H:%M',
-                \'options' : {
-                    \'status-justify' : 'left',
-                    \'status-interval' : '10'
-                \}}
-
 " =======================
     " Colors and highlighting
 
     filetype plugin indent on
     set background=dark
 
-    colorscheme solarized
+    colorscheme twilight256
     syntax on
+
+    highlight LineNr ctermbg=0 ctermfg=240
+    highlight CursorLineNr ctermbg=234 ctermfg=blue
+    highlight StatusLine ctermfg=235 ctermbg=230
+    highlight StatusLineNC ctermfg=235 ctermbg=240
+    highlight ColorColumn ctermbg=234
+    highlight CursorLine cterm=NONE ctermbg=234
+    highlight CursorColumn ctermbg=234
 
     " gutter splits and folds in a darker color
     highlight SignColumn ctermbg=black
-    highlight VertSplit ctermfg=11 ctermbg=11
-    highlight Folded cterm=NONE ctermbg=8 ctermfg=11
+    highlight VertSplit ctermfg=235 ctermbg=235
+    highlight Folded cterm=NONE ctermbg=NONE ctermfg=245
 
     highlight GitGutterAdd ctermbg=black ctermfg=2
     highlight GitGutterChange ctermbg=black ctermfg=3
@@ -113,18 +97,19 @@
     highlight GitGutterChangeDelete ctermbg=black ctermfg=3
 
     " Indent guides
-    highlight IndentGuidesOdd  ctermbg=black
-    highlight IndentGuidesEven ctermbg=black
+    highlight IndentGuidesOdd  ctermbg=234
+    highlight IndentGuidesEven ctermbg=234
 
 " =======================
     " Settings
 
     set nocompatible
+    set statusline=
+    set statusline+=%f%m\ %y%r
     set backspace=indent,eol,start
     set nobackup
     set noswapfile
     set autoread
-    set nonumber
     set incsearch
     set ignorecase
     set smartcase
@@ -150,6 +135,7 @@
     set encoding=utf8
     set colorcolumn=121
     set relativenumber
+    set number
     set listchars=tab:▸\ ,eol:¬
     set wildignore+=*.pyc,*.git,tags
     set splitright

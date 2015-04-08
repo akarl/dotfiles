@@ -23,6 +23,12 @@ set pipe_decode          # strip headers and eval mimes when piping
 set thorough_search      # strip headers and eval mimes before searching
 set &charset ?charset
 
+# Colors ---------------------------------------------
+color indicator brightblack blue
+color index white blue "~N"       # new messages
+color index black yellow "~T"       # tagged messages
+color index default red "~D"       # deleted messages
+
 # Compose View Options -------------------------------
 set realname = "Andreas Karlsson"          # who am i?
 set envelope_from                    # which from?

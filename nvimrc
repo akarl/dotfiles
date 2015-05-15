@@ -13,6 +13,7 @@
     Plug 'd11wtq/ctrlp_bdelete.vim'
     Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
     Plug 'edkolev/tmuxline.vim'
+    Plug 'eiginn/netrw'
     Plug 'hynek/vim-python-pep8-indent', { 'for': ['python'] }
     Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript'] }
     Plug 'jmcantrell/vim-virtualenv'
@@ -22,9 +23,9 @@
     Plug 'scrooloose/syntastic'
     Plug 'tmhedberg/matchit'
     Plug 'tpope/vim-commentary'
-    Plug 'tpope/vim-vinegar'
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-vinegar'
     Plug 'vim-scripts/twilight256.vim'
 
     call plug#end()
@@ -43,13 +44,6 @@
     let g:ctrlp_cmd = 'CtrlP'
     let g:ctrlp_map = ''
     let g:ctrlp_extensions = []
-
-    " Netrw
-    let g:netrw_liststyle = 1
-    let g:netrw_banner = 1
-    let g:netrw_fastbrowse = 0
-    let g:netrw_list_hide = '.git,.pyc'
-    let g:netrw_preview = 1
 
     " Ultisnips
     let g:UltiSnipsExpandTrigger="<c-j>"
@@ -239,6 +233,8 @@
     augroup filetypes
         autocmd!
 
+        autocmd FileType netrw setl bufhidden=delete
+
         autocmd BufRead,BufNewFile *.md set filetype=markdown
 
         autocmd FileType python command! -nargs=1 ExtractToVar :call ExtractToVar__python('<args>')
@@ -291,19 +287,19 @@
     " Functions
     "
     function! DjangoTestFile(f)
-        " let l:file = expand(a:f)
-        " let l:file = substitute(l:file, "/", ".", "g")
-        " let l:file = substitute(l:file, ".py", "", "")
+        let l:file = expand(a:f)
+        let l:file = substitute(l:file, "/", ".", "g")
+        let l:file = substitute(l:file, ".py", "", "")
 
-        " execute 'wall'
+        execute 'wall'
         execute 'bel split | enew'
-        " let l:cmd = 'djtest ' . l:file
-        " call termopen(cmd)
+        let l:cmd = 'djtest ' . l:file
+        call termopen(cmd)
         execute 'resize 10'
         execute 'set winfixheight'
-        execute 'terminal'
+        " execute 'terminal'
 
-        " let g:lastDjangoTest = l:file
+        let g:lastDjangoTest = l:file
     endfunction
 
     function! MysqlPipe(database) range

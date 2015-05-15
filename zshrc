@@ -8,16 +8,6 @@ ZSH=$HOME/.oh-my-zsh
 # ZSH_THEME="robbyrussell"
 ZSH_THEME="my-theme"
 
-# Aliases
-alias truecrypt='/Applications/TrueCrypt.app/Contents/MacOS/Truecrypt --text'
-alias tmux='tmux -u'
-alias mux=tmuxinator
-alias vi=nvim
-alias pyclean='find . -name "*.pyc" -delete'
-alias irssi='TERM=screen-256color irssi'
-alias profanity='TERM=screen-256color profanity'
-alias mutt='TERM=screen-256color mutt -y'
-
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
 
@@ -50,19 +40,3 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(git pip osx wd tmux tmuxinator zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
-
-export GOPATH=/workspace/Go
-export EDITOR=vi
-
-# Customize to your needs...
-export PATH=/usr/local/bin:$PATH:/usr/local/share/npm/bin:/usr/bin:/bin:/usr/sbin:/usr/local/sbin:/sbin:$GOPATH/bin
-
-# Virtualenvwrapper
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=/workspace
-source /usr/local/bin/virtualenvwrapper.sh
-
-# Docker
-export DOCKER_HOST=tcp://192.168.59.103:2376
-unset DOCKER_CERT_PATH
-unset DOCKER_TLS_VERIFY

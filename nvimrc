@@ -7,7 +7,7 @@
     Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
     Plug 'airblade/vim-gitgutter'
     Plug 'altercation/vim-colors-solarized'
-    Plug 'vim-scripts/twilight256.vim'
+    Plug 'ameade/qtpy-vim'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'ctrlpvim/ctrlp.vim'
     Plug 'd11wtq/ctrlp_bdelete.vim'
@@ -15,15 +15,17 @@
     Plug 'edkolev/tmuxline.vim'
     Plug 'hynek/vim-python-pep8-indent', { 'for': ['python'] }
     Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript'] }
-    Plug 'jmcantrell/vim-virtualenv', { 'for': ['python'] }
+    Plug 'jmcantrell/vim-virtualenv'
     Plug 'marijnh/tern_for_vim', { 'for': ['javascript'], 'do': 'npm install' }
     Plug 'nathanaelkane/vim-indent-guides'
+    Plug 'puppetlabs/puppet-syntax-vim'
     Plug 'scrooloose/syntastic'
     Plug 'tmhedberg/matchit'
+    Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-vinegar'
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-surround'
-    Plug 'ameade/qtpy-vim'
-    Plug 'puppetlabs/puppet-syntax-vim'
+    Plug 'vim-scripts/twilight256.vim'
 
     call plug#end()
 
@@ -35,7 +37,6 @@
     let g:ctrlp_follow_symlinks = 1
     let g:ctrlp_open_multiple_files = '2vjr'
     let g:ctrlp_open_new_file = 'r'
-    let g:ctrlp_follow_symlinks = 1
     let g:ctrlp_working_path_mode = 0
     let g:ctrlp_lazy_update = 150
     let g:ctrlp_switch_buffer = 0
@@ -45,7 +46,7 @@
 
     " Netrw
     let g:netrw_liststyle = 1
-    let g:netrw_banner = 0
+    let g:netrw_banner = 1
     let g:netrw_fastbrowse = 0
     let g:netrw_list_hide = '.git,.pyc'
     let g:netrw_preview = 1
@@ -78,10 +79,15 @@
     colorscheme twilight256
     syntax on
 
-    highlight LineNr ctermbg=0 ctermfg=240
-    highlight CursorLineNr ctermbg=234 ctermfg=blue
+    highlight TabLineFill ctermfg=235 ctermbg=235
+    highlight TabLine cterm=NONE ctermfg=240 ctermbg=235
+    highlight TabLineSel cterm=NONE ctermfg=230 ctermbg=0
+
     highlight StatusLine ctermfg=235 ctermbg=230
     highlight StatusLineNC ctermfg=235 ctermbg=240
+
+    highlight LineNr ctermbg=0 ctermfg=240
+    highlight CursorLineNr ctermbg=234 ctermfg=blue
     highlight ColorColumn ctermbg=234
     highlight CursorLine cterm=NONE ctermbg=234
     highlight CursorColumn ctermbg=234
@@ -103,9 +109,13 @@
 " =======================
     " Settings
 
+    set splitright
+    set splitbelow
+    set title
     set nocompatible
     set statusline=
     set statusline+=%f%m\ %y%r
+    set laststatus=2
     set backspace=indent,eol,start
     set nobackup
     set noswapfile
@@ -141,7 +151,7 @@
     set splitright
     set grepprg=ag\ --nogroup\ --nocolor\ --follow\ --skip-vcs-ignores
     set wildmenu
-    set shell=/bin/bash
+    set shell=/bin/zsh
     set more
     set sessionoptions=blank,buffers,folds,sesdir,tabpages,winsize
 
@@ -150,9 +160,12 @@
 
     let mapleader = ' '
 
-    " Workaround nvim bug. Removed when closed.
-    " https://github.com/neovim/neovim/issues/2048
-    nmap <BS> <C-W>h
+    " osx keyboard...
+    nmap § `
+
+    tnoremap <Esc> <c-\><c-n>
+
+    noremap <C-w>c :tabnew<CR>
 
     noremap <leader>g :YcmCompleter GoTo<CR>
 
@@ -171,24 +184,23 @@
     nnoremap <S-Right> <C-i>
 
     " Splits
-    noremap <C-Right> :vertical resize +10<CR>:AirlineRefresh<CR>
-    noremap <C-Left> :vertical resize -10<CR>:AirlineRefresh<CR>
+    noremap <C-Right> :vertical resize +10<CR>
+    noremap <C-Left> :vertical resize -10<CR>
     noremap <C-Up> :resize +5<CR>
     noremap <C-Down> :resize -5<CR>
 
     " Buffers
-    noremap <tab> :CtrlPBuffer<CR>
+    noremap <tab> :ls<CR>:b<space>
     noremap <C-p> :CtrlP<CR>
 
     " Tags
     command! BuildTags :call BuildTags()
-    noremap <leader>t :tjump
 
     " Reload vimrc
     command! ReloadNvimrc :source $MYVIMRC
 
-    " Rerun last :make including args
-    noremap <F2> :make<up>
+    noremap <F2> :call DjangoTestFile('%')<CR>
+    noremap <F1> :call DjangoTestFile(g:lastDjangoTest)<CR>
 
     noremap ]q :cn<CR>zv
     noremap [q :cn<CR>zv
@@ -207,7 +219,7 @@
         autocmd!
 
         " update diff when moving the cursor
-        autocmd CursorMoved,CursorMovedI * if &diff == 1 | diffupdate | endif
+        " autocmd CursorMoved,CursorMovedI * if &diff == 1 | diffupdate | endif
 
         " auto remove trailing whitespace
         autocmd BufWritePre * :%s/\s\+$//e
@@ -249,6 +261,11 @@
         autocmd WinLeave * setlocal nocursorline
         autocmd WinLeave * setlocal nocursorcolumn
 
+        autocmd WinEnter term:* setlocal nocursorline
+        autocmd WinEnter term:* setlocal nocursorcolumn
+        autocmd TermOpen * setlocal nocursorline
+        autocmd TermOpen * setlocal nocursorcolumn
+
         " Only show cursorline and column in active window
         autocmd WinEnter * set wrap
         autocmd WinLeave * set nowrap
@@ -272,6 +289,22 @@
 
 " ======================
     " Functions
+    "
+    function! DjangoTestFile(f)
+        " let l:file = expand(a:f)
+        " let l:file = substitute(l:file, "/", ".", "g")
+        " let l:file = substitute(l:file, ".py", "", "")
+
+        " execute 'wall'
+        execute 'bel split | enew'
+        " let l:cmd = 'djtest ' . l:file
+        " call termopen(cmd)
+        execute 'resize 10'
+        execute 'set winfixheight'
+        execute 'terminal'
+
+        " let g:lastDjangoTest = l:file
+    endfunction
 
     function! MysqlPipe(database) range
         let sql = shellescape(join(getline(a:firstline, a:lastline)))
@@ -315,7 +348,7 @@
     endfunction
 
     function! BuildTags()
-        call jobstart('build_tags', 'ctags',  ['-R', '.'])
+        call jobstart(['ctags', '-R', '.'])
     endfunction
 
     function! UpdateTags()

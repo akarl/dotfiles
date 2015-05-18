@@ -1,18 +1,11 @@
-" =======================
-    " Plugins
+
     call plug#begin('~/.nvim/plugged')
 
     Plug 'Raimondi/delimitMate'
-    Plug 'SirVer/ultisnips'
     Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
     Plug 'airblade/vim-gitgutter'
-    Plug 'altercation/vim-colors-solarized'
-    Plug 'ameade/qtpy-vim'
     Plug 'christoomey/vim-tmux-navigator'
-    Plug 'ctrlpvim/ctrlp.vim'
-    Plug 'd11wtq/ctrlp_bdelete.vim'
     Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
-    Plug 'edkolev/tmuxline.vim'
     Plug 'eiginn/netrw'
     Plug 'hynek/vim-python-pep8-indent', { 'for': ['python'] }
     Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript'] }
@@ -33,23 +26,6 @@
 " =======================
     " Plugin settings
 
-    " Ctrl-p
-    call ctrlp_bdelete#init()
-    let g:ctrlp_follow_symlinks = 1
-    let g:ctrlp_open_multiple_files = '2vjr'
-    let g:ctrlp_open_new_file = 'r'
-    let g:ctrlp_working_path_mode = 0
-    let g:ctrlp_lazy_update = 150
-    let g:ctrlp_switch_buffer = 0
-    let g:ctrlp_cmd = 'CtrlP'
-    let g:ctrlp_map = ''
-    let g:ctrlp_extensions = []
-
-    " Ultisnips
-    let g:UltiSnipsExpandTrigger="<c-j>"
-    let g:UltiSnipsJumpForwardTrigger="<tab>"
-    let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-
     " indent_guides
     let g:indent_guides_auto_colors = 0
     let g:indent_guides_enable_on_vim_startup = 1
@@ -62,7 +38,6 @@
 
     " SQL
     let g:sql_type_default = 'mysql'
-    let g:dbext_default_profile_GAN = 'type=MYSQL:user=root:dbname=getanewsletter'
 
 " =======================
     " Colors and highlighting
@@ -154,9 +129,6 @@
 
     let mapleader = ' '
 
-    " osx keyboard...
-    nmap § `
-
     tnoremap <Esc> <c-\><c-n>
 
     noremap <C-w>c :tabnew<CR>
@@ -172,20 +144,11 @@
 
     noremap <Leader>s :wa<CR>
 
-    " Jump list navigation
-    " I have <tab> (CTRL-i) mapped to :CtrlPBuffer
-    " My terminal is set to send <S-Right> when I press <C-i>
-    nnoremap <S-Right> <C-i>
-
     " Splits
     noremap <C-Right> :vertical resize +10<CR>
     noremap <C-Left> :vertical resize -10<CR>
     noremap <C-Up> :resize +5<CR>
     noremap <C-Down> :resize -5<CR>
-
-    " Buffers
-    noremap <tab> :ls<CR>:b<space>
-    noremap <C-p> :CtrlP<CR>
 
     " Tags
     command! BuildTags :call BuildTags()
@@ -237,9 +200,6 @@
 
         autocmd BufRead,BufNewFile *.md set filetype=markdown
 
-        autocmd FileType python command! -nargs=1 ExtractToVar :call ExtractToVar__python('<args>')
-        autocmd FileType python command! MultiLineDict :call MultiLineDict__python()
-        autocmd FileType python command! IntractToVar :call IntractToVar__python()
         autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
         autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
 
@@ -270,12 +230,6 @@
         autocmd WinEnter * call AutoResizeWindow()
     augroup END
 
-    augroup commands
-        autocmd!
-
-        autocmd FileType python command! -range ToDict :<line1>,<line2>s/\(\w\+\)/'\1': \1,/g
-    augroup END
-
     augroup breakpoints
         autocmd!
 
@@ -300,11 +254,6 @@
         " execute 'terminal'
 
         let g:lastDjangoTest = l:file
-    endfunction
-
-    function! MysqlPipe(database) range
-        let sql = shellescape(join(getline(a:firstline, a:lastline)))
-        execute '!clear && mysql -t --database=' . a:database . ' --user=root --execute=' . sql
     endfunction
 
     function! SetErrorFormat__python()
@@ -359,39 +308,4 @@
                 execute 'vertical resize 126'
             endif
         endif
-    endfunction
-
-    function! ExtractToVar__python(name)
-        execute('normal! cib' . a:name . '')
-        execute('normal! O' . a:name . ' = p^')
-    endfunction
-
-    function! MultiLineDict__python()
-        let origLine = line('.')
-
-        execute('s/{/{\r/g')
-
-        execute(origLine . ' normal! f{vaB')
-        silent! execute(line('v') . ',' . line('.') . ' s/}/\r}/g')
-        execute('normal! ')
-
-        execute(origLine . ' normal! f{vaB')
-        silent! execute(line('v') . ',' . line('.') . ' s/,/,\r/g')
-        execute('normal! ')
-
-        silent! execute(origLine . ' normal! f{vaB=')
-        execute('normal! ')
-    endfunction
-
-    function! IntractToVar__python()
-        " Find the definition
-        execute('normal! ? =')
-        " Cut the function
-        execute('normal! wwvf(/)d')
-        " Go back to the var name and search for next occurrence
-        execute('normal! bb*')
-        " Paste over the existing var
-        execute('normal! viwp')
-        " Go back to the original var and delete it
-        execute('normal! Ndd')
     endfunction

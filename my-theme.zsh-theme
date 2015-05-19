@@ -5,6 +5,9 @@ ZSH_THEME_GIT_PROMPT_SUFFIX=""
 ZSH_THEME_GIT_PROMPT_DIRTY="⎁"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
 
+MODE_INDICATOR='%F{240}[NORMAL]'
+
 PROMPT='
 %d %F{240}$(git_prompt_info)|$(echo `basename "$VIRTUAL_ENV"`)|
 %(1j.%j.)%f$ '
+

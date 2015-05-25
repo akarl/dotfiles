@@ -131,6 +131,8 @@
 
     tnoremap <Esc> <c-\><c-n>
 
+    noremap <C-p> :e **/*
+
     noremap <C-w>c :tabnew<CR>
 
     noremap <leader>g :YcmCompleter GoTo<CR>
@@ -145,10 +147,13 @@
     noremap <Leader>s :wa<CR>
 
     " Splits
-    noremap <C-Right> :vertical resize +10<CR>
-    noremap <C-Left> :vertical resize -10<CR>
-    noremap <C-Up> :resize +5<CR>
-    noremap <C-Down> :resize -5<CR>
+    noremap <right> :vertical resize +10<CR>
+    noremap <left> :vertical resize -10<CR>
+    noremap <up> :resize +5<CR>
+    noremap <down> :resize -5<CR>
+
+    " Active buffers
+    noremap <Leader>l :ls<CR>:b<space>
 
     " Tags
     command! BuildTags :call BuildTags()
@@ -163,11 +168,6 @@
     noremap [q :cn<CR>zv
     noremap ]Q :cla<CR>zv
     noremap [Q :cfir<CR>zv
-
-    nmap <up> <nop>
-    nmap <down> <nop>
-    nmap <left> <nop>
-    nmap <right> <nop>
 
 " ======================
     " Autocommands

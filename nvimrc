@@ -152,22 +152,43 @@
     noremap <up> :resize +5<CR>
     noremap <down> :resize -5<CR>
 
-    " Active buffers
-    noremap <Leader>l :ls<CR>:b<space>
-
     " Tags
     command! BuildTags :call BuildTags()
 
     " Reload vimrc
     command! ReloadNvimrc :source $MYVIMRC
 
-    noremap <F2> :call DjangoTestFile('%')<CR>
-    noremap <F1> :call DjangoTestFile(g:lastDjangoTest)<CR>
+    command! -nargs=1 DjangoTest call DjangoTest(<f-args>)
 
-    noremap ]q :cn<CR>zv
-    noremap [q :cn<CR>zv
-    noremap ]Q :cla<CR>zv
-    noremap [Q :cfir<CR>zv
+    noremap <F2> :call DjangoTestFile('%')<CR>
+    noremap <F1> :DjangoTest <C-r>=g:lastDjangoTest<CR>
+
+    " Quickfix navigation
+    noremap <Leader>q :copen<CR>
+    noremap ]q :cnext<CR>zzzv
+    noremap [q :cprevious<CR>zzzv
+    noremap ]Q :clast<CR>zzzv
+    noremap [Q :cfirst<CR>zzzv
+
+    " Tags navigation
+    noremap <Leader>t :tags<CR>
+    noremap ]t :tnext<CR>zzzv
+    noremap [t :tprevious<CR>zzzv
+    noremap ]T :tlast<CR>zzzv
+    noremap [T :tfirst<CR>zzzv
+
+    " Active buffers
+    noremap <Leader>l :ls<CR>:b<space>
+    noremap ]b :bnext<CR>
+    noremap [b :bprevious<CR>
+
+    " Go to next/previous git hunk
+    noremap ]h :GitGutterNextHunk<CR>
+    noremap [h :GitGutterPrevHunk<CR>
+
+    " View top of file in new split above current buffer.
+    " Good for adding imports etc.
+    noremap <Leader>k :leftabove split<CR>:resize 10<CR>gg
 
 " ======================
     " Autocommands
@@ -239,22 +260,25 @@
 
 " ======================
     " Functions
-    "
+
     function! DjangoTestFile(f)
         let l:file = expand(a:f)
         let l:file = substitute(l:file, "/", ".", "g")
         let l:file = substitute(l:file, ".py", "", "")
 
-        execute 'wall'
+        call DjangoTest(l:file)
+    endfunction
+
+    function! DjangoTest(test)
+        let g:lastDjangoTest = a:test
+
         execute 'bel split | enew'
-        let l:cmd = 'djtest ' . l:file
+        let l:cmd = 'djtest ' . a:test
         call termopen(cmd)
         execute 'resize 10'
         execute 'set winfixheight'
-        " execute 'terminal'
-
-        let g:lastDjangoTest = l:file
     endfunction
+
 
     function! SetErrorFormat__python()
         " TODO: This should be moved into compiler file.

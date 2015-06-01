@@ -37,6 +37,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(vi-mode git pip osx wd tmux tmuxinator zsh-syntax-highlighting)
+plugins=(vi-mode git pass pip osx wd tmux tmuxinator zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
+
+[[ -z $GPG_AGENT_INFO ]] && eval $(gpg-agent --daemon)

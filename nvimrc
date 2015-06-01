@@ -171,7 +171,7 @@
     noremap [Q :cfirst<CR>zzzv
 
     " Tags navigation
-    noremap <Leader>t :tags<CR>
+    noremap <Leader>t :tselect<CR>
     noremap ]t :tnext<CR>zzzv
     noremap [t :tprevious<CR>zzzv
     noremap ]T :tlast<CR>zzzv

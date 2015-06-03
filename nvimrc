@@ -4,6 +4,7 @@
     Plug 'Raimondi/delimitMate'
     Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
     Plug 'airblade/vim-gitgutter'
+    Plug '5long/pytest-vim-compiler'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
     Plug 'eiginn/netrw'
@@ -159,6 +160,8 @@
     command! ReloadNvimrc :source $MYVIMRC
 
     command! -nargs=1 DjangoTest call DjangoTest(<f-args>)
+    command! -nargs=1 Watch call Watch(<f-args>)
+    command! -nargs=* MiniTerm call MiniTerm(<f-args>)
 
     noremap <F2> :call DjangoTestFile('%')<CR>
     noremap <F1> :DjangoTest <C-r>=g:lastDjangoTest<CR>
@@ -224,8 +227,6 @@
         autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
         autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
 
-        autocmd FileType python call SetErrorFormat__python()
-
         autocmd FileType puppet set ts=2 sw=2 sts=2
     augroup END
 
@@ -261,6 +262,21 @@
 " ======================
     " Functions
 
+    function! MiniTerm(...)
+        execute 'bel split'
+        execute 'resize 10'
+        execute 'set winfixheight'
+        if exists('a:1')
+            execute 'terminal ' . a:1
+        else
+            execute 'terminal'
+        endif
+    endfunction
+
+    function! Watch(cmd)
+        call MiniTerm('nodemon -x "' . a:cmd . '" -e py')
+    endfunction
+
     function! DjangoTestFile(f)
         let l:file = expand(a:f)
         let l:file = substitute(l:file, "/", ".", "g")
@@ -277,43 +293,6 @@
         call termopen(cmd)
         execute 'resize 10'
         execute 'set winfixheight'
-    endfunction
-
-
-    function! SetErrorFormat__python()
-        " TODO: This should be moved into compiler file.
-
-        let &makeprg = 'clear && python ./manage.py test -v 0'
-
-        let &errorformat  = '%-GTraceback%.%#,'
-
-        " The error message itself starts with a line with 'File' in it. There
-        " are a couple of variations, and we need to process a line beginning
-        " with whitespace followed by File, the filename in "", a line number,
-        " and optional further text. %E here indicates the start of a multi-line
-        " error message. The %\C at the end means that a case-sensitive search is
-        " required.
-        let &errorformat .= '%E  File "%f"\, line %l\,%m%\C,'
-        let &errorformat .= '%E  File "%f"\, line %l%\C,'
-
-        " The possible continuation lines are identified to Vim by %C. We deal
-        " with these in order of most to least specific to ensure a proper
-        " match. A pointer (^) identifies the column in which the error occurs
-        " (but will not be entirely accurate due to indention of Python code).
-        "let &errorformat .= '%C%p^,'
-
-        " Any text, indented by more than two spaces contain useful information.
-        " We want this to appear in the quickfix window, hence %+.
-        let &errorformat .= '%+C    %.%#,'
-        let &errorformat .= '%+C  %.%#,'
-
-        " The last line (%Z) does not begin with any whitespace. We use a zero
-        " width lookahead (\&) to check this. The line contains the error
-        " message itself (%m)
-        let &errorformat .= '%Z%\S%\&%m,'
-
-        " We can ignore any other lines (%-G)
-        let &errorformat .= '%-G%.%#'
     endfunction
 
     function! BuildTags()

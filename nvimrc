@@ -1,3 +1,5 @@
+" =======================
+    " Plugged
 
     call plug#begin('~/.nvim/plugged')
 
@@ -82,6 +84,9 @@
     highlight SyntasticErrorSign cterm=bold ctermfg=160
     highlight SyntasticWarningSign cterm=bold ctermfg=148
 
+    highlight NonText ctermfg=240
+    highlight SpecialKey ctermfg=240
+
 " =======================
     " Settings
 
@@ -122,7 +127,7 @@
     set colorcolumn=121
     set relativenumber
     set number
-    set listchars=tab:▸\ ,eol:¬
+    set listchars=tab:▸\ ,eol:¬,space:𐄁
     set wildignore+=*.pyc,*.git,tags
     set splitright
     set grepprg=ag\ --nogroup\ --nocolor\ --follow\ --skip-vcs-ignores
@@ -159,16 +164,6 @@
     noremap <up> :resize +5<CR>
     noremap <down> :resize -5<CR>
 
-    " Tags
-    command! BuildTags :call BuildTags()
-
-    " Reload vimrc
-    command! ReloadNvimrc :source $MYVIMRC
-
-    command! -nargs=1 DjangoTest call DjangoTest(<f-args>)
-    command! -nargs=1 Watch call Watch(<f-args>)
-    command! -nargs=* MiniTerm call MiniTerm(<f-args>)
-
     noremap <F2> :call DjangoTestFile('%')<CR>
     noremap <F1> :DjangoTest <C-r>=g:lastDjangoTest<CR>
 
@@ -198,6 +193,22 @@
     " View top of file in new split above current buffer.
     " Good for adding imports etc.
     noremap <Leader>k :leftabove split<CR>:resize 10<CR>gg
+
+" ======================
+    " Commands
+
+    " Tags
+    command! BuildTags :call BuildTags()
+
+    " Reload vimrc
+    command! ReloadNvimrc :source $MYVIMRC
+
+    command! -nargs=1 DjangoTest call DjangoTest(<f-args>)
+    command! -nargs=1 Watch call Watch(<f-args>)
+    command! -nargs=* MiniTerm call MiniTerm(<f-args>)
+
+    " Change tabstop, shiftwidth, softtabstop
+    command! -nargs=1 TabWidth set ts=<args> sw=<args> sts=<args>
 
 " ======================
     " Autocommands

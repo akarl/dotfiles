@@ -76,6 +76,12 @@
     highlight IndentGuidesOdd  ctermbg=234
     highlight IndentGuidesEven ctermbg=234
 
+    "
+    highlight SpellBad cterm=underline ctermbg=NONE ctermfg=160
+    highlight Todo cterm=underline ctermbg=NONE ctermfg=NONE
+    highlight SyntasticErrorSign cterm=bold ctermfg=160
+    highlight SyntasticWarningSign cterm=bold ctermfg=148
+
 " =======================
     " Settings
 

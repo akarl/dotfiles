@@ -87,6 +87,16 @@
     highlight NonText ctermfg=240
     highlight SpecialKey ctermfg=240
 
+    " For viewing patches
+    highlight diffRemoved ctermfg=red
+    highlight diffAdded ctermfg=green
+
+    " For vimdiff
+    highlight DiffAdd ctermfg=NONE ctermbg=22
+    highlight DiffChange ctermfg=NONE ctermbg=54
+    highlight DiffDelete ctermfg=NONE ctermbg=52
+    highlight DiffText ctermfg=NONE ctermbg=22
+
 " =======================
     " Settings
 
@@ -135,6 +145,7 @@
     set shell=/bin/zsh
     set more
     set sessionoptions=blank,buffers,folds,sesdir,tabpages,winsize
+    set diffopt+=filler,foldcolumn:0,context:4
 
 " ======================
     " Key mappings
@@ -217,7 +228,7 @@
         autocmd!
 
         " update diff when moving the cursor
-        " autocmd CursorMoved,CursorMovedI * if &diff == 1 | diffupdate | endif
+        autocmd InsertLeave * if &diff == 1 | diffupdate | endif
 
         " auto remove trailing whitespace
         autocmd BufWritePre * :%s/\s\+$//e
@@ -243,6 +254,8 @@
 
         autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
         autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
+
+        autocmd FileType gitcommit setlocal foldmethod=syntax
 
         autocmd FileType puppet set ts=2 sw=2 sts=2
     augroup END

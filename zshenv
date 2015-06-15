@@ -15,6 +15,7 @@ export PATH=/usr/local/bin:$PATH:/usr/local/share/npm/bin:/usr/bin:/bin:/usr/sbi
 export TERM=xterm-256color
 export CLICOLOR=1
 export LSCOLORS=Gxfxcxdxbxegedabagacad
+export LESSOPEN='|pygmentize %s'
 
 
 export WORKON_HOME=$HOME/.virtualenvs

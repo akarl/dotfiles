@@ -42,3 +42,6 @@ plugins=(vi-mode git pass pip osx wd tmux tmuxinator zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
 [[ -z $GPG_AGENT_INFO ]] && eval $(gpg-agent --daemon)
+
+# Bind some custom commands.
+bindkey "^r" history-incremental-search-backward

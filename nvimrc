@@ -146,6 +146,7 @@
     set more
     set sessionoptions=blank,buffers,folds,sesdir,tabpages,winsize
     set diffopt+=filler,foldcolumn:0,context:4
+    set joinspaces
 
 " ======================
     " Key mappings
@@ -204,6 +205,11 @@
     " View top of file in new split above current buffer.
     " Good for adding imports etc.
     noremap <Leader>k :leftabove split<CR>:resize 10<CR>gg
+
+    vnoremap <A-j> :m '>+1<CR>gv=gv
+    vnoremap <A-k> :m '<-2<CR>gv=gv
+    nnoremap <A-k> :m-2<CR>==
+    nnoremap <A-j> :m+<CR>==
 
 " ======================
     " Commands

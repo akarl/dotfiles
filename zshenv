@@ -2,7 +2,7 @@
 alias truecrypt='/Applications/TrueCrypt.app/Contents/MacOS/Truecrypt --text'
 alias tmux='tmux -u'
 alias mux=tmuxinator
-alias vi=nvim
+# alias vi=nvim
 alias pyclean='find . -name "*.pyc" -delete'
 alias irssi='TERM=screen-256color irssi'
 alias profanity='TERM=screen-256color profanity'

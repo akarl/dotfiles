@@ -27,6 +27,7 @@
     Plug 'crusoexia/vim-monokai'
     Plug 'altercation/vim-colors-solarized'
     Plug 'vim-scripts/twilight256.vim'
+    Plug 'alfredodeza/pytest.vim'
 
     call plug#end()
 
@@ -42,13 +43,16 @@
 
     " YCM
     let g:ycm_autoclose_preview_window_after_insertion = 1
+    let g:ycm_collect_identifiers_from_tags_files = 1
 
     " SQL
     let g:sql_type_default = 'mysql'
 
     " Netrw
     let g:netrw_browsex_viewer = 'open'
-    let g:netrw_liststyle = 1
+
+    " Gitgutter
+    let g:gitgutter_sign_column_always = 1
 
 " =======================
     " Colors and highlighting
@@ -148,7 +152,7 @@
     set norelativenumber
     set nonumber
     set listchars=tab:▸\ ,eol:¬,space:𐄁
-    set wildignore+=*.pyc,*.git,tags
+    set wildignore+=*.pyc,*.git/,tags
     set splitright
     set grepprg=ag\ --nogroup\ --nocolor\ --follow\ --skip-vcs-ignores
     set wildmenu
@@ -157,11 +161,18 @@
     set sessionoptions=blank,buffers,folds,sesdir,tabpages,winsize
     set diffopt+=filler,foldcolumn:0,context:4
     set joinspaces
+    set complete=.,t,kspell
+    set spellfile=~/dotfiles/spellfile.utf-8.add
 
 " ======================
     " Key mappings
 
     let mapleader = ' '
+
+    noremap <silent><leader>tf :Pytest file looponfail
+    noremap <silent><leader>tc :Pytest class looponfail
+    noremap <silent><leader>tm :Pytest method looponfail
+    noremap <silent><leader>tp :Pytest project looponfail
 
     noremap <C-p> :e **/*
 
@@ -297,41 +308,8 @@
 " ======================
     " Functions
 
-    function! MiniTerm(...)
-        execute 'bel split'
-        execute 'resize 10'
-        execute 'set winfixheight'
-        if exists('a:1')
-            execute 'terminal ' . a:1
-        else
-            execute 'terminal'
-        endif
-    endfunction
-
-    function! Watch(cmd)
-        call MiniTerm('nodemon -x "' . a:cmd . '" -e py')
-    endfunction
-
-    function! DjangoTestFile(f)
-        let l:file = expand(a:f)
-        let l:file = substitute(l:file, "/", ".", "g")
-        let l:file = substitute(l:file, ".py", "", "")
-
-        call DjangoTest(l:file)
-    endfunction
-
-    function! DjangoTest(test)
-        let g:lastDjangoTest = a:test
-
-        execute 'bel split | enew'
-        let l:cmd = 'djtest ' . a:test
-        call termopen(cmd)
-        execute 'resize 10'
-        execute 'set winfixheight'
-    endfunction
-
     function! BuildTags()
-        call jobstart(['ctags', '-R', '.'])
+        execute 'silent! !ctags --fields=+l -R . &'
     endfunction
 
     function! UpdateTags()

@@ -13,6 +13,14 @@ virtualenv_prompt_info() {
     fi
 }
 
+gopath_prompt_info() {
+    if [ -h "$GOPATH" ]
+    then
+        echo ' '$(gowhich)
+    fi
+
+}
+
 background_jobs_prompt_info() {
     if [ $(jobs | wc -l) -gt 0 ]
     then
@@ -36,7 +44,7 @@ preexec() {
     echo -n '\033]2;''/'$(echo `basename "$PWD"`)'/ '$(echo "$1")'\033\\'
 }
 
-RPROMPT='$(background_jobs_prompt_info)$(git_prompt_info)$(virtualenv_prompt_info)%f'
+RPROMPT='$(background_jobs_prompt_info)$(git_prompt_info)$(gopath_prompt_info)$(virtualenv_prompt_info)%f'
 
 PROMPT='$(bad_exit_code)
 %d

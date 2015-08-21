@@ -3,48 +3,30 @@
 
     call plug#begin('~/.vim/plugged')
 
-    Plug '5long/pytest-vim-compiler'
     Plug 'Raimondi/delimitMate'
-    Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+    Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer --gocode-completer' }
     Plug 'airblade/vim-gitgutter'
     Plug 'altercation/vim-colors-solarized'
-    Plug 'christoomey/vim-tmux-navigator'
     Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
     Plug 'eiginn/netrw'
+    Plug 'fatih/vim-go', { 'for': ['go'] }
     Plug 'hynek/vim-python-pep8-indent', { 'for': ['python'] }
     Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript'] }
     Plug 'jmcantrell/vim-virtualenv'
-    Plug 'marijnh/tern_for_vim', { 'for': ['javascript'], 'do': 'npm install' }
-    Plug 'nathanaelkane/vim-indent-guides'
-    Plug 'puppetlabs/puppet-syntax-vim'
-    Plug 'scrooloose/syntastic'
     Plug 'tmhedberg/matchit'
     Plug 'tpope/vim-commentary'
-    Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-vinegar'
-    Plug 'vim-scripts/twilight256.vim'
     Plug 'vim-scripts/wombat256.vim'
-    Plug 'tmux-plugins/vim-tmux-focus-events'
+    Plug 'benekastah/neomake'
 
     call plug#end()
 
 " =======================
     " Plugin settings
 
-    " indent_guides
-    let g:indent_guides_auto_colors = 0
-    let g:indent_guides_enable_on_vim_startup = 1
-    let g:indent_guides_default_mapping = 0
-    let g:indent_guides_guide_size = 1
-    let g:indent_guides_start_level = 2
-
     " YCM
     let g:ycm_autoclose_preview_window_after_insertion = 1
-    let g:ycm_collect_identifiers_from_tags_files = 1
-
-    " SQL
-    let g:sql_type_default = 'mysql'
 
     " Netrw
     let g:netrw_browsex_viewer = 'open'
@@ -116,16 +98,18 @@
     set sessionoptions=blank,buffers,folds,sesdir,tabpages,winsize
     set diffopt+=filler,foldcolumn:0,context:4
     set joinspaces
-    set complete=.,t,kspell
     set spellfile=~/dotfiles/spellfile.utf-8.add
-    set undofile
+    set noundofile
     set undodir=~/.vim/undo
     set undolevels=1000
     set undoreload=10000
-    set statusline=\ %f:%l%m\ %r%y
+    set statusline=\ %f:%l:%c%m\ %r%y
     set statusline+=%=
-    set statusline+=\ %{fugitive#head()}
-    set statusline+=%{virtualenv#statusline()}
+    set statusline+=\ %{neomake#statusline#QflistStatus('Syntax')}
+
+    if has('nvim')
+        set completeopt=menuone,preview,noinsert
+    endif
 
 " ======================
     " Key mappings
@@ -133,14 +117,16 @@
     let mapleader = ' '
 
     if has('nvim')
-        tnoremap <Esc> <c-\><c-n>
-        nmap <silent><bs> :<c-u>TmuxNavigateLeft<cr>
-    endif
+        " tnoremap <Esc> <c-\><c-n>
+        " nmap <silent><bs> :<c-u>TmuxNavigateLeft<cr>
+        tnoremap <C-w>h <c-\><c-n><C-w>h
+        tnoremap <C-w>l <c-\><c-n><C-w>l
+        tnoremap <C-w>j <c-\><c-n><C-w>j
+        tnoremap <C-w>k <c-\><c-n><C-w>k
 
-    noremap <silent><leader>tf :Pytest file<CR>
-    noremap <silent><leader>tc :Pytest class<CR>
-    noremap <silent><leader>tm :Pytest method<CR>
-    noremap <silent><leader>tp :Pytest project<CR>
+        " C-i doesn't work in neovim yet.
+        nnoremap ±;2C <C-i>
+    endif
 
     noremap <C-p> :e **/*
 
@@ -165,25 +151,32 @@
 
     " Quickfix navigation
     noremap <Leader>q :copen<CR>
-    noremap ]q :cnext<CR>zzzv
-    noremap [q :cprevious<CR>zzzv
-    noremap ]Q :clast<CR>zzzv
-    noremap [Q :cfirst<CR>zzzv
+    noremap ]q :cnext<CR>zvzz
+    noremap [q :cprevious<CR>zvzz
+    noremap ]Q :clast<CR>zvzz
+    noremap [Q :cfirst<CR>zvzz
+
+    " Locationlist navigation
+    noremap <Leader>l :lopen<CR>
+    noremap ]l :lnext<CR>zvzz
+    noremap [l :lprevious<CR>zvzz
+    noremap ]L :llast<CR>zvzz
+    noremap [L :lfirst<CR>zvzz
 
     " Tags navigation
-    noremap ]t :tnext<CR>zzzv
-    noremap [t :tprevious<CR>zzzv
-    noremap ]T :tlast<CR>zzzv
-    noremap [T :tfirst<CR>zzzv
+    noremap ]t :tnext<CR>zvzz
+    noremap [t :tprevious<CR>zvzz
+    noremap ]T :tlast<CR>zvzz
+    noremap [T :tfirst<CR>zvzz
 
     " Active buffers
-    noremap <Leader>l :ls<CR>:b<space>
+    noremap <Leader>b :ls<CR>:b<space>
     noremap ]b :bnext<CR>
     noremap [b :bprevious<CR>
 
     " Go to next/previous git hunk
-    noremap ]h :GitGutterNextHunk<CR>
-    noremap [h :GitGutterPrevHunk<CR>
+    noremap ]c :GitGutterNextHunk<CR>zvzz
+    noremap [c :GitGutterPrevHunk<CR>zvzz
 
     " View top of file in new split above current buffer.
     " Good for adding imports etc.
@@ -193,6 +186,8 @@
     vnoremap <A-k> :m '<-2<CR>gv=gv
     nnoremap <A-k> :m-2<CR>==
     nnoremap <A-j> :m+<CR>==
+
+    nnoremap <C-w>z <C-w>\|<C-w>_
 
 " ======================
     " Commands
@@ -219,36 +214,38 @@
         " Setup colors
         autocmd ColorScheme * :call SetupColors()
 
-        " auto remove trailing whitespace
         autocmd BufWritePre * :%s/\s\+$//e
+        autocmd BufWritePre * :%s/\($\n\)\+\%$//e
+
+        autocmd BufWritePost * silent! Neomake
+        autocmd CursorHold * silent! update
 
         " Highlight the current word under the cursor
         autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
         autocmd BufEnter * let &titlestring=' /'.fnamemodify(getcwd(), ':t').'/'
 
-        " autocmd VimEnter,BufWritePost,FocusGained * call UpdateTmuxWindowTitle()
+        autocmd WinLeave * setlocal nocursorcolumn nocursorline syntax=off
+        autocmd WinEnter * setlocal cursorcolumn cursorline syntax=on
     augroup END
 
     augroup filetypes
         autocmd!
 
-        " Delete fugitive buffers when hidden
-        autocmd BufReadPost fugitive://* set bufhidden=delete
-
-        " Mark buffers from packages as nomodifiable
-        autocmd BufReadPost */site-packages/* setlocal nomodifiable
+        autocmd BufReadPost */site-packages/* setlocal nomodifiable bufhidden=delete
+        autocmd FileType netrw setl bufhidden=delete
 
         " update diff when moving the cursor
-        autocmd InsertLeave * if &diff == 1 | diffupdate | endif
-
-        autocmd FileType netrw setl bufhidden=delete
+        autocmd CursorHold * if &diff == 1 | diffupdate | endif
 
         autocmd BufRead,BufNewFile *.md set filetype=markdown
 
         autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
         autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
-        autocmd FileType python map <F5> Oimport pdb; pdb.set_trace()<ESC>
+        autocmd FileType python map <F5> Oimport ipdb; ipdb.set_trace()<ESC>
+        autocmd FileType python setlocal statusline+=%{virtualenv#statusline()}
+
+        autocmd FileType go setlocal statusline+=\ %{resolve($GOPATH)}
 
         autocmd FileType javascript map <F5> Odebugger;<ESC>
 

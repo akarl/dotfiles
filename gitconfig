@@ -1,0 +1,20 @@
+[user]
+	name = Andreas Karlsson
+	email = andreas.karlsson87@gmail.com
+[push]
+	default = simple
+[core]
+	autocrlf = input
+	excludesfile = /Users/andreas/.gitignore_global
+	editor = /usr/local/bin/nvim
+[diff]
+	tool = nvimdiff
+[merge]
+	tool = nvimdiff
+	conflictstyle = diff3
+[difftool]
+	prompt = true
+[mergetool]
+	prompt = true
+[difftool "nvimdiff"]
+    cmd = nvim -d $BASE $LOCAL

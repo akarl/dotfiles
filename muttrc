@@ -88,7 +88,7 @@ bind attach <return> view-mailcap
 alternates = "mail@andreas-karlsson.com|andreas@getanewsletter.com|tech@getanewsletter.nu"
 
 set spoolfile = +mail@andreas-karlsson.com/INBOX
-mailboxes +mail@andreas-karlsson.com/INBOX +andreas@getanewsletter.com/INBOX +tech@getanewsletter.com/INBOX
+mailboxes +mail@andreas-karlsson.com/INBOX +andreas@getanewsletter.com/INBOX +tech@getanewsletter.com/INBOX +errors@getanewsletter.com/INBOX
 
 # Other special folders.
 set mbox      = "+mail@andreas-karlsson.com/[Gmail].All Mail"

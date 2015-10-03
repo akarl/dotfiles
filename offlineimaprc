@@ -17,7 +17,7 @@
 
 [general]
 ui = ttyui
-accounts = Private,GAN.Andreas,GAN.Tech
+accounts = Private,GAN.Andreas,GAN.Tech,GAN.Errors
 pythonfile=~/dotfiles/offlineimap.py
 fsync = False
 
@@ -94,3 +94,26 @@ cert_fingerprint = 816aa5a46b09cb40b3ad8396f97520430bd8dce5
 remotehost = mail.getanewsletter.nu
 remoteuser = tech@getanewsletter.nu
 remotepasseval = get_keychain_pass(account="tech@getanewsletter.nu", server="mail.getanewsletter.nu")
+
+# ====================
+# GAN.Errors
+# ====================
+
+[Account GAN.Errors]
+localrepository = GAN.Errors-local
+remoterepository = GAN.Errors-remote
+status_backend = sqlite
+#maxage = 120
+
+[Repository GAN.Errors-local]
+type = Maildir
+localfolders = ~/.mail/errors@getanewsletter.com
+
+[Repository GAN.Errors-remote]
+maxconnections = 1
+type = IMAP
+ssl = yes
+cert_fingerprint = 816aa5a46b09cb40b3ad8396f97520430bd8dce5
+remotehost = mail.getanewsletter.nu
+remoteuser = errors@getanewsletter.nu
+remotepasseval = get_keychain_pass(account="errors@getanewsletter.nu", server="mail.getanewsletter.nu")

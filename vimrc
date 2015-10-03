@@ -1,12 +1,11 @@
-" =======================
-    " Plugged
+" Plugins
 
     call plug#begin('~/.vim/plugged')
 
     Plug 'Raimondi/delimitMate'
     Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer --gocode-completer' }
     Plug 'airblade/vim-gitgutter'
-    Plug 'altercation/vim-colors-solarized'
+    Plug 'benekastah/neomake'
     Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
     Plug 'eiginn/netrw'
     Plug 'fatih/vim-go', { 'for': ['go'] }
@@ -14,16 +13,23 @@
     Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript'] }
     Plug 'jmcantrell/vim-virtualenv'
     Plug 'tmhedberg/matchit'
+    Plug 'voithos/vim-python-matchit'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-vinegar'
     Plug 'vim-scripts/wombat256.vim'
-    Plug 'benekastah/neomake'
+    Plug 'janko-m/vim-test'
+    Plug 'kana/vim-textobj-user'
+    Plug 'kana/vim-textobj-indent'
+    Plug 'jeetsukumaran/vim-indentwise'
 
     call plug#end()
 
-" =======================
-    " Plugin settings
+" Plugin settings
+
+    let test#strategy = 'basic'
+    let test#python#runner = 'djangotest'
+    let test#python#djangotest#file_pattern = '^test.*\.py$'
 
     " YCM
     let g:ycm_autoclose_preview_window_after_insertion = 1
@@ -40,8 +46,7 @@
     " Using solarized for light colorscheme.
     let g:solarized_termcolors=256
 
-" =======================
-    " Colors and highlighting
+" Colors and highlighting
 
     filetype plugin indent on
     set t_ut=
@@ -51,11 +56,8 @@
 
     colorscheme wombat256mod
 
-" =======================
-    " Settings
+" Settings
 
-    set splitright
-    set splitbelow
     set title
     set nocompatible
     set laststatus=2
@@ -64,6 +66,7 @@
     set noswapfile
     set autoread
     set incsearch
+    set nohlsearch
     set ignorecase
     set smartcase
     set nosmartindent
@@ -82,10 +85,9 @@
     set lazyredraw
     set ttyfast
     set ttimeoutlen=0
-    set foldmethod=indent
+    set foldmethod=syntax
     set scrolloff=5
     set fileformat=unix
-    set encoding=utf8
     set colorcolumn=121
     set norelativenumber
     set nonumber
@@ -107,32 +109,25 @@
     set statusline+=%=
     set statusline+=\ %{neomake#statusline#QflistStatus('Syntax')}
 
-    if has('nvim')
-        set completeopt=menuone,preview,noinsert
-    endif
-
-" ======================
-    " Key mappings
+" Key mappings
 
     let mapleader = ' '
 
     if has('nvim')
-        " tnoremap <Esc> <c-\><c-n>
-        " nmap <silent><bs> :<c-u>TmuxNavigateLeft<cr>
-        tnoremap <C-w>h <c-\><c-n><C-w>h
-        tnoremap <C-w>l <c-\><c-n><C-w>l
-        tnoremap <C-w>j <c-\><c-n><C-w>j
-        tnoremap <C-w>k <c-\><c-n><C-w>k
+        tnoremap <Esc><Esc> <c-\><c-n>
 
         " C-i doesn't work in neovim yet.
         nnoremap ±;2C <C-i>
+
+        noremap <Leader>e :silent terminal nvimex edit $(fzf)<CR>
+        noremap <Leader>b :silent terminal nvimex b $(nvimex ls \| fzf)<CR>
     endif
 
-    noremap <C-p> :e **/*
+    noremap <F4> :wa<CR>:TestLast<CR>
+
+    noremap gd :YcmCompleter GoTo<CR>
 
     noremap <C-w>c :tabnew<CR>
-
-    noremap <leader>g :YcmCompleter GoTo<CR>
 
     " Copy and past using system clipboard
     vnoremap <leader>y "*y
@@ -170,13 +165,17 @@
     noremap [T :tfirst<CR>zvzz
 
     " Active buffers
-    noremap <Leader>b :ls<CR>:b<space>
     noremap ]b :bnext<CR>
     noremap [b :bprevious<CR>
 
+    noremap [A :first<CR>
+    noremap ]A :last<CR>
+    noremap [a :next<CR>
+    noremap ]a :next<CR>
+
     " Go to next/previous git hunk
-    noremap ]c :GitGutterNextHunk<CR>zvzz
-    noremap [c :GitGutterPrevHunk<CR>zvzz
+    noremap ]h :GitGutterNextHunk<CR>zvzz
+    noremap [h :GitGutterPrevHunk<CR>zvzz
 
     " View top of file in new split above current buffer.
     " Good for adding imports etc.
@@ -189,13 +188,18 @@
 
     nnoremap <C-w>z <C-w>\|<C-w>_
 
-" ======================
-    " Commands
+" Commands
 
     " Tags
     if has('nvim')
+        command! Tag :terminal nvimex_tags
+        command! SitePackagesTag :terminal cd $VIRTUAL_ENV/lib/python2.7/site-packages && nvimex_tags
         command! BuildTags :call BuildTags()
+        command! SitePackages :terminal cd $VIRTUAL_ENV/lib/python2.7/site-packages && nvimex edit $(fzf)
     endif
+
+    command! Gstatus echo system('git status')
+    command! Gbranch echo system('git branch')
 
     " Reload vimrc
     command! ReloadVimrc :source $MYVIMRC
@@ -203,8 +207,7 @@
     " Change tabstop, shiftwidth, softtabstop
     command! -nargs=1 TabWidth set ts=<args> sw=<args> sts=<args>
 
-" ======================
-    " Autocommands
+" Autocommands
 
     augroup misc
         autocmd!
@@ -218,28 +221,33 @@
         autocmd BufWritePre * :%s/\($\n\)\+\%$//e
 
         autocmd BufWritePost * silent! Neomake
-        autocmd CursorHold * silent! update
 
         " Highlight the current word under the cursor
         autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
         autocmd BufEnter * let &titlestring=' /'.fnamemodify(getcwd(), ':t').'/'
 
-        autocmd WinLeave * setlocal nocursorcolumn nocursorline syntax=off
-        autocmd WinEnter * setlocal cursorcolumn cursorline syntax=on
+        autocmd WinLeave * setlocal nocursorcolumn nocursorline
+        autocmd WinEnter * setlocal cursorcolumn cursorline
+
+        autocmd InsertLeave * setlocal cursorcolumn
+        autocmd InsertEnter * setlocal nocursorcolumn
     augroup END
 
     augroup filetypes
         autocmd!
 
-        autocmd BufReadPost */site-packages/* setlocal nomodifiable bufhidden=delete
-        autocmd FileType netrw setl bufhidden=delete
+        autocmd BufLeave *nvimex* setlocal nomodifiable bufhidden=delete
+        autocmd FileType netrw setlocal bufhidden=delete
 
         " update diff when moving the cursor
         autocmd CursorHold * if &diff == 1 | diffupdate | endif
 
         autocmd BufRead,BufNewFile *.md set filetype=markdown
 
+        autocmd FileType vim setlocal foldmethod=indent
+
+        autocmd FileType python setlocal foldmethod=indent
         autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
         autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
         autocmd FileType python map <F5> Oimport ipdb; ipdb.set_trace()<ESC>
@@ -248,8 +256,6 @@
         autocmd FileType go setlocal statusline+=\ %{resolve($GOPATH)}
 
         autocmd FileType javascript map <F5> Odebugger;<ESC>
-
-        autocmd FileType gitcommit setlocal foldmethod=syntax
 
         autocmd FileType puppet set ts=2 sw=2 sts=2
     augroup END
@@ -265,8 +271,7 @@
         augroup END
     endif
 
-" ======================
-    " Functions
+" Functions
 
     if has('nvim')
         function! BuildTags()

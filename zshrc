@@ -37,11 +37,22 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(vi-mode git pass pip osx wd tmux zsh-syntax-highlighting)
+plugins=(vi-mode wd tmux zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
 [[ -z $GPG_AGENT_INFO ]] && eval $(gpg-agent --daemon)
 
 # Bind some custom commands.
-bindkey "^r" history-incremental-search-backward
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+function _pip_completion {
+    local words cword
+    read -Ac words
+    read -cn cword
+    reply=( $( COMP_WORDS="$words[*]" \
+        COMP_CWORD=$(( cword-1 )) \
+        PIP_AUTO_COMPLETE=1 $words[1] ) )
+}
+compctl -K _pip_completion pip

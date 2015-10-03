@@ -9,8 +9,21 @@ alias rm='echo Use $fg[green]del$reset_color, or the full path $fg[red]/bin/rm$r
 alias vi='/usr/local/bin/nvim'
 alias testdb='mycli -u root -P 3307 -D getanewsletter -R "\t \u@gantest:\d> "'
 alias db='mycli -u root -D getanewsletter'
-alias pip='python -m pip'
-alias fsw='ag -l . | entr -c -r'  # using ag here for nice .gitignore etc.
+
+fsw () {
+    filetype="$1";
+    shift;
+    find -L . -type f -name "*.$filetype" | entr -c -r "$@"
+}
+
+nvimex_tags() {
+  line=$(
+    awk 'BEGIN { FS="\t" } !/^!/ {print toupper($4)"\t"$1"\t"$2"\t"$3}' tags |
+    cut -c1-80 | fzf --nth=1,2
+  )
+  ~/dotfiles/nvimex.py e $(cut -f3 <<< "$line")
+  ~/dotfiles/nvimex.py "silent tag $(cut -f2 <<< "$line")"
+}
 
 del () { mv $* ~/.Trash/ }
 
@@ -23,6 +36,8 @@ export LC_ALL=en_US.UTF-8
 export CLICOLOR=1
 export LSCOLORS=Gxfxcxdxbxegedabagacad
 export LESSOPEN='|pygmentize %s'
+export FZF_DEFAULT_COMMAND='ag -f -l -U --nocolor'
+export FZF_TMUX=0
 
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=/workspace
@@ -53,6 +68,7 @@ godeactivate () {
     fi
 }
 
+[[ ! -z $NVIM_LISTEN_ADDRESS ]] && alias nvimex='~/dotfiles/nvimex.py'
 [[ ! -z $VIRTUAL_ENV ]] && export PATH=$VIRTUAL_ENV/bin:$PATH
 
 export DOCKER_HOST=tcp://192.168.59.103:2376

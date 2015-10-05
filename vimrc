@@ -3,7 +3,8 @@
     call plug#begin('~/.vim/plugged')
 
     Plug 'Raimondi/delimitMate'
-    Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer --gocode-completer' }
+    " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer --gocode-completer' }
+    Plug 'Shougo/deoplete.nvim'
     Plug 'airblade/vim-gitgutter'
     Plug 'benekastah/neomake'
     Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
@@ -22,6 +23,7 @@
     Plug 'kana/vim-textobj-user'
     Plug 'kana/vim-textobj-indent'
     Plug 'jeetsukumaran/vim-indentwise'
+    Plug 'davidhalter/jedi-vim'
 
     call plug#end()
 
@@ -30,6 +32,13 @@
     let test#strategy = 'basic'
     let test#python#runner = 'djangotest'
     let test#python#djangotest#file_pattern = '^test.*\.py$'
+
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#enable_smart_case = 1
+    let g:deoplete#auto_completion_start_length = 1
+
+    let g:jedi#auto_initialization = 0
+    let g:jedi#show_call_signatures = 0
 
     " YCM
     let g:ycm_autoclose_preview_window_after_insertion = 1
@@ -108,6 +117,8 @@
     set statusline=\ %f:%l:%c%m\ %r%y
     set statusline+=%=
     set statusline+=\ %{neomake#statusline#QflistStatus('Syntax')}
+    set complete=.,b,i,d,t
+    set completeopt=menu,menuone,longest,preview
 
 " Key mappings
 
@@ -247,6 +258,8 @@
 
         autocmd FileType vim setlocal foldmethod=indent
 
+        autocmd FileType python setlocal omnifunc=jedi#completions
+        autocmd FileType python noremap <buffer> K :call jedi#show_documentation()<CR>
         autocmd FileType python setlocal foldmethod=indent
         autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
         autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags

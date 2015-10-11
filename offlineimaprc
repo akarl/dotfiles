@@ -17,7 +17,7 @@
 
 [general]
 ui = ttyui
-accounts = Private,GAN.Andreas,GAN.Tech,GAN.Errors
+accounts = Private
 pythonfile=~/dotfiles/offlineimap.py
 fsync = False
 
@@ -39,7 +39,7 @@ localfolders = ~/.mail/mail@andreas-karlsson.com
 maxconnections = 1
 type = Gmail
 ssl = yes
-sslcacertfile = /usr/local/etc/openssl/osx_cert.pem
+sslcacertfile = /usr/local/etc/openssl/cert.pem
 remoteuser = mail@andreas-karlsson.com
 remotepasseval = get_keychain_pass(account="mail@andreas-karlsson.com", server="imap.gmail.com")
 realdelete = no
@@ -47,73 +47,3 @@ folderfilter = lambda folder: folder in ['INBOX',
                                          '[Gmail]/Sent Mail',
                                          '[Gmail]/All Mail'
                                         ]
-
-
-# ====================
-# GAN.Andreas
-# ====================
-
-[Account GAN.Andreas]
-localrepository = GAN.Andreas-local
-remoterepository = GAN.Andreas-remote
-status_backend = sqlite
-maxage = 30
-
-[Repository GAN.Andreas-local]
-type = Maildir
-localfolders = ~/.mail/andreas@getanewsletter.com
-
-[Repository GAN.Andreas-remote]
-maxconnections = 1
-type = IMAP
-ssl = yes
-cert_fingerprint = 816aa5a46b09cb40b3ad8396f97520430bd8dce5
-remotehost = mail.getanewsletter.nu
-remoteuser = andreas@getanewsletter.nu
-remotepasseval = get_keychain_pass(account="andreas@getanewsletter.nu", server="mail.getanewsletter.nu")
-
-# ====================
-# GAN.Tech
-# ====================
-
-[Account GAN.Tech]
-localrepository = GAN.Tech-local
-remoterepository = GAN.Tech-remote
-status_backend = sqlite
-maxage = 30
-
-[Repository GAN.Tech-local]
-type = Maildir
-localfolders = ~/.mail/tech@getanewsletter.com
-
-[Repository GAN.Tech-remote]
-maxconnections = 1
-type = IMAP
-ssl = yes
-cert_fingerprint = 816aa5a46b09cb40b3ad8396f97520430bd8dce5
-remotehost = mail.getanewsletter.nu
-remoteuser = tech@getanewsletter.nu
-remotepasseval = get_keychain_pass(account="tech@getanewsletter.nu", server="mail.getanewsletter.nu")
-
-# ====================
-# GAN.Errors
-# ====================
-
-[Account GAN.Errors]
-localrepository = GAN.Errors-local
-remoterepository = GAN.Errors-remote
-status_backend = sqlite
-#maxage = 120
-
-[Repository GAN.Errors-local]
-type = Maildir
-localfolders = ~/.mail/errors@getanewsletter.com
-
-[Repository GAN.Errors-remote]
-maxconnections = 1
-type = IMAP
-ssl = yes
-cert_fingerprint = 816aa5a46b09cb40b3ad8396f97520430bd8dce5
-remotehost = mail.getanewsletter.nu
-remoteuser = errors@getanewsletter.nu
-remotepasseval = get_keychain_pass(account="errors@getanewsletter.nu", server="mail.getanewsletter.nu")

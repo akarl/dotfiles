@@ -41,8 +41,6 @@ plugins=(vi-mode wd tmux zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
-[[ -z $GPG_AGENT_INFO ]] && eval $(gpg-agent --daemon)
-
 # Bind some custom commands.
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

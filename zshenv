@@ -44,6 +44,8 @@ export PROJECT_HOME=/workspace
 export PATH=$PATH:/usr/local/Cellar/python/2.7.10_2/Frameworks/Python.framework/Versions/2.7/bin
 source virtualenvwrapper.sh
 
+source ~/.secrets.zsh
+
 
 # Setup gopath
 export GOPATH=$HOME/.gopath

@@ -3,7 +3,6 @@
     call plug#begin('~/.vim/plugged')
 
     Plug 'Raimondi/delimitMate'
-    " Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer --gocode-completer' }
     Plug 'Shougo/deoplete.nvim'
     Plug 'airblade/vim-gitgutter'
     Plug 'benekastah/neomake'
@@ -24,14 +23,14 @@
     Plug 'kana/vim-textobj-indent'
     Plug 'jeetsukumaran/vim-indentwise'
     Plug 'davidhalter/jedi-vim'
+    Plug 'jgdavey/tslime.vim'
 
     call plug#end()
 
 " Plugin settings
 
-    let test#strategy = 'basic'
-    let test#python#runner = 'djangotest'
-    let test#python#djangotest#file_pattern = '^test.*\.py$'
+    let test#strategy = 'tslime'
+    let test#python#runner = 'pytest'
 
     let g:deoplete#enable_at_startup = 1
     let g:deoplete#enable_smart_case = 1
@@ -97,7 +96,7 @@
     set foldmethod=syntax
     set scrolloff=5
     set fileformat=unix
-    set colorcolumn=121
+    set colorcolumn=111
     set norelativenumber
     set nonumber
     set listchars=tab:▸\ ,eol:¬,space:𐄁
@@ -211,6 +210,8 @@
 
     command! Gstatus echo system('git status')
     command! Gbranch echo system('git branch')
+
+    command! TmuxReset unlet g:tslime
 
     " Reload vimrc
     command! ReloadVimrc :source $MYVIMRC

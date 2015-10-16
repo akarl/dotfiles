@@ -54,6 +54,8 @@
     " Using solarized for light colorscheme.
     let g:solarized_termcolors=256
 
+    let g:neomake_python_enabled_makers = ['flake8']
+
 " Colors and highlighting
 
     filetype plugin indent on

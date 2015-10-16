@@ -1,9 +1,0 @@
-set editor=vim
-set gui=none
-set fullscreen
-set complete=bl
-
-noremap <F11> :set gui=all<cr>
-noremap <F12> :set gui=none<cr>
-
-" vim: set ft=vimperator:

@@ -3,7 +3,7 @@
     call plug#begin('~/.vim/plugged')
 
     Plug 'Raimondi/delimitMate'
-    Plug 'Shougo/deoplete.nvim'
+    " Plug 'Shougo/deoplete.nvim'
     Plug 'airblade/vim-gitgutter'
     Plug 'benekastah/neomake'
     Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
@@ -17,13 +17,13 @@
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-vinegar'
-    Plug 'vim-scripts/wombat256.vim'
     Plug 'janko-m/vim-test'
     Plug 'kana/vim-textobj-user'
     Plug 'kana/vim-textobj-indent'
     Plug 'jeetsukumaran/vim-indentwise'
     Plug 'davidhalter/jedi-vim'
     Plug 'jgdavey/tslime.vim'
+    Plug 'flazz/vim-colorschemes'
 
     call plug#end()
 
@@ -51,20 +51,17 @@
     " Virtualenv
     let g:virtualenv_stl_format = '   %n'
 
-    " Using solarized for light colorscheme.
-    let g:solarized_termcolors=256
-
     let g:neomake_python_enabled_makers = ['flake8']
 
 " Colors and highlighting
 
     filetype plugin indent on
     set t_ut=
-    set t_Co=256
-    set background=dark
+    set t_Co=16
+    set background=light
     syntax on
 
-    colorscheme wombat256mod
+    colorscheme Tomorrow
 
 " Settings
 
@@ -98,7 +95,7 @@
     set foldmethod=syntax
     set scrolloff=5
     set fileformat=unix
-    set colorcolumn=111
+    set colorcolumn=101
     set norelativenumber
     set nonumber
     set listchars=tab:▸\ ,eol:¬,space:𐄁
@@ -309,6 +306,7 @@
         highlight! link TabLine StatusLine
         highlight! link NonText Comment
         highlight! link ColorColumn CursorColumn
+        highlight! link CursorLine CursorColumn
 
         highlight GitGutterAdd ctermfg=green
         highlight GitGutterChange ctermfg=blue
@@ -334,13 +332,13 @@
 
     function! Night()
         set background=dark
-        colorscheme wombat256mod
+        colorscheme default
     endfunction
 
     function! AutoResizeWindow()
         if (&ft =~ 'python')
-            if (winwidth(0) < 126)
-                execute 'vertical resize 126'
+            if (winwidth(0) < 102)
+                execute 'vertical resize 102'
             endif
         endif
     endfunction

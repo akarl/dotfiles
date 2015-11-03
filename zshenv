@@ -72,6 +72,28 @@ godeactivate () {
     fi
 }
 
+# Opens the github page for the current git repository in your browser
+# Takes an optional argument which is the file to view.
+github () {
+    giturl=$(git config --get remote.origin.url)
+
+    if [ -z "$giturl" ]
+    then
+        echo "Not a git repository or no remote.origin.url set"
+        exit 1;
+    fi
+
+    giturl=${giturl/git\@github\.com\:/https://github.com/}
+    giturl=${giturl/\.git/\/tree/}
+
+    branch="$(git symbolic-ref HEAD 2>/dev/null)" ||
+        branch="(unnamed branch)"
+    branch=${branch##refs/heads/}
+
+    giturl=$giturl$branch/$1
+    open $giturl
+}
+
 [[ ! -z $NVIM_LISTEN_ADDRESS ]] && alias nvimex='~/dotfiles/nvimex.py'
 [[ ! -z $VIRTUAL_ENV ]] && export PATH=$VIRTUAL_ENV/bin:$PATH
 

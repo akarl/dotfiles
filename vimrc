@@ -31,15 +31,8 @@
     let test#strategy = 'tslime'
     let test#python#runner = 'pytest'
 
-    let g:deoplete#enable_at_startup = 1
-    let g:deoplete#enable_smart_case = 1
-    let g:deoplete#auto_completion_start_length = 1
-
     let g:jedi#auto_initialization = 0
     let g:jedi#show_call_signatures = 0
-
-    " YCM
-    let g:ycm_autoclose_preview_window_after_insertion = 1
 
     " Netrw
     let g:netrw_browsex_viewer = 'open'
@@ -49,8 +42,6 @@
 
     " Virtualenv
     let g:virtualenv_stl_format = '   %n'
-
-    let g:neomake_python_enabled_makers = ['flake8']
 
 " Colors and highlighting
 
@@ -115,7 +106,7 @@
     set statusline+=%=
     set statusline+=\ %{neomake#statusline#QflistStatus('Syntax')}
     set complete=.,b,i,d,t
-    set completeopt=menu,menuone,longest,preview
+    set completeopt=menu,menuone,longest
 
 " Key mappings
 
@@ -133,8 +124,6 @@
 
     noremap <F4> :wa<CR>:TestLast<CR>
     noremap <F2> :wa<CR>:Tmux clear; make test<CR>
-
-    noremap gd :YcmCompleter GoTo<CR>
 
     noremap <C-w>c :tabnew<CR>
 

@@ -255,6 +255,8 @@
         autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
         autocmd FileType python map <F5> Oimport ipdb; ipdb.set_trace()<ESC>
         autocmd FileType python setlocal statusline+=%{virtualenv#statusline()}
+        autocmd FileType python noremap gD :call jedi#goto_definitions()<CR>
+        autocmd FileType python noremap gd :call jedi#goto_assignments()<CR>
 
         autocmd FileType go setlocal statusline+=\ %{resolve($GOPATH)}
 

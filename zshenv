@@ -38,6 +38,8 @@ export LSCOLORS=Gxfxcxdxbxegedabagacad
 export LESSOPEN='|pygmentize %s'
 export FZF_DEFAULT_COMMAND='ag -f -l -U --nocolor'
 export FZF_TMUX=0
+export XDG_CONFIG_HOME=~/.config
+export XDG_DATA_HOME=~/.local/share
 
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=/workspace

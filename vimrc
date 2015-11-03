@@ -3,7 +3,6 @@
     call plug#begin('~/.vim/plugged')
 
     Plug 'Raimondi/delimitMate'
-    " Plug 'Shougo/deoplete.nvim'
     Plug 'airblade/vim-gitgutter'
     Plug 'benekastah/neomake'
     Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
@@ -58,10 +57,10 @@
     filetype plugin indent on
     set t_ut=
     set t_Co=16
-    set background=light
+    set background=dark
     syntax on
 
-    colorscheme Tomorrow
+    colorscheme wombat256mod
 
 " Settings
 
@@ -133,6 +132,7 @@
     endif
 
     noremap <F4> :wa<CR>:TestLast<CR>
+    noremap <F2> :wa<CR>:Tmux clear; make test<CR>
 
     noremap gd :YcmCompleter GoTo<CR>
 
@@ -305,8 +305,8 @@
         highlight! link TabLineFill StatusLine
         highlight! link TabLine StatusLine
         highlight! link NonText Comment
+        highlight! link CursorColumn CursorLine
         highlight! link ColorColumn CursorColumn
-        highlight! link CursorLine CursorColumn
 
         highlight GitGutterAdd ctermfg=green
         highlight GitGutterChange ctermfg=blue
@@ -327,12 +327,12 @@
 
     function! Day()
         set background=light
-        colorscheme solarized
+        colorscheme tomorrow
     endfunction
 
     function! Night()
         set background=dark
-        colorscheme default
+        colorscheme wombat256mod
     endfunction
 
     function! AutoResizeWindow()

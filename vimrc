@@ -209,6 +209,7 @@
 
     command! Gstatus echo system('git status')
     command! Gbranch echo system('git branch')
+    command! ToGithub execute "!github " . expand("%") . "\\#L" . line(".")
 
     command! TmuxReset unlet g:tslime
 

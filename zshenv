@@ -9,6 +9,7 @@ alias rm='echo Use $fg[green]del$reset_color, or the full path $fg[red]/bin/rm$r
 alias vi='/usr/local/bin/nvim'
 alias testdb='mycli -u root -P 3307 -D getanewsletter -R "\t \u@gantest:\d> "'
 alias db='mycli -u root -D getanewsletter'
+alias dev='VAGRANT_CWD=~/workspace/chef vagrant'
 
 fsw () {
     filetype="$1";
@@ -94,7 +95,6 @@ github () {
     open $giturl
 }
 
-[[ ! -z $NVIM_LISTEN_ADDRESS ]] && alias nvimex='~/dotfiles/nvimex.py'
 [[ ! -z $VIRTUAL_ENV ]] && export PATH=$VIRTUAL_ENV/bin:$PATH
 
 export DOCKER_HOST=tcp://192.168.59.103:2376

@@ -5,7 +5,6 @@
     Plug 'Raimondi/delimitMate'
     Plug 'airblade/vim-gitgutter'
     Plug 'benekastah/neomake'
-    Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
     Plug 'eiginn/netrw'
     Plug 'fatih/vim-go', { 'for': ['go'] }
     Plug 'hynek/vim-python-pep8-indent', { 'for': ['python'] }
@@ -118,8 +117,9 @@
         " C-i doesn't work in neovim yet.
         nnoremap ±;2C <C-i>
 
-        noremap <Leader>e :silent terminal nvimex edit $(fzf)<CR>
-        noremap <Leader>b :silent terminal nvimex b $(nvimex ls \| fzf)<CR>
+        noremap <Leader>e :silent terminal nvimex edit $(fzf) -w<CR>
+        noremap <Leader>b :silent terminal nvimex b $(nvimex ls -w \| fzf) -w<CR>
+        noremap <Leader>t :Tag<CR>
     endif
 
     noremap <F4> :wa<CR>:TestLast<CR>
@@ -166,6 +166,7 @@
     noremap ]b :bnext<CR>
     noremap [b :bprevious<CR>
 
+    " Arglist navigation
     noremap [A :first<CR>
     noremap ]A :last<CR>
     noremap [a :next<CR>
@@ -179,11 +180,7 @@
     " Good for adding imports etc.
     noremap <Leader>k :leftabove split<CR>:resize 10<CR>gg
 
-    vnoremap <A-j> :m '>+1<CR>gv=gv
-    vnoremap <A-k> :m '<-2<CR>gv=gv
-    nnoremap <A-k> :m-2<CR>==
-    nnoremap <A-j> :m+<CR>==
-
+    " Maximize window
     nnoremap <C-w>z <C-w>\|<C-w>_
 
 " Commands
@@ -193,7 +190,7 @@
         command! Tag :terminal nvimex_tags
         command! SitePackagesTag :terminal cd $VIRTUAL_ENV/lib/python2.7/site-packages && nvimex_tags
         command! BuildTags :call BuildTags()
-        command! SitePackages :terminal cd $VIRTUAL_ENV/lib/python2.7/site-packages && nvimex edit $(fzf)
+        command! SitePackages :terminal cd $VIRTUAL_ENV/lib/python2.7/site-packages && nvimex edit $(fzf) -w
     endif
 
     command! Gstatus echo system('git status')
@@ -238,13 +235,14 @@
     augroup filetypes
         autocmd!
 
-        autocmd BufLeave *nvimex* setlocal nomodifiable bufhidden=delete
         autocmd FileType netrw setlocal bufhidden=delete
 
         " update diff when moving the cursor
         autocmd CursorHold * if &diff == 1 | diffupdate | endif
 
         autocmd BufRead,BufNewFile *.md set filetype=markdown
+
+        autocmd FileType markdown setlocal makeprg=hoedown\ --all-block\ %\ >\ /tmp/hoedown.html\ &&\ open\ /tmp/hoedown.html
 
         autocmd FileType vim setlocal foldmethod=indent
 
@@ -253,7 +251,7 @@
         autocmd FileType python setlocal foldmethod=indent
         autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
         autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
-        autocmd FileType python map <F5> Oimport ipdb; ipdb.set_trace()<ESC>
+        autocmd FileType python map <F5> Oimport pdb; pdb.set_trace()<ESC>
         autocmd FileType python setlocal statusline+=%{virtualenv#statusline()}
         autocmd FileType python noremap gD :call jedi#goto_definitions()<CR>
         autocmd FileType python noremap gd :call jedi#goto_assignments()<CR>
@@ -261,8 +259,6 @@
         autocmd FileType go setlocal statusline+=\ %{resolve($GOPATH)}
 
         autocmd FileType javascript map <F5> Odebugger;<ESC>
-
-        autocmd FileType puppet set ts=2 sw=2 sts=2
     augroup END
 
     if has('nvim')

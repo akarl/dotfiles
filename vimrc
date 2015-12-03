@@ -5,23 +5,23 @@
     Plug 'Raimondi/delimitMate'
     Plug 'airblade/vim-gitgutter'
     Plug 'benekastah/neomake'
+    Plug 'davidhalter/jedi-vim'
     Plug 'eiginn/netrw'
     Plug 'fatih/vim-go', { 'for': ['go'] }
+    Plug 'flazz/vim-colorschemes'
     Plug 'hynek/vim-python-pep8-indent', { 'for': ['python'] }
+    Plug 'janko-m/vim-test'
+    Plug 'jeetsukumaran/vim-indentwise'
     Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript'] }
+    Plug 'jgdavey/tslime.vim'
     Plug 'jmcantrell/vim-virtualenv'
+    Plug 'kana/vim-textobj-indent'
+    Plug 'kana/vim-textobj-user'
     Plug 'tmhedberg/matchit'
-    Plug 'voithos/vim-python-matchit'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-vinegar'
-    Plug 'janko-m/vim-test'
-    Plug 'kana/vim-textobj-user'
-    Plug 'kana/vim-textobj-indent'
-    Plug 'jeetsukumaran/vim-indentwise'
-    Plug 'davidhalter/jedi-vim'
-    Plug 'jgdavey/tslime.vim'
-    Plug 'flazz/vim-colorschemes'
+    Plug 'voithos/vim-python-matchit'
 
     call plug#end()
 
@@ -42,6 +42,13 @@
     " Virtualenv
     let g:virtualenv_stl_format = '   %n'
 
+    " Go
+    let g:go_highlight_functions = 1
+    let g:go_highlight_methods = 1
+    let g:go_highlight_structs = 1
+    let g:go_highlight_operators = 1
+    let g:go_highlight_build_constraints = 1
+
 " Colors and highlighting
 
     filetype plugin indent on
@@ -54,8 +61,12 @@
 
 " Settings
 
+    if !has('nvim')
+        set nocompatible
+        set ttyfast
+    endif
+
     set title
-    set nocompatible
     set laststatus=2
     set backspace=indent,eol,start
     set nobackup
@@ -79,7 +90,6 @@
     set cursorline
     set cursorcolumn
     set lazyredraw
-    set ttyfast
     set ttimeoutlen=0
     set foldmethod=syntax
     set scrolloff=5
@@ -106,6 +116,7 @@
     set statusline+=\ %{neomake#statusline#QflistStatus('Syntax')}
     set complete=.,b,i,d,t
     set completeopt=menu,menuone,longest
+    set spell
 
 " Key mappings
 
@@ -171,10 +182,6 @@
     noremap ]A :last<CR>
     noremap [a :next<CR>
     noremap ]a :next<CR>
-
-    " Go to next/previous git hunk
-    noremap ]h :GitGutterNextHunk<CR>zvzz
-    noremap [h :GitGutterPrevHunk<CR>zvzz
 
     " View top of file in new split above current buffer.
     " Good for adding imports etc.
@@ -257,6 +264,7 @@
         autocmd FileType python noremap gd :call jedi#goto_assignments()<CR>
 
         autocmd FileType go setlocal statusline+=\ %{resolve($GOPATH)}
+        autocmd FileType go setlocal nofoldenable
 
         autocmd FileType javascript map <F5> Odebugger;<ESC>
     augroup END
@@ -268,7 +276,13 @@
             autocmd BufWritePost * :call UpdateTags()
             autocmd TermOpen * setlocal nocursorcolumn nocursorline
             autocmd TermOpen * setlocal nocursorcolumn nocursorline
+
+            autocmd TermOpen * setlocal nospell
+
             autocmd TermOpen * set winfixheight
+
+            autocmd InsertLeave term://* setlocal nocursorcolumn
+            autocmd InsertEnter term://* setlocal nocursorcolumn
         augroup END
     endif
 
@@ -310,6 +324,17 @@
         highlight DiffChange ctermfg=NONE ctermbg=54
         highlight DiffDelete ctermfg=NONE ctermbg=52
         highlight DiffText ctermfg=NONE ctermbg=22
+
+        " Spell highlight
+        syntax clear SpellBad
+        syntax clear SpellCap
+        syntax clear SpellLocal
+        syntax clear SpellRare
+
+        highlight SpellBad cterm=underline ctermbg=NONE
+        highlight! link SpellCap SpellBad
+        highlight! link SpellLocal SpellBad
+        highlight! link SpellRare SpellBad
     endfunction
     call SetupColors()
 

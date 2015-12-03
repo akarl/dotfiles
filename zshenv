@@ -10,6 +10,7 @@ alias vi='/usr/local/bin/nvim'
 alias testdb='mycli -u root -P 3307 -D getanewsletter -R "\t \u@gantest:\d> "'
 alias db='mycli -u root -D getanewsletter'
 alias dev='VAGRANT_CWD=~/workspace/chef vagrant'
+alias less='/usr/bin/less -X'
 
 fsw () {
     filetype="$1";

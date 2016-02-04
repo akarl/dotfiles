@@ -11,7 +11,6 @@
 	tool = nvimdiff
 [merge]
 	tool = nvimdiff
-	conflictstyle = diff3
 [difftool]
 	prompt = true
 [mergetool]

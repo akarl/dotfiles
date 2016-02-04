@@ -22,6 +22,7 @@
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-vinegar'
     Plug 'voithos/vim-python-matchit'
+    Plug 'Glench/Vim-Jinja2-Syntax'
 
     call plug#end()
 
@@ -131,12 +132,17 @@
         noremap <Leader>e :silent terminal nvimex edit $(fzf) -w<CR>
         noremap <Leader>b :silent terminal nvimex b $(nvimex ls -w \| fzf) -w<CR>
         noremap <Leader>t :Tag<CR>
+
+        noremap - :silent terminal ranger --selectfile=%  --choosefile=/tmp/.ranger && nvimex edit $(cat /tmp/.ranger) -w && /bin/rm /tmp/.ranger<CR>
     endif
 
     noremap <F4> :wa<CR>:TestLast<CR>
     noremap <F2> :wa<CR>:Tmux clear; make test<CR>
 
     noremap <C-w>c :tabnew<CR>
+
+    " Moving right in insert mode without arrow keys.
+    inoremap <C-l> <Right>
 
     " Copy and past using system clipboard
     vnoremap <leader>y "*y
@@ -152,6 +158,11 @@
     noremap <left> :vertical resize -10<CR>
     noremap <up> :resize +5<CR>
     noremap <down> :resize -5<CR>
+
+    inoremap <right> <Nop>
+    inoremap <left> <Nop>
+    inoremap <up> <Nop>
+    inoremap <down> <Nop>
 
     " Quickfix navigation
     noremap <Leader>q :copen<CR>
@@ -192,15 +203,16 @@
 
 " Commands
 
-    " Tags
     if has('nvim')
-        command! Tag :terminal nvimex_tags
-        command! SitePackagesTag :terminal cd $VIRTUAL_ENV/lib/python2.7/site-packages && nvimex_tags
+        command! Gchanged :silent terminal nvimex edit $(g diff --name-only | fzf) -w
+        command! Gstatus :silent terminal git status && exit
+
+        command! Tag :terminal tagsearch
+        command! SitePackagesTag :terminal cd $VIRTUAL_ENV/lib/python2.7/site-packages && tagsearch
         command! BuildTags :call BuildTags()
         command! SitePackages :terminal cd $VIRTUAL_ENV/lib/python2.7/site-packages && nvimex edit $(fzf) -w
     endif
 
-    command! Gstatus echo system('git status')
     command! Gbranch echo system('git branch')
     command! ToGithub execute "!github " . expand("%") . "\\#L" . line(".")
 
@@ -290,7 +302,7 @@
 
     if has('nvim')
         function! BuildTags()
-            call jobstart(['ctags', '-R', '.'])
+            call jobstart(['ctags'])
         endfunction
 
         function! UpdateTags()

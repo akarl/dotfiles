@@ -1,11 +1,5 @@
---python-kinds=-i-v
-
+--languages=python
+--python-kinds=-i-v-m
 --recurse=yes
 --tag-relative=yes
 --exclude=.git
---exclude=public_static
---exclude=build
---exclude=bower_components
---exclude=node_modules
---exclude=*.min.js
---exclude=dist

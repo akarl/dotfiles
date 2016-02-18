@@ -11,18 +11,19 @@
     Plug 'flazz/vim-colorschemes'
     Plug 'hynek/vim-python-pep8-indent', { 'for': ['python'] }
     Plug 'janko-m/vim-test'
-    Plug 'jeetsukumaran/vim-indentwise'
+    " Plug 'jeetsukumaran/vim-indentwise'
     Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript'] }
     Plug 'jgdavey/tslime.vim'
     Plug 'jmcantrell/vim-virtualenv'
-    Plug 'kana/vim-textobj-indent'
-    Plug 'kana/vim-textobj-user'
+    " Plug 'kana/vim-textobj-indent'
+    " Plug 'kana/vim-textobj-user'
     Plug 'tmhedberg/matchit'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-vinegar'
     Plug 'voithos/vim-python-matchit'
     Plug 'Glench/Vim-Jinja2-Syntax'
+    Plug 'tweekmonster/braceless.vim'
 
     call plug#end()
 
@@ -274,6 +275,8 @@
         autocmd FileType python setlocal statusline+=%{virtualenv#statusline()}
         autocmd FileType python noremap gD :call jedi#goto_definitions()<CR>
         autocmd FileType python noremap gd :call jedi#goto_assignments()<CR>
+        autocmd FileType python BracelessEnable +indent +highlight
+        autocmd FileType python /class\|def<CR>
 
         autocmd FileType go setlocal statusline+=\ %{resolve($GOPATH)}
         autocmd FileType go setlocal nofoldenable

@@ -1,56 +1,28 @@
-# Path to your oh-my-zsh configuration.
-ZSH=$HOME/.oh-my-zsh
+autoload -U compinit
+compinit
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-# ZSH_THEME="robbyrussell"
-ZSH_THEME="my-theme"
+setopt HIST_IGNORE_DUPS
+setopt INC_APPEND_HISTORY
+setopt HIST_IGNORE_SPACE
 
-# Set to this to use case-sensitive completion
-# CASE_SENSITIVE="true"
+export SAVEHIST=10000
+export HISTFILE="$HOME/.zsh-history"
 
-# Uncomment this to disable bi-weekly auto-update checks
-# DISABLE_AUTO_UPDATE="true"
+# Fish style syntax highlight
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Uncomment to change how often before auto-updates occur? (in days)
-# export UPDATE_ZSH_DAYS=13
+eval "`pip completion --zsh`"
 
-# Uncomment following line if you want to disable colors in ls
-# DISABLE_LS_COLORS="true"
-
-# Uncomment following line if you want to disable autosetting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment following line if you want to disable command autocorrection
-# DISABLE_CORRECTION="true"
-
-# Uncomment following line if you want red dots to be displayed while waiting for completion
-COMPLETION_WAITING_DOTS="true"
-
-# Uncomment following line if you want to disable marking untracked files under
-# VCS as dirty. This makes repository status check for large repositories much,
-# much faster.
-DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(vi-mode wd tmux zsh-syntax-highlighting)
-
-source $ZSH/oh-my-zsh.sh
-
-# Bind some custom commands.
+# Source the prompt
+source $HOME/dotfiles/prompt.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-function _pip_completion {
-    local words cword
-    read -Ac words
-    read -cn cword
-    reply=( $( COMP_WORDS="$words[*]" \
-        COMP_CWORD=$(( cword-1 )) \
-        PIP_AUTO_COMPLETE=1 $words[1] ) )
-}
-compctl -K _pip_completion pip
+export KEYTIMEOUT=1
+
+bindkey "^[[3~" delete-char
+bindkey '^w' backward-kill-word
+bindkey '^p' up-history
+bindkey '^n' down-history
+
+bindkey -v

@@ -21,3 +21,5 @@
 	template = /Users/andreas/dotfiles/gitcommit.template.txt
 [help]
 	autocorrect = 15
+[credential]
+	helper = osxkeychain

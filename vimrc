@@ -8,22 +8,17 @@
     Plug 'davidhalter/jedi-vim'
     Plug 'eiginn/netrw'
     Plug 'fatih/vim-go', { 'for': ['go'] }
-    Plug 'flazz/vim-colorschemes'
     Plug 'hynek/vim-python-pep8-indent', { 'for': ['python'] }
     Plug 'janko-m/vim-test'
-    " Plug 'jeetsukumaran/vim-indentwise'
     Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript'] }
     Plug 'jgdavey/tslime.vim'
     Plug 'jmcantrell/vim-virtualenv'
-    " Plug 'kana/vim-textobj-indent'
-    " Plug 'kana/vim-textobj-user'
     Plug 'tmhedberg/matchit'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-vinegar'
     Plug 'voithos/vim-python-matchit'
     Plug 'Glench/Vim-Jinja2-Syntax'
-    Plug 'tweekmonster/braceless.vim'
 
     call plug#end()
 
@@ -56,10 +51,10 @@
     filetype plugin indent on
     set t_ut=
     set t_Co=16
-    set background=dark
+    set background=light
     syntax on
 
-    colorscheme wombat256mod
+    colorscheme default
 
 " Settings
 
@@ -87,13 +82,13 @@
     set linebreak
     set breakindent
     set showbreak=\ \ …
-    set showcmd
+    set noshowcmd
     set hidden
     set cursorline
-    set cursorcolumn
+    set nocursorcolumn
     set lazyredraw
     set ttimeoutlen=0
-    set foldmethod=syntax
+    set foldmethod=indent
     set scrolloff=5
     set fileformat=unix
     set colorcolumn=101
@@ -245,11 +240,8 @@
 
         autocmd BufEnter * let &titlestring=' /'.fnamemodify(getcwd(), ':t').'/'
 
-        autocmd WinLeave * setlocal nocursorcolumn nocursorline
-        autocmd WinEnter * setlocal cursorcolumn cursorline
-
-        autocmd InsertLeave * setlocal cursorcolumn
-        autocmd InsertEnter * setlocal nocursorcolumn
+        autocmd WinLeave * setlocal nocursorline
+        autocmd WinEnter * setlocal cursorline
     augroup END
 
     augroup filetypes
@@ -264,24 +256,21 @@
 
         autocmd FileType markdown setlocal makeprg=hoedown\ --all-block\ %\ >\ /tmp/hoedown.html\ &&\ open\ /tmp/hoedown.html
 
-        autocmd FileType vim setlocal foldmethod=indent
-
         autocmd FileType python setlocal omnifunc=jedi#completions
         autocmd FileType python noremap <buffer> K :call jedi#show_documentation()<CR>
-        autocmd FileType python setlocal foldmethod=indent
         autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
         autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
         autocmd FileType python map <F5> Oimport pdb; pdb.set_trace()<ESC>
         autocmd FileType python setlocal statusline+=%{virtualenv#statusline()}
         autocmd FileType python noremap gD :call jedi#goto_definitions()<CR>
         autocmd FileType python noremap gd :call jedi#goto_assignments()<CR>
-        autocmd FileType python BracelessEnable +indent +highlight
-        autocmd FileType python /class\|def<CR>
 
         autocmd FileType go setlocal statusline+=\ %{resolve($GOPATH)}
         autocmd FileType go setlocal nofoldenable
 
         autocmd FileType javascript map <F5> Odebugger;<ESC>
+
+        autocmd FileType jinja TabWidth 2
     augroup END
 
     if has('nvim')
@@ -322,8 +311,8 @@
         highlight! link TabLineFill StatusLine
         highlight! link TabLine StatusLine
         highlight! link NonText Comment
-        highlight! link CursorColumn CursorLine
-        highlight! link ColorColumn CursorColumn
+
+        highlight! IncSearch cterm=reverse
 
         highlight GitGutterAdd ctermfg=green
         highlight GitGutterChange ctermfg=blue
@@ -335,10 +324,10 @@
         highlight diffAdded ctermfg=green
 
         " For vimdiff
-        highlight DiffAdd ctermfg=NONE ctermbg=22
-        highlight DiffChange ctermfg=NONE ctermbg=54
-        highlight DiffDelete ctermfg=NONE ctermbg=52
-        highlight DiffText ctermfg=NONE ctermbg=22
+        highlight! DiffAdd ctermfg=NONE ctermbg=22
+        highlight! DiffChange ctermfg=NONE ctermbg=54
+        highlight! DiffDelete ctermfg=NONE ctermbg=52
+        highlight! DiffText ctermfg=NONE ctermbg=22
 
         " Spell highlight
         syntax clear SpellBad

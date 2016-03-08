@@ -1,33 +1,60 @@
 # Icons from: https://github.com/ryanoasis/vim-webdevicons
 
-source /usr/local/share/antigen.zsh
+autoload -U colors
+colors
+
+setopt PROMPTSUBST
+
+# Import the git prompt.
+source ~/.share/git-prompt.sh
+
+function zle-line-init zle-keymap-select {
+    zle reset-prompt
+}
+zle -N zle-line-init
+zle -N zle-keymap-select
+
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWUPSTREAM="verbose"
+GIT_PS1_SHOWCOLORHINTS=1
+GIT_PS1_STATESEPARATOR=''
+
+# Disable the normal virtualenv prompt.
 VIRTUAL_ENV_DISABLE_PROMPT=1
 
-ZSH_THEME_GIT_PROMPT_PREFIX=" "
-ZSH_THEME_GIT_PROMPT_SUFFIX=" "
-ZSH_THEME_GIT_PROMPT_DIRTY="~"
-ZSH_THEME_GIT_PROMPT_CLEAN=""
+git_prompt_info() {
+    git_info=$(__git_ps1)
+
+    if [ $git_info ]
+    then
+        echo " $git_info |"
+    fi
+}
 
 virtualenv_prompt_info() {
     if [ $VIRTUAL_ENV ]
     then
-        echo ' '$(echo `basename "$VIRTUAL_ENV"`)
+        base=$(echo `basename "$VIRTUAL_ENV"`)
+        echo " $base |"
     fi
 }
 
 gopath_prompt_info() {
     if [ -h "$GOPATH" ]
     then
-        echo ' '$(gowhich)
+        echo " $(gowhich) |"
     fi
-
 }
 
 background_jobs_prompt_info() {
     if [ $(jobs | wc -l) -gt 0 ]
     then
-        echo '#%F{240}%j %f'
+        echo "#%F{240}%j%f |"
     fi
+}
+
+vi_normal_prompt_info() {
+    echo "${${KEYMAP/vicmd/[NORMAL]}/(main|viins)/}"
 }
 
 precmd() {
@@ -38,9 +65,9 @@ preexec() {
     echo -n '\033]2;''/'$(echo `basename "$PWD"`)'/ '$(echo "$1")'\033\\'
 }
 
-RPROMPT='⏎ $(echo $?) $(background_jobs_prompt_info)$(git_prompt_info)$(gopath_prompt_info)$(virtualenv_prompt_info)%f'
+
+RPROMPT='$(vi_normal_prompt_info) ⏎ $(echo $?) $(background_jobs_prompt_info) $(git_prompt_info) $(virtualenv_prompt_info)%f'
 
 PROMPT='
 %d
 $ %f'
-

@@ -1,23 +1,25 @@
 " Plugins
 
+    if empty(glob('~/.vim/autoload/plug.vim'))
+        silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+            \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        autocmd VimEnter * PlugInstall | source $MYVIMRC
+    endif
+
     call plug#begin('~/.vim/plugged')
 
     Plug 'Raimondi/delimitMate'
     Plug 'airblade/vim-gitgutter'
     Plug 'benekastah/neomake'
     Plug 'davidhalter/jedi-vim'
-    Plug 'eiginn/netrw'
     Plug 'fatih/vim-go', { 'for': ['go'] }
     Plug 'hynek/vim-python-pep8-indent', { 'for': ['python'] }
     Plug 'janko-m/vim-test'
-    Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript'] }
     Plug 'jgdavey/tslime.vim'
     Plug 'jmcantrell/vim-virtualenv'
     Plug 'tmhedberg/matchit'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-vinegar'
-    Plug 'voithos/vim-python-matchit'
     Plug 'Glench/Vim-Jinja2-Syntax'
 
     call plug#end()
@@ -29,9 +31,6 @@
 
     let g:jedi#auto_initialization = 0
     let g:jedi#show_call_signatures = 0
-
-    " Netrw
-    let g:netrw_browsex_viewer = 'open'
 
     " Gitgutter
     let g:gitgutter_sign_column_always = 1
@@ -49,12 +48,53 @@
 " Colors and highlighting
 
     filetype plugin indent on
-    set t_ut=
-    set t_Co=16
-    set background=light
     syntax on
 
+    if !has('nvim')
+        set t_ut=
+        set t_Co=16
+    endif
+
+    set background=dark
     colorscheme default
+
+    highlight! link LineNr Normal
+    highlight! link Folded Comment
+    highlight! link SignColumn Normal
+    highlight! link TabLineFill StatusLine
+    highlight! link TabLine StatusLine
+    highlight! link NonText Comment
+
+    highlight IncSearch cterm=reverse
+    highlight StatusLineNC ctermfg=gray
+
+    highlight GitGutterAdd ctermfg=green
+    highlight GitGutterChange ctermfg=blue
+    highlight GitGutterDelete ctermfg=red
+    highlight GitGutterChangeDelete ctermfg=blue
+
+    " For viewing patches
+    highlight diffRemoved ctermfg=red
+    highlight diffAdded ctermfg=green
+
+    " For vimdiff
+    highlight DiffAdd ctermfg=black ctermbg=darkgreen
+    highlight DiffChange ctermfg=black ctermbg=yellow
+    highlight DiffDelete ctermfg=black ctermbg=red
+    highlight DiffText ctermfg=black ctermbg=darkgreen
+
+    highlight Visual ctermfg=black ctermbg=gray
+
+    " Spell highlight
+    syntax clear SpellBad
+    syntax clear SpellCap
+    syntax clear SpellLocal
+    syntax clear SpellRare
+
+    highlight SpellBad cterm=underline ctermbg=NONE
+    highlight! link SpellCap SpellBad
+    highlight! link SpellLocal SpellBad
+    highlight! link SpellRare SpellBad
 
 " Settings
 
@@ -63,57 +103,53 @@
         set ttyfast
     endif
 
-    set title
-    set laststatus=2
-    set backspace=indent,eol,start
-    set nobackup
-    set noswapfile
-    set autoread
-    set incsearch
-    set nohlsearch
-    set ignorecase
-    set smartcase
-    set nosmartindent
-    set tabstop=4
-    set softtabstop=4
-    set shiftwidth=4
-    set expandtab
-    set wrap
-    set linebreak
-    set breakindent
-    set showbreak=\ \ …
-    set noshowcmd
-    set hidden
-    set cursorline
-    set nocursorcolumn
-    set lazyredraw
-    set ttimeoutlen=0
-    set foldmethod=indent
-    set scrolloff=5
-    set fileformat=unix
-    set colorcolumn=101
-    set norelativenumber
-    set nonumber
-    set listchars=tab:▸\ ,eol:¬,space:𐄁
-    set wildignore+=*.pyc,*.git/,tags,__pycache__/
-    set grepprg=ag\ --nogroup\ --nocolor\ --follow\ --skip-vcs-ignores
-    set wildmenu
-    set shell=/bin/zsh
-    set more
-    set sessionoptions=blank,buffers,folds,sesdir,tabpages,winsize
-    set diffopt+=filler,foldcolumn:0,context:4
-    set joinspaces
-    set spellfile=~/dotfiles/spellfile.utf-8.add
-    set noundofile
-    set undodir=~/.vim/undo
-    set undolevels=1000
-    set undoreload=10000
-    set statusline=\ %f:%l:%c%m\ %r%y
+    set title  " Vim sets terminal window title.
+    set laststatus=2  " Show a  status line even if only one window.
+    set backspace=indent,eol,start  " Backspace works behind start of insert.
+    set nobackup  " Dont use backup files.
+    set noswapfile  " Dont use swapfiles.
+    set incsearch  " Show search matches while typing.
+    set nohlsearch  " Dont keep the higlight of a search after searching.
+    set ignorecase  " Searches are case insensitive.
+    set smartcase  " If search contains a capital letter make the search case sensitive.
+    set nosmartindent  " Smartindent insn't very smart on a lot of languages.
+    set tabstop=4  " A tab looks as 4 spaces.
+    set softtabstop=4  "A tab counts as 4 spaces.
+    set shiftwidth=4  " Indenting indents 4 spaces.
+    set expandtab  " Tab inserts spaces instead of tabs.
+    set wrap  " Wrap long lines.
+    set linebreak " When wrapping don't wrap in the middle of a word.
+    set breakindent  " Indent wrapped lines at same level as original.
+    set showbreak=\ \ …  " Show this at begingin of indent.
+    set noshowcmd  " Don't show command typed.
+    set hidden  " Can leave unsaved buffers.
+    set cursorline  " Show a cursorline at cursor.
+    set nocursorcolumn  " Dont show the cursorcolumn.
+    set lazyredraw  " Don't redraw when executing macros etc.
+    set ttimeoutlen=0  " Removes the delay when pressing ESC.
+    set foldmethod=indent  " Fold on indent.
+    set scrolloff=5  " Always leave 5 rows at top/bottom from cursor.
+    set fileformat=unix  " Unix file format.
+    set colorcolumn=101  " Visual margin for text width.
+    set nonumber  " Don't show line numbers.
+    set norelativenumber  " Dont show line numbers relative.
+    set listchars=tab:▸\ ,eol:¬,space:𐄁 " What to display when running :set list.
+    set wildignore+=*.pyc,*.git/,tags,__pycache__/  " Ignore these file endings when possible.
+    set grepprg=ag\ --nogroup\ --nocolor\ --follow\ --skip-vcs-ignores  " Use ag as grep command.
+    set wildmenu  " Show matches above commandline when pressing TAB.
+    set shell=/bin/zsh  " Use zsh as the shell.
+    set more  " Pause lists when whole screen is filled, so they are scrollable.
+    set sessionoptions=blank,buffers,folds,sesdir,tabpages,winsize  " What to save in a session.
+    set diffopt+=filler,foldcolumn:0,context:4  " Nice options when shoing diffs.
+    set spellfile=~/dotfiles/spellfile.utf-8.add  " File to use when saving custom words to spellfile"
+    set undofile  " Save undo steps after close.
+    set undodir=~/.vim/undo  " Where to save the undo file.
+    set statusline=\ %f:%l:%c%m\ %r%y  " Usefull statusline: file:line:column modified readonly filetype .
     set statusline+=%=
-    set statusline+=\ %{neomake#statusline#QflistStatus('Syntax')}
-    set complete=.,b,i,d,t
-    set completeopt=menu,menuone,longest
-    set spell
+    set statusline+=\ %{neomake#statusline#QflistStatus('Syntax')}  " Show that we have syntax error.
+    set complete=.,b,i,d,t  " CTRL-n completes: current buffer, other buffers, included files, macros, tags.
+    set completeopt=menu,menuone,longest  " Popup menu, even if one match, longest common text.
+    set spell  " Show spelling errors.
 
 " Key mappings
 
@@ -137,15 +173,9 @@
 
     noremap <C-w>c :tabnew<CR>
 
-    " Moving right in insert mode without arrow keys.
-    inoremap <C-l> <Right>
-
     " Copy and past using system clipboard
     vnoremap <leader>y "*y
     noremap <leader>p "*p
-
-    " make Y behave like C and D
-    noremap Y y$
 
     noremap <Leader>s :wa<CR>
 
@@ -155,6 +185,7 @@
     noremap <up> :resize +5<CR>
     noremap <down> :resize -5<CR>
 
+    " Don't move in insert mode.
     inoremap <right> <Nop>
     inoremap <left> <Nop>
     inoremap <up> <Nop>
@@ -190,10 +221,6 @@
     noremap [a :next<CR>
     noremap ]a :next<CR>
 
-    " View top of file in new split above current buffer.
-    " Good for adding imports etc.
-    noremap <Leader>k :leftabove split<CR>:resize 10<CR>gg
-
     " Maximize window
     nnoremap <C-w>z <C-w>\|<C-w>_
 
@@ -205,14 +232,12 @@
 
         command! Tag :terminal tagsearch
         command! SitePackagesTag :terminal cd $VIRTUAL_ENV/lib/python2.7/site-packages && tagsearch
-        command! BuildTags :call BuildTags()
         command! SitePackages :terminal cd $VIRTUAL_ENV/lib/python2.7/site-packages && nvimex edit $(fzf) -w
     endif
 
-    command! Gbranch echo system('git branch')
-    command! ToGithub execute "!github " . expand("%") . "\\#L" . line(".")
-
     command! TmuxReset unlet g:tslime
+
+    command! BuildTags :!/bin/rm\ tags;\ /usr/local/bin/ctags<CR>
 
     " Reload vimrc
     command! ReloadVimrc :source $MYVIMRC
@@ -225,11 +250,7 @@
     augroup misc
         autocmd!
 
-        autocmd WinEnter * call AutoResizeWindow()
-
-        " Setup colors
-        autocmd ColorScheme * :call SetupColors()
-
+        " Stip trailing lines/spaces.
         autocmd BufWritePre * :%s/\s\+$//e
         autocmd BufWritePre * :%s/\($\n\)\+\%$//e
 
@@ -238,26 +259,21 @@
         " Highlight the current word under the cursor
         autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
+        " Set the terminal title as the current file.
         autocmd BufEnter * let &titlestring=' /'.fnamemodify(getcwd(), ':t').'/'
 
         autocmd WinLeave * setlocal nocursorline
-        autocmd WinEnter * setlocal cursorline
     augroup END
 
     augroup filetypes
         autocmd!
-
-        autocmd FileType netrw setlocal bufhidden=delete
 
         " update diff when moving the cursor
         autocmd CursorHold * if &diff == 1 | diffupdate | endif
 
         autocmd BufRead,BufNewFile *.md set filetype=markdown
 
-        autocmd FileType markdown setlocal makeprg=hoedown\ --all-block\ %\ >\ /tmp/hoedown.html\ &&\ open\ /tmp/hoedown.html
-
         autocmd FileType python setlocal omnifunc=jedi#completions
-        autocmd FileType python noremap <buffer> K :call jedi#show_documentation()<CR>
         autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
         autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
         autocmd FileType python map <F5> Oimport pdb; pdb.set_trace()<ESC>
@@ -268,8 +284,8 @@
         autocmd FileType go setlocal statusline+=\ %{resolve($GOPATH)}
         autocmd FileType go setlocal nofoldenable
 
-        autocmd FileType javascript map <F5> Odebugger;<ESC>
 
+        autocmd FileType javascript map <F5> Odebugger;<ESC>
         autocmd FileType jinja TabWidth 2
     augroup END
 
@@ -277,85 +293,11 @@
         augroup nvim
             autocmd!
 
-            autocmd BufWritePost * :call UpdateTags()
-            autocmd TermOpen * setlocal nocursorcolumn nocursorline
-            autocmd TermOpen * setlocal nocursorcolumn nocursorline
-
+            autocmd TermOpen * setlocal nocursorline
             autocmd TermOpen * setlocal nospell
-
             autocmd TermOpen * set winfixheight
 
             autocmd InsertLeave term://* setlocal nocursorcolumn
             autocmd InsertEnter term://* setlocal nocursorcolumn
         augroup END
     endif
-
-" Functions
-
-    if has('nvim')
-        function! BuildTags()
-            call jobstart(['ctags'])
-        endfunction
-
-        function! UpdateTags()
-            if filereadable("tags")
-                call BuildTags()
-            endif
-        endfunction
-    endif
-
-    function! SetupColors()
-        highlight! link LineNr Normal
-        highlight! link Folded Comment
-        highlight! link SignColumn Normal
-        highlight! link TabLineFill StatusLine
-        highlight! link TabLine StatusLine
-        highlight! link NonText Comment
-
-        highlight! IncSearch cterm=reverse
-
-        highlight GitGutterAdd ctermfg=green
-        highlight GitGutterChange ctermfg=blue
-        highlight GitGutterDelete ctermfg=red
-        highlight GitGutterChangeDelete ctermfg=blue
-
-        " For viewing patches
-        highlight diffRemoved ctermfg=red
-        highlight diffAdded ctermfg=green
-
-        " For vimdiff
-        highlight! DiffAdd ctermfg=NONE ctermbg=22
-        highlight! DiffChange ctermfg=NONE ctermbg=54
-        highlight! DiffDelete ctermfg=NONE ctermbg=52
-        highlight! DiffText ctermfg=NONE ctermbg=22
-
-        " Spell highlight
-        syntax clear SpellBad
-        syntax clear SpellCap
-        syntax clear SpellLocal
-        syntax clear SpellRare
-
-        highlight SpellBad cterm=underline ctermbg=NONE
-        highlight! link SpellCap SpellBad
-        highlight! link SpellLocal SpellBad
-        highlight! link SpellRare SpellBad
-    endfunction
-    call SetupColors()
-
-    function! Day()
-        set background=light
-        colorscheme tomorrow
-    endfunction
-
-    function! Night()
-        set background=dark
-        colorscheme wombat256mod
-    endfunction
-
-    function! AutoResizeWindow()
-        if (&ft =~ 'python')
-            if (winwidth(0) < 102)
-                execute 'vertical resize 102'
-            endif
-        endif
-    endfunction

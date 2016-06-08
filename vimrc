@@ -11,16 +11,16 @@
     Plug 'Raimondi/delimitMate'
     Plug 'airblade/vim-gitgutter'
     Plug 'benekastah/neomake'
-    Plug 'davidhalter/jedi-vim'
     Plug 'fatih/vim-go', { 'for': ['go'] }
     Plug 'hynek/vim-python-pep8-indent', { 'for': ['python'] }
     Plug 'janko-m/vim-test'
     Plug 'jgdavey/tslime.vim'
-    Plug 'jmcantrell/vim-virtualenv'
     Plug 'tmhedberg/matchit'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
     Plug 'Glench/Vim-Jinja2-Syntax'
+    Plug 'altercation/vim-colors-solarized'
+    Plug 'sunaku/vim-dasht'
 
     call plug#end()
 
@@ -29,14 +29,8 @@
     let test#strategy = 'tslime'
     let test#python#runner = 'pytest'
 
-    let g:jedi#auto_initialization = 0
-    let g:jedi#show_call_signatures = 0
-
     " Gitgutter
     let g:gitgutter_sign_column_always = 1
-
-    " Virtualenv
-    let g:virtualenv_stl_format = '   %n'
 
     " Go
     let g:go_highlight_functions = 1
@@ -44,6 +38,17 @@
     let g:go_highlight_structs = 1
     let g:go_highlight_operators = 1
     let g:go_highlight_build_constraints = 1
+    let g:go_metalinter_autosave = 1
+    let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+    let g:go_metalinter_autosave_enabled = ['vet', 'errcheck']
+
+    let g:neomake_open_list = 2
+    let g:neomake_list_height = 3
+    let g:neomake_go_enabled_makers = ['go']
+
+    let g:dasht_filetype_docsets = {
+        \ 'python': ['python_2', 'sqlalchemy', 'flask'],
+    \ }
 
 " Colors and highlighting
 
@@ -55,8 +60,8 @@
         set t_Co=16
     endif
 
-    set background=dark
-    colorscheme default
+    set background=light
+    colorscheme solarized
 
     highlight! link LineNr Normal
     highlight! link Folded Comment
@@ -65,25 +70,20 @@
     highlight! link TabLine StatusLine
     highlight! link NonText Comment
 
-    highlight IncSearch cterm=reverse
-    highlight StatusLineNC ctermfg=gray
-
     highlight GitGutterAdd ctermfg=green
-    highlight GitGutterChange ctermfg=blue
+    highlight GitGutterChange ctermfg=yellow
     highlight GitGutterDelete ctermfg=red
-    highlight GitGutterChangeDelete ctermfg=blue
+    highlight GitGutterChangeDelete ctermfg=red
 
     " For viewing patches
     highlight diffRemoved ctermfg=red
     highlight diffAdded ctermfg=green
 
     " For vimdiff
-    highlight DiffAdd ctermfg=black ctermbg=darkgreen
+    highlight DiffAdd ctermfg=black ctermbg=green
     highlight DiffChange ctermfg=black ctermbg=yellow
     highlight DiffDelete ctermfg=black ctermbg=red
-    highlight DiffText ctermfg=black ctermbg=darkgreen
-
-    highlight Visual ctermfg=black ctermbg=gray
+    highlight DiffText ctermfg=black ctermbg=green
 
     " Spell highlight
     syntax clear SpellBad
@@ -145,10 +145,9 @@
     set undofile  " Save undo steps after close.
     set undodir=~/.vim/undo  " Where to save the undo file.
     set statusline=\ %f:%l:%c%m\ %r%y  " Usefull statusline: file:line:column modified readonly filetype .
-    set statusline+=%=
-    set statusline+=\ %{neomake#statusline#QflistStatus('Syntax')}  " Show that we have syntax error.
+    set statusline+=\ %{neomake#statusline#LoclistStatus('Neomake:\ ')}  " Show that we have syntax error.
     set complete=.,b,i,d,t  " CTRL-n completes: current buffer, other buffers, included files, macros, tags.
-    set completeopt=menu,menuone,longest  " Popup menu, even if one match, longest common text.
+    set completeopt=menu,menuone,longest,preview  " Popup menu, even if one match, longest common text.
     set spell  " Show spelling errors.
 
 " Key mappings
@@ -156,22 +155,22 @@
     let mapleader = ' '
 
     if has('nvim')
-        tnoremap <Esc><Esc> <c-\><c-n>
-
         " C-i doesn't work in neovim yet.
         nnoremap ±;2C <C-i>
 
         noremap <Leader>e :silent terminal nvimex edit $(fzf) -w<CR>
         noremap <Leader>b :silent terminal nvimex b $(nvimex ls -w \| fzf) -w<CR>
-        noremap <Leader>t :Tag<CR>
-
         noremap - :silent terminal ranger --selectfile=%  --choosefile=/tmp/.ranger && nvimex edit $(cat /tmp/.ranger) -w && /bin/rm /tmp/.ranger<CR>
     endif
+
+    nnoremap <silent> K :call Dasht([expand('<cword>')])<CR>
 
     noremap <F4> :wa<CR>:TestLast<CR>
     noremap <F2> :wa<CR>:Tmux clear; make test<CR>
 
     noremap <C-w>c :tabnew<CR>
+
+    noremap <Leader>t :tag<space>
 
     " Copy and past using system clipboard
     vnoremap <leader>y "*y
@@ -185,12 +184,6 @@
     noremap <up> :resize +5<CR>
     noremap <down> :resize -5<CR>
 
-    " Don't move in insert mode.
-    inoremap <right> <Nop>
-    inoremap <left> <Nop>
-    inoremap <up> <Nop>
-    inoremap <down> <Nop>
-
     " Quickfix navigation
     noremap <Leader>q :copen<CR>
     noremap ]q :cnext<CR>zvzz
@@ -198,8 +191,8 @@
     noremap ]Q :clast<CR>zvzz
     noremap [Q :cfirst<CR>zvzz
 
-    " Locationlist navigation
-    noremap <Leader>l :lopen<CR>
+    " Quickfix navigation
+    noremap <Leader>l :copen<CR>
     noremap ]l :lnext<CR>zvzz
     noremap [l :lprevious<CR>zvzz
     noremap ]L :llast<CR>zvzz
@@ -221,23 +214,16 @@
     noremap [a :next<CR>
     noremap ]a :next<CR>
 
-    " Maximize window
-    nnoremap <C-w>z <C-w>\|<C-w>_
-
 " Commands
 
     if has('nvim')
         command! Gchanged :silent terminal nvimex edit $(g diff --name-only | fzf) -w
-        command! Gstatus :silent terminal git status && exit
-
-        command! Tag :terminal tagsearch
-        command! SitePackagesTag :terminal cd $VIRTUAL_ENV/lib/python2.7/site-packages && tagsearch
         command! SitePackages :terminal cd $VIRTUAL_ENV/lib/python2.7/site-packages && nvimex edit $(fzf) -w
     endif
 
     command! TmuxReset unlet g:tslime
 
-    command! BuildTags :!/bin/rm\ tags;\ /usr/local/bin/ctags<CR>
+    command! BuildTags :!/bin/rm tags; /usr/local/bin/ctags
 
     " Reload vimrc
     command! ReloadVimrc :source $MYVIMRC
@@ -249,6 +235,9 @@
 
     augroup misc
         autocmd!
+
+		" Dont use folding in the preview window.
+        autocmd BufAdd * if &previewwindow | set nofoldenable | endif
 
         " Stip trailing lines/spaces.
         autocmd BufWritePre * :%s/\s\+$//e
@@ -263,6 +252,7 @@
         autocmd BufEnter * let &titlestring=' /'.fnamemodify(getcwd(), ':t').'/'
 
         autocmd WinLeave * setlocal nocursorline
+        autocmd WinEnter * setlocal cursorline
     augroup END
 
     augroup filetypes
@@ -273,31 +263,16 @@
 
         autocmd BufRead,BufNewFile *.md set filetype=markdown
 
-        autocmd FileType python setlocal omnifunc=jedi#completions
+        " autocmd FileType python setlocal omnifunc=jedi#completions
         autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
         autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
         autocmd FileType python map <F5> Oimport pdb; pdb.set_trace()<ESC>
-        autocmd FileType python setlocal statusline+=%{virtualenv#statusline()}
-        autocmd FileType python noremap gD :call jedi#goto_definitions()<CR>
-        autocmd FileType python noremap gd :call jedi#goto_assignments()<CR>
+        " autocmd FileType python noremap gD :call jedi#goto_definitions()<CR>
+        " autocmd FileType python noremap gd :call jedi#goto_assignments()<CR>
 
         autocmd FileType go setlocal statusline+=\ %{resolve($GOPATH)}
         autocmd FileType go setlocal nofoldenable
 
-
         autocmd FileType javascript map <F5> Odebugger;<ESC>
         autocmd FileType jinja TabWidth 2
     augroup END
-
-    if has('nvim')
-        augroup nvim
-            autocmd!
-
-            autocmd TermOpen * setlocal nocursorline
-            autocmd TermOpen * setlocal nospell
-            autocmd TermOpen * set winfixheight
-
-            autocmd InsertLeave term://* setlocal nocursorcolumn
-            autocmd InsertEnter term://* setlocal nocursorcolumn
-        augroup END
-    endif

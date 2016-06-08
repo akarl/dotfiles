@@ -1,11 +1,17 @@
 autoload -U compinit
 compinit
 
+setopt APPEND_HISTORY
+setopt EXTENDED_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_IGNORE_DUPS
-setopt INC_APPEND_HISTORY
 setopt HIST_IGNORE_SPACE
+setopt HIST_VERIFY
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
 
 export SAVEHIST=10000
+export HISTSIZE=10000
 export HISTFILE="$HOME/.zsh-history"
 
 # Fish style syntax highlight
@@ -16,8 +22,6 @@ eval "`pip completion --zsh`"
 # Source the prompt
 source $HOME/dotfiles/prompt.zsh
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 export KEYTIMEOUT=1
 
 bindkey "^[[3~" delete-char
@@ -26,3 +30,5 @@ bindkey '^p' up-history
 bindkey '^n' down-history
 
 bindkey -v
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

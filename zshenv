@@ -50,28 +50,8 @@ export PATH=$PATH:/usr/local/Cellar/python/2.7.10_2/Frameworks/Python.framework/
 source virtualenvwrapper.sh
 source ~/.secrets.zsh
 
-# Setup gopath
-export GOPATH=$HOME/.gopath
+export GOPATH=$HOME/workspace/gocode
 export PATH=$PATH:$GOPATH/bin
-
-alias gowhich='readlink ~/.gopath'
-
-gostart () {
-    mkdir src pkg bin
-    goactivate
-}
-goactivate () {
-    godeactivate
-    ln -s $(pwd) $GOPATH
-    echo "Activated `gowhich`"
-}
-
-godeactivate () {
-    if [ -h "$GOPATH" ]
-    then
-        /bin/rm $GOPATH
-    fi
-}
 
 # Opens the github page for the current git repository in your browser
 # Takes an optional argument which is the file to view.

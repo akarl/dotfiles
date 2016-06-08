@@ -9,6 +9,7 @@
 	editor = /usr/local/bin/nvim
 [diff]
 	tool = nvimdiff
+	algorithm = patience
 [merge]
 	tool = nvimdiff
 [difftool]

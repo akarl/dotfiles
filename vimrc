@@ -68,6 +68,7 @@
     highlight! link SignColumn Normal
     highlight! link TabLineFill StatusLine
     highlight! link TabLine StatusLine
+    highlight! link TabLineSel Normal
     highlight! link NonText Comment
 
     highlight GitGutterAdd ctermfg=green
@@ -272,6 +273,8 @@
 
         autocmd FileType go setlocal statusline+=\ %{resolve($GOPATH)}
         autocmd FileType go setlocal nofoldenable
+        autocmd FileType go iabbrev iferr if err != nil {}<LEFT>
+
 
         autocmd FileType javascript map <F5> Odebugger;<ESC>
         autocmd FileType jinja TabWidth 2

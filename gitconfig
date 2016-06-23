@@ -10,6 +10,7 @@
 [diff]
 	tool = nvimdiff
 	algorithm = patience
+    compactionHeuristic =true
 [merge]
 	tool = nvimdiff
 [difftool]

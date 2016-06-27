@@ -38,13 +38,14 @@
     let g:go_highlight_structs = 1
     let g:go_highlight_operators = 1
     let g:go_highlight_build_constraints = 1
-    let g:go_metalinter_autosave = 1
+    let g:go_metalinter_autosave = 0
+    let g:go_fmt_command = "goimports"
     let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
     let g:go_metalinter_autosave_enabled = ['vet', 'errcheck']
 
-    let g:neomake_open_list = 2
-    let g:neomake_list_height = 3
-    let g:neomake_go_enabled_makers = ['go']
+    " let g:neomake_open_list = 2
+    " let g:neomake_list_height = 3
+    let g:neomake_go_enabled_makers = ['go', 'govet']
 
     let g:dasht_filetype_docsets = {
         \ 'python': ['python_2', 'sqlalchemy', 'flask'],

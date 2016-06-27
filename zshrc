@@ -13,22 +13,17 @@ setopt SHARE_HISTORY
 export SAVEHIST=10000
 export HISTSIZE=10000
 export HISTFILE="$HOME/.zsh-history"
+export KEYTIMEOUT=1
 
-# Fish style syntax highlight
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-eval "`pip completion --zsh`"
-
-# Source the prompt
 source $HOME/dotfiles/prompt.zsh
 
-export KEYTIMEOUT=1
+eval "`pip completion --zsh`"
 
 bindkey "^[[3~" delete-char
 bindkey '^w' backward-kill-word
 bindkey '^p' up-history
 bindkey '^n' down-history
-
 bindkey -v
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

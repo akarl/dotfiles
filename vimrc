@@ -20,7 +20,6 @@
     Plug 'tpope/vim-surround'
     Plug 'Glench/Vim-Jinja2-Syntax'
     Plug 'altercation/vim-colors-solarized'
-    Plug 'sunaku/vim-dasht'
 
     call plug#end()
 
@@ -43,13 +42,7 @@
     let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
     let g:go_metalinter_autosave_enabled = ['vet', 'errcheck']
 
-    " let g:neomake_open_list = 2
-    " let g:neomake_list_height = 3
     let g:neomake_go_enabled_makers = ['go', 'govet']
-
-    let g:dasht_filetype_docsets = {
-        \ 'python': ['python_2', 'sqlalchemy', 'flask'],
-    \ }
 
 " Colors and highlighting
 
@@ -118,7 +111,6 @@
     set tabstop=4  " A tab looks as 4 spaces.
     set softtabstop=4  "A tab counts as 4 spaces.
     set shiftwidth=4  " Indenting indents 4 spaces.
-    set expandtab  " Tab inserts spaces instead of tabs.
     set wrap  " Wrap long lines.
     set linebreak " When wrapping don't wrap in the middle of a word.
     set breakindent  " Indent wrapped lines at same level as original.
@@ -142,7 +134,7 @@
     set shell=/bin/zsh  " Use zsh as the shell.
     set more  " Pause lists when whole screen is filled, so they are scrollable.
     set sessionoptions=blank,buffers,folds,sesdir,tabpages,winsize  " What to save in a session.
-    set diffopt+=filler,foldcolumn:0,context:4  " Nice options when shoing diffs.
+    set diffopt+=filler,foldcolumn:0,context:4  " Nice options when showing diffs.
     set spellfile=~/dotfiles/spellfile.utf-8.add  " File to use when saving custom words to spellfile"
     set undofile  " Save undo steps after close.
     set undodir=~/.vim/undo  " Where to save the undo file.
@@ -238,19 +230,20 @@
     augroup misc
         autocmd!
 
-		" Dont use folding in the preview window.
-        autocmd BufAdd * if &previewwindow | set nofoldenable | endif
+        " Update diff when moving the cursor
+        autocmd CursorHold * if &diff == 1 | diffupdate | endif
 
-        " Stip trailing lines/spaces.
+        " Strip trailing lines/spaces.
         autocmd BufWritePre * :%s/\s\+$//e
         autocmd BufWritePre * :%s/\($\n\)\+\%$//e
 
+        " Run makers after save.
         autocmd BufWritePost * silent! Neomake
 
         " Highlight the current word under the cursor
         autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
-        " Set the terminal title as the current file.
+        " Set the terminal title as the current working directory.
         autocmd BufEnter * let &titlestring=' /'.fnamemodify(getcwd(), ':t').'/'
 
         autocmd WinLeave * setlocal nocursorline
@@ -260,23 +253,23 @@
     augroup filetypes
         autocmd!
 
-        " update diff when moving the cursor
-        autocmd CursorHold * if &diff == 1 | diffupdate | endif
-
-        autocmd BufRead,BufNewFile *.md set filetype=markdown
-
-        " autocmd FileType python setlocal omnifunc=jedi#completions
+        " Python
+        autocmd FileType python setlocal expandtab
         autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
         autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
         autocmd FileType python map <F5> Oimport pdb; pdb.set_trace()<ESC>
-        " autocmd FileType python noremap gD :call jedi#goto_definitions()<CR>
-        " autocmd FileType python noremap gd :call jedi#goto_assignments()<CR>
 
+        " Go
         autocmd FileType go setlocal statusline+=\ %{resolve($GOPATH)}
         autocmd FileType go setlocal nofoldenable
         autocmd FileType go iabbrev iferr if err != nil {}<LEFT>
 
+        " Markdown
+        autocmd BufRead,BufNewFile *.md set filetype=markdown
 
+        " Javascript
         autocmd FileType javascript map <F5> Odebugger;<ESC>
+
+        " Misc
         autocmd FileType jinja TabWidth 2
     augroup END

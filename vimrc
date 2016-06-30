@@ -39,8 +39,6 @@
     let g:go_highlight_build_constraints = 1
     let g:go_metalinter_autosave = 0
     let g:go_fmt_command = "goimports"
-    let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
-    let g:go_metalinter_autosave_enabled = ['vet', 'errcheck']
 
     let g:neomake_go_enabled_makers = ['go', 'govet']
 
@@ -64,6 +62,7 @@
     highlight! link TabLine StatusLine
     highlight! link TabLineSel Normal
     highlight! link NonText Comment
+    highlight! link SpecialKey Comment
 
     highlight GitGutterAdd ctermfg=green
     highlight GitGutterChange ctermfg=yellow
@@ -157,8 +156,6 @@
         noremap - :silent terminal ranger --selectfile=%  --choosefile=/tmp/.ranger && nvimex edit $(cat /tmp/.ranger) -w && /bin/rm /tmp/.ranger<CR>
     endif
 
-    nnoremap <silent> K :call Dasht([expand('<cword>')])<CR>
-
     noremap <F4> :wa<CR>:TestLast<CR>
     noremap <F2> :wa<CR>:Tmux clear; make test<CR>
 
@@ -185,7 +182,7 @@
     noremap ]Q :clast<CR>zvzz
     noremap [Q :cfirst<CR>zvzz
 
-    " Quickfix navigation
+    " Locationlist navigation
     noremap <Leader>l :copen<CR>
     noremap ]l :lnext<CR>zvzz
     noremap [l :lprevious<CR>zvzz
@@ -260,9 +257,8 @@
         autocmd FileType python map <F5> Oimport pdb; pdb.set_trace()<ESC>
 
         " Go
-        autocmd FileType go setlocal statusline+=\ %{resolve($GOPATH)}
-        autocmd FileType go setlocal nofoldenable
-        autocmd FileType go iabbrev iferr if err != nil {}<LEFT>
+        autocmd BufWritePre *.go mkview!
+        autocmd BufWritePost *.go loadview
 
         " Markdown
         autocmd BufRead,BufNewFile *.md set filetype=markdown

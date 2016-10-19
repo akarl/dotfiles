@@ -19,6 +19,8 @@
 	prompt = true
 [difftool "nvimdiff"]
     cmd = nvim -d $BASE $LOCAL
+[mergetool "nvimdiff"]
+    cmd = nvim $MERGED
 [commit]
 	template = /Users/andreas/dotfiles/gitcommit.template.txt
 [help]

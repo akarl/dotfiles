@@ -1,4 +1,6 @@
 autoload -U compinit
+autoload -U select-word-style
+select-word-style bash
 compinit
 
 setopt APPEND_HISTORY
@@ -20,10 +22,6 @@ source $HOME/dotfiles/prompt.zsh
 
 eval "`pip completion --zsh`"
 
-bindkey "^[[3~" delete-char
-bindkey '^w' backward-kill-word
-bindkey '^p' up-history
-bindkey '^n' down-history
-bindkey -v
+bindkey -e
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

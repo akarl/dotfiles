@@ -19,7 +19,13 @@
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
     Plug 'Glench/Vim-Jinja2-Syntax'
-    Plug 'altercation/vim-colors-solarized'
+	Plug 'vim-scripts/wombat256.vim'
+	Plug 'panickbr/neovim-ranger'
+	Plug '/usr/local/opt/fzf'
+	Plug 'junegunn/fzf.vim'
+	Plug 'davidhalter/jedi-vim'
+	Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+	Plug 'zchee/deoplete-jedi', { 'for': ['python']}
 
     call plug#end()
 
@@ -27,6 +33,7 @@
 
     let test#strategy = 'tslime'
     let test#python#runner = 'pytest'
+	let test#python#pytest#options = '--capture=no --showlocals'
 
     " Gitgutter
     let g:gitgutter_sign_column_always = 1
@@ -42,6 +49,10 @@
 
     let g:neomake_go_enabled_makers = ['go', 'govet']
 
+    let g:deoplete#enable_at_startup = 1
+	let g:jedi#auto_initialization = 0
+	let g:jedi#auto_vim_configuration = 0
+
 " Colors and highlighting
 
     filetype plugin indent on
@@ -52,9 +63,10 @@
         set t_Co=16
     endif
 
-    set background=light
-    colorscheme solarized
+    set background=dark
+    colorscheme wombat256mod
 
+    highlight! link ColorColumn CursorLine
     highlight! link LineNr Normal
     highlight! link Folded Comment
     highlight! link SignColumn Normal
@@ -129,6 +141,7 @@
     set listchars=tab:▸\ ,eol:¬,space:𐄁 " What to display when running :set list.
     set wildignore+=*.pyc,*.git/,tags,__pycache__/  " Ignore these file endings when possible.
     set grepprg=ag\ --nogroup\ --nocolor\ --follow\ --skip-vcs-ignores  " Use ag as grep command.
+	set wildmode=longest,list,full  " Bash like command autocomplete
     set wildmenu  " Show matches above commandline when pressing TAB.
     set shell=/bin/zsh  " Use zsh as the shell.
     set more  " Pause lists when whole screen is filled, so they are scrollable.
@@ -140,8 +153,11 @@
     set statusline=\ %f:%l:%c%m\ %r%y  " Usefull statusline: file:line:column modified readonly filetype .
     set statusline+=\ %{neomake#statusline#LoclistStatus('Neomake:\ ')}  " Show that we have syntax error.
     set complete=.,b,i,d,t  " CTRL-n completes: current buffer, other buffers, included files, macros, tags.
-    set completeopt=menu,menuone,longest,preview  " Popup menu, even if one match, longest common text.
+    set completeopt=menu,menuone,longest  " Popup menu, even if one match, longest common text.
     set spell  " Show spelling errors.
+
+	set exrc  " Allow project local vimrc files.
+	set secure  " Disable autocmd etc for project local vimrc files.
 
 " Key mappings
 
@@ -150,18 +166,17 @@
     if has('nvim')
         " C-i doesn't work in neovim yet.
         nnoremap ±;2C <C-i>
-
-        noremap <Leader>e :silent terminal nvimex edit $(fzf) -w<CR>
-        noremap <Leader>b :silent terminal nvimex b $(nvimex ls -w \| fzf) -w<CR>
-        noremap - :silent terminal ranger --selectfile=%  --choosefile=/tmp/.ranger && nvimex edit $(cat /tmp/.ranger) -w && /bin/rm /tmp/.ranger<CR>
     endif
 
+	noremap - :silent! edit %:h<CR>
     noremap <F4> :wa<CR>:TestLast<CR>
     noremap <F2> :wa<CR>:Tmux clear; make test<CR>
 
     noremap <C-w>c :tabnew<CR>
 
-    noremap <Leader>t :tag<space>
+	noremap <Leader>e :Buffers<CR>
+    noremap <Leader>t :Tags<CR>
+    noremap <Leader>o :Files<CR>
 
     " Copy and past using system clipboard
     vnoremap <leader>y "*y
@@ -207,11 +222,6 @@
 
 " Commands
 
-    if has('nvim')
-        command! Gchanged :silent terminal nvimex edit $(g diff --name-only | fzf) -w
-        command! SitePackages :terminal cd $VIRTUAL_ENV/lib/python2.7/site-packages && nvimex edit $(fzf) -w
-    endif
-
     command! TmuxReset unlet g:tslime
 
     command! BuildTags :!/bin/rm tags; /usr/local/bin/ctags
@@ -242,21 +252,23 @@
 
         " Set the terminal title as the current working directory.
         autocmd BufEnter * let &titlestring=' /'.fnamemodify(getcwd(), ':t').'/'
-
-        autocmd WinLeave * setlocal nocursorline
-        autocmd WinEnter * setlocal cursorline
     augroup END
 
     augroup filetypes
         autocmd!
 
+		" Chef eruby
+        autocmd FileType eruby setlocal expandtab
+
         " Python
         autocmd FileType python setlocal expandtab
         autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
         autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
-        autocmd FileType python map <F5> Oimport pdb; pdb.set_trace()<ESC>
+        autocmd FileType python map <F5> Oimport ipdb; ipdb.set_trace()<ESC>
+		autocmd FileType python noremap <C-]> :call jedi#goto()<CR>
 
         " Go
+		autocmd FileType go set nofoldenable
         autocmd BufWritePre *.go mkview!
         autocmd BufWritePost *.go loadview
 
@@ -268,4 +280,5 @@
 
         " Misc
         autocmd FileType jinja TabWidth 2
+        autocmd FileType yml setlocal expandtab
     augroup END

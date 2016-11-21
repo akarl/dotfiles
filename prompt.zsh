@@ -27,7 +27,7 @@ git_prompt_info() {
 
     if [ $git_info ]
     then
-        echo " $git_info |"
+        echo "-  $git_info"
     fi
 }
 
@@ -35,7 +35,7 @@ virtualenv_prompt_info() {
     if [ $VIRTUAL_ENV ]
     then
         base=$(echo `basename "$VIRTUAL_ENV"`)
-        echo " $base |"
+        echo "-  $base "
     fi
 }
 
@@ -49,7 +49,7 @@ gopath_prompt_info() {
 background_jobs_prompt_info() {
     if [ $(jobs | wc -l) -gt 0 ]
     then
-        echo "#%F{240}%j%f |"
+        echo "- #%F{240}%j%f"
     fi
 }
 
@@ -66,7 +66,7 @@ preexec() {
 }
 
 
-RPROMPT='$(vi_normal_prompt_info) ⏎ $(echo $?) $(background_jobs_prompt_info) $(git_prompt_info) $(virtualenv_prompt_info)%f'
+RPROMPT='⏎ $(echo $?) $(background_jobs_prompt_info) $(git_prompt_info) $(virtualenv_prompt_info)%f'
 
 PROMPT='
 %d

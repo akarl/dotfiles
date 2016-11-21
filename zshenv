@@ -20,14 +20,14 @@ export LESSOPEN='|pygmentize %s'
 export FZF_DEFAULT_COMMAND='ag -f -l -U --nocolor'
 export FZF_TMUX=0
 export XDG_CONFIG_HOME=~/.config
+export XDG_CACHE_HOME=~/.cache
 export XDG_DATA_HOME=~/.local/share
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=/workspace
-export PATH=$PATH:/usr/local/Cellar/python/2.7.10_2/Frameworks/Python.framework/Versions/2.7/bin
 
 source ~/dotfiles/funcs.zsh
-source virtualenvwrapper.sh
 source ~/.secrets.zsh
+source virtualenvwrapper.sh
 
 export GOPATH=$HOME/workspace/gocode
 export PATH=$PATH:$GOPATH/bin

@@ -36,3 +36,10 @@ tagsearch() {
         nvimex "edit $(cut -f2 <<< $line) | silent tag $(cut -f1 <<< $line)" -w
     fi
 }
+
+
+sr() {
+	git add .
+	find . -type f -name "*.$2" -exec sed -i "" "$1" {} +
+	git diff
+}

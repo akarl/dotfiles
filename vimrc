@@ -21,7 +21,8 @@
 	Plug 'Glench/Vim-Jinja2-Syntax'
 	Plug 'vim-scripts/wombat256.vim'
 	Plug 'panickbr/neovim-ranger'
-	Plug 'ctrlpvim/ctrlp.vim'
+	Plug '/usr/local/opt/fzf'
+	Plug 'junegunn/fzf.vim'
 	Plug 'vim-airline/vim-airline'
 	Plug 'vim-airline/vim-airline-themes'
 	" Plug 'edkolev/tmuxline.vim'
@@ -33,8 +34,6 @@
 	call plug#end()
 
 " Plugin settings
-
-	let g:ctrlp_cmd = 'CtrlPLastMode'
 
 	let g:airline_powerline_fonts = 1
 	let g:airline_detect_spell = 0
@@ -149,7 +148,7 @@
 	set nonumber  " Don't show line numbers.
 	set norelativenumber  " Dont show line numbers relative.
 	set listchars=tab:▸\ ,eol:¬,space:𐄁 " What to display when running :set list.
-	set wildignore+=*.pyc,*.git/,tags,__pycache__/  " Ignore these file endings when possible.
+	set wildignore+=*.pyc,*.git/,tags,__pycache__/,node_modules/  " Ignore these file endings when possible.
 	set grepprg=ag\ --nogroup\ --nocolor\ --follow\ --skip-vcs-ignores  " Use ag as grep command.
 	set wildmode=longest,list,full  " Bash like command autocomplete
 	set wildmenu  " Show matches above commandline when pressing TAB.
@@ -181,6 +180,10 @@
 	noremap - :silent! edit %:h<CR>
 	noremap <F4> :wa<CR>:TestLast<CR>
 	noremap <F2> :wa<CR>:Tmux clear; make test<CR>
+
+	noremap <Leader>e :Buffers<CR>
+	noremap <Leader>t :Tags<CR>
+	noremap <Leader>o :Files<CR><Paste>
 
 	noremap <C-w>c :tabnew<CR>
 
@@ -292,4 +295,5 @@
 		" Misc
 		autocmd FileType jinja TabWidth 2
 		autocmd FileType yml setlocal expandtab
+		autocmd FileType coffee setlocal expandtab
 	augroup END

@@ -2,7 +2,6 @@ alias tmux='tmux -u'
 alias pyclean='find . -name "*.pyc" -delete'
 alias ll='ls -l'
 alias g='git'
-alias rm='echo Use $fg[green]del$reset_color, or the full path $fg[red]/bin/rm$reset_color'
 alias vi='/usr/local/bin/nvim'
 alias dev='VAGRANT_CWD=~/workspace/chef vagrant'
 alias less='/usr/bin/less -X'
@@ -25,11 +24,13 @@ export XDG_DATA_HOME=~/.local/share
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=/workspace
 
-source ~/dotfiles/funcs.zsh
 source ~/.secrets.zsh
-source virtualenvwrapper.sh
+source /usr/local/bin/virtualenvwrapper.sh
 
 export GOPATH=$HOME/workspace/gocode
 export PATH=$PATH:$GOPATH/bin
+
+# Add local scripts to path
+export PATH=$PATH:$HOME/dotfiles/bin
 
 [[ ! -z $VIRTUAL_ENV ]] && export PATH=$VIRTUAL_ENV/bin:$PATH

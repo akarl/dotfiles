@@ -1,0 +1,4 @@
+#!/usr/local/bin/zsh
+# Moves files to trash
+
+mv $* ~/.Trash/

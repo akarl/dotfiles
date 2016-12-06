@@ -1,0 +1,20 @@
+#!/usr/local/bin/zsh
+# Wrapper around git add and git add -p to see the diff before adding the file.
+# With an option to split, meaning doing git add -p on the file.
+
+files=`git status --porcelain | cut -f3 -d' '`
+echo "$files"
+
+while read -r f; do #for f in $files; do
+	git diff "$f"
+
+	while true; do
+		read -q "add?Add this file? [y/n/s]"
+		case "$add" in
+			[Yy]* ) `git add $f`;;
+			[Nn]* ) break;;
+			[Ss]* ) `git add -p $f`;;
+			*     ) echo "(y)es or (n)o or (s)plit";;
+		esac
+	done
+done <<< "$files"

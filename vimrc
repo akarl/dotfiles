@@ -116,6 +116,7 @@
 	if !has('nvim')
 		set nocompatible
 		set ttyfast
+		set inccommmand=nosplit
 	endif
 
 	set title  " Vim sets terminal window title.

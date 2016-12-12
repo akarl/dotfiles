@@ -25,19 +25,26 @@
 	Plug 'junegunn/fzf.vim'
 	Plug 'vim-airline/vim-airline'
 	Plug 'vim-airline/vim-airline-themes'
-	" Plug 'edkolev/tmuxline.vim'
-	Plug 'davidhalter/jedi-vim'
-	Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-	Plug 'zchee/deoplete-jedi', { 'for': ['python']}
-	Plug 'zchee/deoplete-go', { 'do': 'make'}
+	Plug 'rhysd/conflict-marker.vim'
+	Plug 'SirVer/ultisnips'
+	Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all'}
 
 	call plug#end()
 
 " Plugin settings
 
+	set runtimepath+=~/dotfiles
+	let g:UltiSnipsSnippetsDir = '~/dotfiles/ultisnips'
+	let g:UltiSnipsExpandTrigger="<tab>"
+	let g:UltiSnipsJumpForwardTrigger="<tab>"
+	let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+	let g:ycm_key_list_select_completion = []
+	let g:ycm_key_list_previous_completion = []
+
 	let g:airline_powerline_fonts = 1
 	let g:airline_detect_spell = 0
-	let g:airline_exclude_preview = 1
+	let g:airline_exclude_preview = 0
 	let g:airline_theme='base16_grayscale'
 
 	let test#strategy = 'tslime'
@@ -58,9 +65,9 @@
 
 	let g:neomake_go_enabled_makers = ['go', 'govet']
 
-	let g:deoplete#enable_at_startup = 1
-	let g:jedi#auto_initialization = 0
-	let g:jedi#auto_vim_configuration = 0
+	" let g:deoplete#enable_at_startup = 1
+	" let g:jedi#auto_initialization = 0
+	" let g:jedi#auto_vim_configuration = 0
 
 " Colors and highlighting
 
@@ -163,10 +170,11 @@
 	set statusline=\ %f:%l:%c%m\ %r%y  " Usefull statusline: file:line:column modified readonly filetype .
 	set statusline+=\ %{neomake#statusline#LoclistStatus('Neomake:\ ')}  " Show that we have syntax error.
 	set complete=.,b,i,d,t  " CTRL-n completes: current buffer, other buffers, included files, macros, tags.
-	set completeopt=menu,menuone,longest  " Popup menu, even if one match, longest common text.
+	set completeopt=menu,menuone,longest,preview  " Popup menu, even if one match, longest common text.
 	set spell  " Show spelling errors.
 	set exrc  " Allow project local vimrc files.
 	set secure  " Disable autocmd etc for project local vimrc files.
+	set previewheight=2
 
 " Key mappings
 
@@ -178,6 +186,8 @@
 		tnoremap <ESC> <C-\><C-n>
 	endif
 
+	noremap gf :YcmCompleter GoTo<CR>
+	noremap <Leader>h :YcmCompleter GetDoc<CR>
 	noremap - :silent! edit %:h<CR>
 	noremap <F4> :wa<CR>:TestLast<CR>
 	noremap <F2> :wa<CR>:Tmux clear; make test<CR>
@@ -281,7 +291,6 @@
 		autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
 		autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
 		autocmd FileType python map <F5> Oimport ipdb; ipdb.set_trace()<ESC>
-		autocmd FileType python noremap <C-]> :call jedi#goto()<CR>
 		autocmd BufWritePost *.py BuildTags
 
 		" Go

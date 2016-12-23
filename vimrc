@@ -174,7 +174,8 @@
 	set spell  " Show spelling errors.
 	set exrc  " Allow project local vimrc files.
 	set secure  " Disable autocmd etc for project local vimrc files.
-	set previewheight=2
+	set previewheight=2  " Set the hight of the preview window.
+	set autoread  " Automatically reload files that changed on disk.
 
 " Key mappings
 
@@ -264,6 +265,9 @@
 
 		" Update diff when moving the cursor
 		autocmd CursorHold * if &diff == 1 | diffupdate | endif
+
+		" set autoread won't work in terminal unless this is set.
+		autocmd CursorHold * checktime
 
 		" Strip trailing lines/spaces.
 		autocmd BufWritePre * :%s/\s\+$//e

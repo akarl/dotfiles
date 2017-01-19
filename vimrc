@@ -23,8 +23,6 @@
 	Plug 'panickbr/neovim-ranger'
 	Plug '/usr/local/opt/fzf'
 	Plug 'junegunn/fzf.vim'
-	Plug 'vim-airline/vim-airline'
-	Plug 'vim-airline/vim-airline-themes'
 	Plug 'rhysd/conflict-marker.vim'
 	Plug 'SirVer/ultisnips'
 	Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all'}
@@ -123,7 +121,10 @@
 	if !has('nvim')
 		set nocompatible
 		set ttyfast
-		set inccommmand=nosplit
+	endif
+
+	if has('nvim')
+		set inccommand=nosplit
 	endif
 
 	set title  " Vim sets terminal window title.
@@ -167,8 +168,6 @@
 	set spellfile=~/dotfiles/spellfile.utf-8.add  " File to use when saving custom words to spellfile"
 	set undofile  " Save undo steps after close.
 	set undodir=~/.vim/undo  " Where to save the undo file.
-	set statusline=\ %f:%l:%c%m\ %r%y  " Usefull statusline: file:line:column modified readonly filetype .
-	set statusline+=\ %{neomake#statusline#LoclistStatus('Neomake:\ ')}  " Show that we have syntax error.
 	set complete=.,b,i,d,t  " CTRL-n completes: current buffer, other buffers, included files, macros, tags.
 	set completeopt=menu,menuone,longest,preview  " Popup menu, even if one match, longest common text.
 	set spell  " Show spelling errors.
@@ -195,7 +194,7 @@
 
 	noremap <Leader>e :Buffers<CR>
 	noremap <Leader>t :Tags<CR>
-	noremap <Leader>o :Files<CR><Paste>
+	noremap <Leader>o :Files<CR>
 
 	noremap <C-w>c :tabnew<CR>
 
@@ -253,11 +252,6 @@
 	" Change tabstop, shiftwidth, softtabstop
 	command! -nargs=1 TabWidth set ts=<args> sw=<args> sts=<args>
 
-	" Git commands
-	command! Gcheckout :sp term://git\ checkout\ -p\ %
-	command! Gdiff :sp term://git\ --no-pager\ diff\ %
-	command! Gstatus :sp term://git\ status
-
 " Autocommands
 
 	augroup misc
@@ -280,7 +274,7 @@
 		autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
 		" Set the terminal title as the current working directory.
-		autocmd BufEnter * let &titlestring=' /'.fnamemodify(getcwd(), ':t').'/'
+		autocmd BufEnter * let &titlestring='vi - '.fnamemodify(getcwd(), ':t')
 
 	augroup END
 

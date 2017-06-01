@@ -1,3 +1,5 @@
+fpath=(/usr/local/share/zsh-completions $fpath)
+
 autoload -U compinit
 autoload -U select-word-style
 select-word-style bash
@@ -17,6 +19,7 @@ export HISTSIZE=10000
 export HISTFILE="$HOME/.zsh-history"
 export KEYTIMEOUT=1
 
+source /usr/local/bin/virtualenvwrapper.sh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $HOME/dotfiles/prompt.zsh
 

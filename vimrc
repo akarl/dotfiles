@@ -10,40 +10,27 @@
 
 	Plug 'Raimondi/delimitMate'
 	Plug 'airblade/vim-gitgutter'
-	Plug 'benekastah/neomake'
+	Plug 'w0rp/ale'
 	Plug 'fatih/vim-go', { 'for': ['go'] }
 	Plug 'hynek/vim-python-pep8-indent', { 'for': ['python'] }
+	Plug 'editorconfig/editorconfig-vim'
 	Plug 'janko-m/vim-test'
 	Plug 'jgdavey/tslime.vim'
 	Plug 'tmhedberg/matchit'
 	Plug 'tpope/vim-commentary'
 	Plug 'tpope/vim-surround'
+	Plug 'tpope/vim-eunuch'
+	Plug 'tpope/vim-fugitive'
 	Plug 'Glench/Vim-Jinja2-Syntax'
 	Plug 'vim-scripts/wombat256.vim'
 	Plug 'panickbr/neovim-ranger'
 	Plug '/usr/local/opt/fzf'
 	Plug 'junegunn/fzf.vim'
-	Plug 'rhysd/conflict-marker.vim'
-	Plug 'SirVer/ultisnips'
-	Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all'}
+	Plug 'valloric/youcompleteme', { 'do': './install.py --clang-completer --gocode-completer'}
 
 	call plug#end()
 
 " Plugin settings
-
-	set runtimepath+=~/dotfiles
-	let g:UltiSnipsSnippetsDir = '~/dotfiles/ultisnips'
-	let g:UltiSnipsExpandTrigger="<tab>"
-	let g:UltiSnipsJumpForwardTrigger="<tab>"
-	let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-
-	let g:ycm_key_list_select_completion = []
-	let g:ycm_key_list_previous_completion = []
-
-	let g:airline_powerline_fonts = 1
-	let g:airline_detect_spell = 0
-	let g:airline_exclude_preview = 0
-	let g:airline_theme='base16_grayscale'
 
 	let test#strategy = 'tslime'
 	let test#python#runner = 'pytest'
@@ -61,17 +48,17 @@
 	let g:go_metalinter_autosave = 0
 	let g:go_fmt_command = "goimports"
 
-	let g:neomake_go_enabled_makers = ['go', 'govet']
-
-	" let g:deoplete#enable_at_startup = 1
-	" let g:jedi#auto_initialization = 0
-	" let g:jedi#auto_vim_configuration = 0
+	let $PYTHONPATH.='.'
+	let g:ycm_python_binary_path = 'python'
 
 " Colors and highlighting
 
 	filetype plugin indent on
 	syntax on
 
+	if has('nvim')
+		set guicursor=i:ver100
+	endif
 	if !has('nvim')
 		set t_ut=
 		set t_Co=16
@@ -173,21 +160,19 @@
 	set spell  " Show spelling errors.
 	set exrc  " Allow project local vimrc files.
 	set secure  " Disable autocmd etc for project local vimrc files.
-	set previewheight=2  " Set the hight of the preview window.
+	set previewheight=20  " Set the hight of the preview window.
 	set autoread  " Automatically reload files that changed on disk.
+	set mouse=a  " Enable mouse support
 
 " Key mappings
 
 	let mapleader = ' '
 
 	if has('nvim')
-		" C-i doesn't work in neovim yet.
-		nnoremap ±;2C <C-i>
 		tnoremap <ESC> <C-\><C-n>
 	endif
 
-	noremap gf :YcmCompleter GoTo<CR>
-	noremap <Leader>h :YcmCompleter GetDoc<CR>
+	noremap gd :YcmCompleter GoToDefinition<CR>
 	noremap - :silent! edit %:h<CR>
 	noremap <F4> :wa<CR>:TestLast<CR>
 	noremap <F2> :wa<CR>:Tmux clear; make test<CR>
@@ -244,7 +229,11 @@
 
 	command! TmuxReset unlet g:tslime
 
-	command! BuildTags :call jobstart('/bin/rm tags; /usr/local/bin/ctags')
+	if empty($VIRTUAL_ENV)
+		command! BuildTags :!/bin/rm tags; /usr/local/bin/ctags .
+	else
+		command! BuildTags :!/bin/rm tags; /usr/local/bin/ctags . $VIRTUAL_ENV/lib/python*/site-packages
+	endif
 
 	" Reload vimrc
 	command! ReloadVimrc :source $MYVIMRC
@@ -287,9 +276,8 @@
 		" Python
 		autocmd FileType python setlocal expandtab
 		autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
-		autocmd FileType python setlocal tags+=$VIRTUAL_ENV/lib/python2.7/site-packages/tags
 		autocmd FileType python map <F5> Oimport ipdb; ipdb.set_trace()<ESC>
-		autocmd BufWritePost *.py BuildTags
+		autocmd FileType python map <F6> Oimport rpdb; rpdb.Rpdb().set_trace()<ESC>
 
 		" Go
 		autocmd FileType go set nofoldenable

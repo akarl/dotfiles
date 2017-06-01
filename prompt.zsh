@@ -23,11 +23,11 @@ GIT_PS1_STATESEPARATOR=''
 VIRTUAL_ENV_DISABLE_PROMPT=1
 
 git_prompt_info() {
-    git_info=$(__git_ps1)
+    git_info=$(__git_ps1 | xargs)
 
     if [ $git_info ]
     then
-        echo "-  $git_info"
+        echo "| git:$git_info"
     fi
 }
 
@@ -35,21 +35,21 @@ virtualenv_prompt_info() {
     if [ $VIRTUAL_ENV ]
     then
         base=$(echo `basename "$VIRTUAL_ENV"`)
-        echo "-  $base "
+        echo "| venv:$base"
     fi
 }
 
 gopath_prompt_info() {
     if [ -h "$GOPATH" ]
     then
-        echo " $(gowhich) |"
+        echo "go:$(gowhich) |"
     fi
 }
 
 background_jobs_prompt_info() {
     if [ $(jobs | wc -l) -gt 0 ]
     then
-        echo "- #%F{240}%j%f"
+        echo "| #%F{240}%j%f"
     fi
 }
 
@@ -57,16 +57,7 @@ vi_normal_prompt_info() {
     echo "${${KEYMAP/vicmd/[NORMAL]}/(main|viins)/}"
 }
 
-precmd() {
-    echo -n '\033]2;''/'$(echo `basename "$PWD"`)'/''\033\\'
-}
-
-preexec() {
-    echo -n '\033]2;''/'$(echo `basename "$PWD"`)'/ '$(echo "$1")'\033\\'
-}
-
-
-RPROMPT='⏎ $(echo $?) $(background_jobs_prompt_info) $(git_prompt_info) $(virtualenv_prompt_info)%f'
+RPROMPT='r:$(echo $?)$(background_jobs_prompt_info) $(git_prompt_info) $(virtualenv_prompt_info)%f'
 
 PROMPT='
 %d

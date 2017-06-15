@@ -17,10 +17,12 @@
 	Plug 'janko-m/vim-test'
 	Plug 'jgdavey/tslime.vim'
 	Plug 'tmhedberg/matchit'
+	Plug 'Chiel92/vim-autoformat'
 	Plug 'tpope/vim-commentary'
 	Plug 'tpope/vim-surround'
 	Plug 'tpope/vim-eunuch'
 	Plug 'tpope/vim-fugitive'
+	Plug 'kassio/neoterm'
 	Plug 'Glench/Vim-Jinja2-Syntax'
 	Plug 'vim-scripts/wombat256.vim'
 	Plug 'panickbr/neovim-ranger'
@@ -32,9 +34,11 @@
 
 " Plugin settings
 
-	let test#strategy = 'tslime'
+	let test#strategy = 'neoterm'
 	let test#python#runner = 'pytest'
-	let test#python#pytest#options = '--capture=no --showlocals'
+	let test#python#pytest#options = '--capture=no --showlocals -vv'
+
+	let g:neoterm_autoscroll = 1
 
 	" Gitgutter
 	let g:gitgutter_sign_column_always = 1
@@ -50,6 +54,12 @@
 
 	let $PYTHONPATH.='.'
 	let g:ycm_python_binary_path = 'python'
+
+	let g:formatters_python = ['yapf']
+	let g:formatdef_yapf = "'yapf -l '.a:firstline.'-'.a:lastline"
+	let g:autoformat_autoindent = 0
+	let g:autoformat_retab = 0
+	let g:autoformat_remove_trailing_spaces = 0
 
 " Colors and highlighting
 
@@ -168,10 +178,6 @@
 
 	let mapleader = ' '
 
-	if has('nvim')
-		tnoremap <ESC> <C-\><C-n>
-	endif
-
 	noremap gd :YcmCompleter GoToDefinition<CR>
 	noremap - :silent! edit %:h<CR>
 	noremap <F4> :wa<CR>:TestLast<CR>
@@ -180,6 +186,7 @@
 	noremap <Leader>e :Buffers<CR>
 	noremap <Leader>t :Tags<CR>
 	noremap <Leader>o :Files<CR>
+	noremap <Leader>g :Gstatus<CR>
 
 	noremap <C-w>c :tabnew<CR>
 

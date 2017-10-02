@@ -3,10 +3,10 @@ alias pyclean='find . -name "*.pyc" -delete'
 alias ll='ls -l'
 alias g='git'
 alias vi='/usr/local/bin/nvim'
-alias dev='VAGRANT_CWD=~/workspace/chef vagrant'
 alias less='/usr/bin/less -X'
 alias r='/usr/local/bin/ranger'
 alias py='ipython'
+alias python='python2'
 
 export DISABLE_AUTO_TITLE="true"
 export EDITOR=/usr/local/bin/nvim
@@ -32,5 +32,11 @@ export PATH=$PATH:$GOPATH/bin
 
 # Add local scripts to path
 export PATH=$HOME/dotfiles/bin:$PATH
+
+function dev() {
+	pushd ~/workspace/chef
+	vagrant $@
+	popd
+}
 
 [[ ! -z $VIRTUAL_ENV ]] && export PATH=$VIRTUAL_ENV/bin:$PATH

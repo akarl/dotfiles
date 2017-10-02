@@ -19,7 +19,7 @@ export HISTSIZE=10000
 export HISTFILE="$HOME/.zsh-history"
 export KEYTIMEOUT=1
 
-source /usr/local/bin/virtualenvwrapper.sh
+[[ -z $VIRTUAL_ENV ]] && source /usr/local/bin/virtualenvwrapper.sh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $HOME/dotfiles/prompt.zsh
 

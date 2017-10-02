@@ -15,16 +15,14 @@
 	Plug 'hynek/vim-python-pep8-indent', { 'for': ['python'] }
 	Plug 'editorconfig/editorconfig-vim'
 	Plug 'janko-m/vim-test'
-	Plug 'jgdavey/tslime.vim'
 	Plug 'tmhedberg/matchit'
-	Plug 'Chiel92/vim-autoformat'
 	Plug 'tpope/vim-commentary'
 	Plug 'tpope/vim-surround'
 	Plug 'tpope/vim-eunuch'
 	Plug 'tpope/vim-fugitive'
 	Plug 'kassio/neoterm'
 	Plug 'Glench/Vim-Jinja2-Syntax'
-	Plug 'vim-scripts/wombat256.vim'
+	Plug 'iCyMind/NeoSolarized'
 	Plug 'panickbr/neovim-ranger'
 	Plug '/usr/local/opt/fzf'
 	Plug 'junegunn/fzf.vim'
@@ -39,9 +37,10 @@
 	let test#python#pytest#options = '--capture=no --showlocals -vv'
 
 	let g:neoterm_autoscroll = 1
+	let g:neoterm_size = 15
+	let g:neoterm_fixedsize = 1
 
-	" Gitgutter
-	let g:gitgutter_sign_column_always = 1
+	let g:fzf_buffers_jump = 1
 
 	" Go
 	let g:go_highlight_functions = 1
@@ -55,11 +54,13 @@
 	let $PYTHONPATH.='.'
 	let g:ycm_python_binary_path = 'python'
 
-	let g:formatters_python = ['yapf']
-	let g:formatdef_yapf = "'yapf -l '.a:firstline.'-'.a:lastline"
-	let g:autoformat_autoindent = 0
-	let g:autoformat_retab = 0
-	let g:autoformat_remove_trailing_spaces = 0
+	let g:ale_fix_on_save = 0
+	let g:ale_linters = {
+		\   'python': ['flake8', 'mypy']
+	\ }
+	let g:ale_fixers = {
+	\   'python': ['yapf', 'remove_trailing_lines'],
+	\ }
 
 " Colors and highlighting
 
@@ -68,16 +69,18 @@
 
 	if has('nvim')
 		set guicursor=i:ver100
+		set scrollback=10000
 	endif
 	if !has('nvim')
 		set t_ut=
 		set t_Co=16
 	endif
 
-	set background=dark
-	colorscheme wombat256mod
+	set background=light
+	set termguicolors
+	colorscheme NeoSolarized
 
-	highlight! link ColorColumn CursorLine
+	" highlight! link ColorColumn CursorLine
 	highlight! link LineNr Normal
 	highlight! link Folded Comment
 	highlight! link SignColumn Normal
@@ -137,7 +140,7 @@
 	set tabstop=4  " A tab looks as 4 spaces.
 	set softtabstop=4  "A tab counts as 4 spaces.
 	set shiftwidth=4  " Indenting indents 4 spaces.
-	set wrap  " Wrap long lines.
+	set nowrap  " Don't wrap long lines.
 	set linebreak " When wrapping don't wrap in the middle of a word.
 	set breakindent  " Indent wrapped lines at same level as original.
 	set showbreak=\ \ …  " Show this at begingin of indent.
@@ -150,7 +153,7 @@
 	set foldmethod=indent  " Fold on indent.
 	set scrolloff=5  " Always leave 5 rows at top/bottom from cursor.
 	set fileformat=unix  " Unix file format.
-	set colorcolumn=101  " Visual margin for text width.
+	set colorcolumn=  " Don't display a color column.
 	set nonumber  " Don't show line numbers.
 	set norelativenumber  " Dont show line numbers relative.
 	set listchars=tab:▸\ ,eol:¬,space:𐄁 " What to display when running :set list.
@@ -173,20 +176,31 @@
 	set previewheight=20  " Set the hight of the preview window.
 	set autoread  " Automatically reload files that changed on disk.
 	set mouse=a  " Enable mouse support
+	set foldenable
+	set signcolumn=yes
 
 " Key mappings
 
 	let mapleader = ' '
 
 	noremap gd :YcmCompleter GoToDefinition<CR>
-	noremap - :silent! edit %:h<CR>
-	noremap <F4> :wa<CR>:TestLast<CR>
-	noremap <F2> :wa<CR>:Tmux clear; make test<CR>
 
-	noremap <Leader>e :Buffers<CR>
-	noremap <Leader>t :Tags<CR>
-	noremap <Leader>o :Files<CR>
+	if has('nvim')
+		" Doing <C-w> goes to normal-mode and does a real <C-w>
+		tnoremap <C-w> <C-\><C-n><C-w>
+	endif
+
+
+	noremap <Leader>e :FZF<CR>
+	noremap <Leader>T :Tags<CR>
+	noremap <Leader><space> :Commands<CR>
+
+	noremap <Leader>tt :Ttoggle<CR>
+	noremap <Leader>tn :Topen<CR>:noautocmd write<CR>:TestNearest<CR>
+	noremap <Leader>tl :Topen<CR>:noautocmd write<CR>:TestLast<CR>
+
 	noremap <Leader>g :Gstatus<CR>
+	noremap - :e %:h<CR>
 
 	noremap <C-w>c :tabnew<CR>
 
@@ -259,10 +273,6 @@
 		" set autoread won't work in terminal unless this is set.
 		autocmd CursorHold * checktime
 
-		" Strip trailing lines/spaces.
-		autocmd BufWritePre * :%s/\s\+$//e
-		autocmd BufWritePre * :%s/\($\n\)\+\%$//e
-
 		" Run makers after save.
 		autocmd BufWritePost * silent! Neomake
 
@@ -285,6 +295,10 @@
 		autocmd FileType python setlocal formatprg=autopep8\ --ignore=E309\ -
 		autocmd FileType python map <F5> Oimport ipdb; ipdb.set_trace()<ESC>
 		autocmd FileType python map <F6> Oimport rpdb; rpdb.Rpdb().set_trace()<ESC>
+
+		" Sql
+		autocmd FileType sql vnoremap <Enter> :<C-U>call neoterm#exec(join(getline("'<", "'>"))."\n")<CR>
+
 
 		" Go
 		autocmd FileType go set nofoldenable

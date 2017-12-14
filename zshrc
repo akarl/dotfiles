@@ -23,7 +23,7 @@ export KEYTIMEOUT=1
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $HOME/dotfiles/prompt.zsh
 
-eval "`pip completion --zsh`"
+eval "`pip2 completion --zsh`"
 
 bindkey -e
 

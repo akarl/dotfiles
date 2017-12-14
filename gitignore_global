@@ -1,5 +1,6 @@
 tags
 .exrc
 session.vim
+.ropeproject
 .DS_Store
 supervisord-restart-inbox.sh

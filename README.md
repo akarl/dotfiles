@@ -38,15 +38,7 @@
 - ranger
 - fzf
 - spotify
-- neomutt
-- notmuch
-- isync
 - rofi-pass
-
-## Go
-- go
-- godep
-
 
 Start gnome-keyring-daemon automatically at login and unlock the keyring
 using PAM. See https://wiki.archlinux.org/index.php/GNOME/Keyring#PAM_method

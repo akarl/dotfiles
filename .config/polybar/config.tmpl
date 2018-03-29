@@ -1,0 +1,185 @@
+[bar/main_bar]
+bottom = true
+width = 100%
+height = 18
+offset-x = 0
+offset-y = 0
+radius = 0.0
+fixed-center = true
+line-size = 2
+line-color = #${BLUE}
+
+monitor = DP1-2
+monitor-fallback = eDP1
+
+background = #${BLACK2}
+foreground = #${FOREGROUND}
+
+border-size = 0
+border-color = #${GREEN}
+border-top-size = 2
+border-top-color = #${BLACK2}
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 1
+
+font-0 = Source Code Pro Light:size=9
+font-1 = Font Awesome 5 Free:style=Regular:size=9
+font-2 = Font Awesome 5 Free:style=Solid:size=9
+font-3 = Font Awesome 5 Brands:style=Regular:size=9
+
+modules-left = i3 date
+modules-center =
+modules-right = keyboard volume battery wired-network wireless-network menu-sys
+
+tray-position = 
+
+[module/i3]
+type = internal/i3
+
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;-
+ws-icon-3 = 4;-
+ws-icon-4 = 5;-
+ws-icon-5 = 6;-
+ws-icon-6 = 7;-
+ws-icon-7 = 8;
+ws-icon-8 = 9;
+ws-icon-9 = 10;~
+ws-icon-default = -
+
+index-sort = true
+
+label-focused = %index% %icon%
+label-focused-underline = #${GREEN}
+label-focused-padding = 1
+
+label-unfocused = %index% %icon%
+label-unfocused-padding = 1
+
+label-visible = %index% %icon%
+label-visible-underline = #${FOREGROUND}
+label-visible-padding = 1
+
+label-urgent = %index% %icon%
+label-urgent-underline = #${RED}
+label-urgent-padding = 2
+
+label-mode = %mode%
+label-mode-padding = 2
+
+[module/keyboard]
+type = internal/xkeyboard
+label-layout =  %layout%
+
+[module/date]
+type = internal/date
+interval = 5
+
+date = "%a %Y-%m-%d"
+time = "%H:%M"
+label = %date% %time%
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = AC
+full-at = 99
+
+time-format = %H:%M
+
+label-charging = %percentage%%
+label-discharging = %time%
+label-full =  100%
+
+format-charging = <ramp-capacity> <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
+
+format-charging-underline = #${GREEN}
+format-discharging-underline = #${RED}
+format-full-underline = #${GREEN}
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+[module/wired-network]
+type = internal/network
+interface = enp0s31f6
+
+[module/wireless-network]
+type = internal/network
+interface = wlp4s0
+label-connected =  %essid% %downspeed%
+label-connected-underline = #${GREEN}
+label-disconnected = No wifi network
+label-disconnected-underline = #${RED}
+
+[module/volume]
+type = internal/volume
+master-soundcard=hw:1
+format-volume = <ramp-volume> <label-volume>
+format-muted = <label-muted>
+format-volume-underline= #${GREEN}
+format-muted-underline = #${RED}
+
+
+label-volume = %percentage%%
+label-muted =  0%
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+ramp-headphones-0 = 
+ramp-headphones-1 = 
+
+headphone-mixer = Headphone
+headphone-id = 14
+mapped = false
+
+[module/menu-sys]
+type = custom/menu
+
+expand-right = false
+
+label-open = 
+label-close = 
+label-open-underline = #${BLUE}
+label-close-underline = #${BLUE}
+label-open-padding = 1
+label-close-padding = 1
+
+menu-0-0 =  Shutdown
+menu-0-0-exec = systemctl poweroff
+menu-0-0-padding = 1
+menu-0-0-underline = #${BLUE}
+
+menu-0-1 =  Sleep
+menu-0-1-exec = systemctl suspend
+menu-0-1-padding = 1
+menu-0-1-underline = #${BLUE}
+
+menu-0-2 =  Reboot
+menu-0-2-exec = systemctl reboot
+menu-0-2-padding = 1
+menu-0-2-underline = #${BLUE}
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+# vim: ft=cfg

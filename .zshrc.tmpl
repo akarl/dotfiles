@@ -1,0 +1,90 @@
+source /usr/share/zsh/share/antigen.zsh
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-completions
+antigen bundle greymd/docker-zsh-completion
+antigen bundle Tarrasch/zsh-autoenv
+antigen bundle z
+antigen bundle andrewferrier/fzf-z
+antigen apply
+
+autoload -U edit-command-line
+autoload -U compinit
+autoload -U select-word-style
+select-word-style bash
+compinit
+
+setopt APPEND_HISTORY
+setopt EXTENDED_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_VERIFY
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt PROMPTSUBST
+setopt AUTOCD
+setopt CORRECT
+
+export SAVEHIST=10000
+export HISTSIZE=10000
+export HISTFILE="$HOME/.zsh-history"
+export KEYTIMEOUT=1
+export FZF_DEFAULT_OPTS='--height 100%'
+export FZFZ_SUBDIR_LIMIT=0
+
+gd() {
+  local dir
+  dir=$(find $HOME/go/src -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+
+bindkey -e
+zle -N edit-command-line
+zle -N   fzfz-file-widget
+
+bindkey '^x^e' edit-command-line
+bindkey '^g' fzfz-file-widget
+
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
+source /usr/bin/aws_zsh_completer.sh
+
+source ~/perl5/perlbrew/etc/bashrc
+
+source /usr/share/git/completion/git-prompt.sh
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWUPSTREAM="verbose"
+GIT_PS1_SHOWCOLORHINTS=1
+GIT_PS1_STATESEPARATOR=''
+
+prompt_jobs() {
+	if [ $(jobs | wc -l) -gt 0 ]
+	then
+		echo "  %j"
+	fi
+}
+
+prompt_return_code() {
+	ret=$?
+	if [ $ret -gt 0 ]
+	then
+		echo "  $ret"
+	fi
+}
+
+prompt_git() {
+    git_info=$(__git_ps1 | xargs)
+
+    if [ $git_info ]
+    then
+		git_info="${git_info:1:${#git_info}-2}"
+        echo "  $git_info"
+    fi
+}
+
+RPROMPT='$(prompt_return_code)$(prompt_jobs)$(prompt_git)'
+PROMPT='> %d 
+-> %f'
+
+# vim: ft=zsh

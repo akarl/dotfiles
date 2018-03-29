@@ -5,8 +5,7 @@
 	default = simple
 [core]
 	autocrlf = input
-	excludesfile = /Users/andreas/.gitignore_global
-	editor = /usr/local/bin/nvim
+	editor = nvim
 [diff]
 	tool = nvimdiff
 	algorithm = patience
@@ -22,11 +21,5 @@
     cmd = nvim -d $BASE $LOCAL
 [mergetool "nvimdiff"]
     cmd = nvim $MERGED
-[commit]
-	template = /Users/andreas/dotfiles/gitcommit.template.txt
 [help]
 	autocorrect = 15
-[credential]
-	helper = osxkeychain
-[alias]
-	addf = !git_add_files

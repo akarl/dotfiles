@@ -1,6 +1,0 @@
-#!/usr/local/bin/zsh
-# Wrapper for sed which does a search and replace
-
-git add .
-find . -type f -name "*.$2" -exec sed -i "" "$1" {} +
-git diff

@@ -7,11 +7,12 @@ export EDITOR=/usr/bin/nvim
 export BROWSER=/usr/bin/google-chrome-stable
 export PATH=$HOME/bin:$HOME/go/bin:$PATH:$HOME/dev-tools/bin
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
-
-export SERVICES_DB="$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' reg3devenv_services_db_1)";
-export REG_KEY="$HOME/workspace/dockerfiles/reg3-dev-env/etc/ssl/private/ssl-cert-snakeoil.key"
-export REG_CERT="$HOME/workspace/dockerfiles/reg3-dev-env/etc/ssl/certs/ssl-cert-snakeoil.pem"
-
 export GOPATH=$HOME/go
+
+if [[ "$(docker ps | grep 'services_db' | wc -c)" -ne 0 ]]; then
+  export SERVICES_DB="$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' reg3-dev-env_services_db_1)";
+  export REG_KEY="$HOME/workspace/dockerfiles/reg3-dev-env/etc/ssl/private/ssl-cert-snakeoil.key"
+  export REG_CERT="$HOME/workspace/dockerfiles/reg3-dev-env/etc/ssl/certs/ssl-cert-snakeoil.pem"
+fi
 
 # vim: ft=zsh

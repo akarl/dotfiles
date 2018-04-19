@@ -119,6 +119,18 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
+workspace 1 output DP1-2
+workspace 2 output DP1-2
+workspace 3 output DP1-2
+workspace 4 output DP1-2
+workspace 5 output DP1-2
+workspace 6 output DP1-2
+
+workspace 7 output eDP1
+workspace 8 output eDP1
+workspace 9 output eDP1
+workspace 0 output eDP1
+
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -153,13 +165,13 @@ assign [class="google-chrome"] workspace 1
 exec --no-startup-id "xss-lock -- sh ~/.config/i3/i3lock.sh"
 exec --no-startup-id /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
 
-exec_always --no-startup-id "killall xbanish ; xbanish > ~/log/xbanish.log"
+exec_always --no-startup-id "killall xbanish; sleep 5; xbanish"
 
 exec --no-startup-id compton
 exec --no-startup-id dunst
 exec --no-startup-id udiskie -n -a -T
 
-exec_always --no-startup-id "killall polybar ; polybar main_bar"
+exec_always --no-startup-id "sleep 1; ~/.config/polybar/run.sh"
 
 exec --no-startup-id "i3-msg 'workspace 2; exec termite'"
 exec --no-startup-id "i3-msg 'workspace 1; exec google-chrome-stable'"

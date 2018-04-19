@@ -9,7 +9,7 @@ fixed-center = true
 line-size = 2
 line-color = #${BLUE}
 
-monitor = DP1-2
+monitor = ${env:MONITOR:}
 monitor-fallback = eDP1
 
 background = #${BLACK2}
@@ -31,9 +31,9 @@ font-1 = Font Awesome 5 Free:style=Regular:size=9
 font-2 = Font Awesome 5 Free:style=Solid:size=9
 font-3 = Font Awesome 5 Brands:style=Regular:size=9
 
-modules-left = i3 date
+modules-left = i3
 modules-center =
-modules-right = keyboard volume battery wired-network wireless-network menu-sys
+modules-right = date keyboard volume battery wired-network wireless-network menu-sys
 
 tray-position = 
 
@@ -53,6 +53,7 @@ ws-icon-9 = 10;~
 ws-icon-default = -
 
 index-sort = true
+pin-workspaces = true
 
 label-focused = %index% %icon%
 label-focused-underline = #${GREEN}
@@ -139,8 +140,8 @@ ramp-volume-2 = 
 ramp-headphones-0 = 
 ramp-headphones-1 = 
 
-headphone-mixer = Headphone
-headphone-id = 14
+# headphone-mixer = Headphone
+# headphone-id = 14
 mapped = false
 
 [module/menu-sys]

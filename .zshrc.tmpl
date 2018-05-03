@@ -61,7 +61,7 @@ GIT_PS1_STATESEPARATOR=''
 prompt_jobs() {
 	if [ $(jobs | wc -l) -gt 0 ]
 	then
-		echo "  %j"
+		echo "  %j,"
 	fi
 }
 
@@ -69,7 +69,7 @@ prompt_return_code() {
 	ret=$?
 	if [ $ret -gt 0 ]
 	then
-		echo "  $ret"
+		echo "  $ret,"
 	fi
 }
 
@@ -83,8 +83,7 @@ prompt_git() {
     fi
 }
 
-RPROMPT='$(prompt_return_code)$(prompt_jobs)$(prompt_git)'
-PROMPT='> %d 
+PROMPT='> %d |>$(prompt_return_code)$(prompt_jobs)$(prompt_git)
 -> %f'
 
 # vim: ft=zsh

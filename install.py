@@ -3,6 +3,7 @@
 from os import makedirs, walk
 from os.path import abspath, join, expandvars, dirname, isdir
 from string import Template
+import codecs
 
 VARS = {
     'FOREGROUND': 'a7a7a7',
@@ -43,13 +44,14 @@ def handle_file(path, filename):
         print('Creaing directory %s' % dirname(target))
         makedirs(dirname(target))
 
-    with open(source) as source_file:
-        template = Template(source_file.read())
+    with codecs.open(source, encoding='utf-8') as source_file:
+        data = source_file.read()
+        template = Template(data)
 
     output = template.safe_substitute(VARS)
     print('Writing %s' % target)
 
-    with open(target, 'w') as target_file:
+    with codecs.open(target, 'w', encoding='utf-8') as target_file:
         target_file.write(output)
 
 if __name__ == '__main__':

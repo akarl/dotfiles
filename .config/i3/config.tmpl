@@ -7,18 +7,20 @@ font pango:Source Code Pro 10
 default_border pixel 1
 
 # Theme colors
-# class                 border		backgr.		text		indicator	child_border
-client.focused          #${BACKGROUND}	#${BACKGROUND}	#${GREEN}	#${RED}		#${GREEN}
+# class                 border			backgr.			text			indicator		child_border
+client.focused          #${BACKGROUND}	#${BACKGROUND}	#${GREEN}		#${RED}			#${GREEN}
 client.focused_inactive #${BACKGROUND}	#${BACKGROUND}	#${FOREGROUND}	#${BACKGROUND}	#${BLACK2}
-client.unfocused        #${BLACK2}	#${BLACK2}	#${FOREGROUND}	#${BLACK2}	#${BLACK2}
-client.urgent           #${RED}		#${BACKGROUND}	#${FOREGROUND}	#${RED}		#${BLACK2}
+client.unfocused        #${BLACK2}		#${BLACK2}		#${FOREGROUND}	#${BLACK2}		#${BLACK2}
+client.urgent           #${RED}			#${BACKGROUND}	#${FOREGROUND}	#${RED}			#${BLACK2}
 client.placeholder      #${BACKGROUND}	#${BACKGROUND}	#${FOREGROUND}	#${BACKGROUND}	#${BLACK2}
-client.background	#${BACKGROUND}
+client.background		#${BACKGROUND}
 
 hide_edge_borders none
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
+
+focus_on_window_activation focus
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
@@ -127,16 +129,5 @@ exec_always --no-startup-id "killall xbanish; sleep 5; xbanish"
 exec_always --no-startup-id "~/.config/polybar/run.sh"
 exec_always --no-startup-id "~/.fehbg"
 exec_always --no-startup-id "autorandr -c"
-
-# Autostart and move applications.
-# for_window [instance="^termite$"] move container to workspace 2
-# for_window [instance="^google-chrome$"] move container to workspace 1
-# for_window [instance="^HipChat4$"] move container to workspace 9
-# for_window [instance="^evolution$"] move container to workspace 8
-exec --no-startup-id "termite"
-exec --no-startup-id "google-chrome-stable"
-exec --no-startup-id "evolution"
-exec --no-startup-id "hipchat4"
-
 
 # vim: ft=i3

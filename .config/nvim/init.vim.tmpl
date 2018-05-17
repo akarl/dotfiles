@@ -27,8 +27,6 @@
 	Plug 'tpope/vim-repeat'
 	Plug 'tpope/vim-sleuth'
 	Plug 'tpope/vim-surround'
-	Plug 'vim-airline/vim-airline'
-	Plug 'vim-airline/vim-airline-themes'
 	Plug 'w0rp/ale'
 
 	" Needed for ranger.vim.
@@ -79,21 +77,14 @@
 	set termguicolors
 	colorscheme base16-twilight
 
-	" highlight! link LineNr Normal
-	" highlight! link Folded Comment
-	" highlight! link SignColumn Normal
-	" highlight! link TabLineFill Comment
-	" highlight! link TabLine Normal
-	" highlight! link TabLineSel Normal
-	" highlight! link NonText Comment
-	" highlight! link SpecialKey Comment
-	" highlight! link StatusLine Normal
-	" highlight! link StatusLineNC Normal
-	" highlight! link VertSplit Normal
+	highlight! link Folded LineNr
+	highlight TabLineSel guibg=#${GREEN} guifg=#${BLACK}
+	highlight StatusLine guibg=#${GREEN} guifg=#${BLACK}
+	highlight StatusLineNC guifg=#${GREEN}
+	highlight CursorLineNr guibg=#${GREEN} guifg=#${BLACK}
+	highlight VertSplit guibg=#${GREEN} guifg=#${BLACK}
 
-	" highlight TabLineSel guifg=#${GREEN} guibg=NONE
 	highlight Search guifg=NONE guibg=NONE gui=bold,underline,italic
-	" highlight StatusLine guifg=#${GREEN} guibg=NONE
 
 " Settings
 
@@ -129,7 +120,7 @@
 	set number  " Don't show line numbers.
 	set norelativenumber  " Don't show line numbers relative.
 	set nosmartindent  " Smartindent isn't very smart on a lot of languages.
-	set spell  " Show spelling errors.
+	set nospell  " Don't show spelling errors.
 	set noswapfile  " Don't use swapfiles.
 	set nowrap  " Don't wrap long lines.
 	set previewheight=20  " Set the hight of the preview window.
@@ -227,6 +218,10 @@
 		" Reset the working directory after opening a file with an
 		" absolute path.
 		autocmd BufEnter * cd\ .
+
+		" Show the cursorline only in active window.
+		autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+		autocmd WinLeave * setlocal nocursorline
 	augroup END
 
 	augroup filetypes

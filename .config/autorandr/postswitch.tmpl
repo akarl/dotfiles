@@ -1,0 +1,12 @@
+#! /usr/bin/env bash
+
+currens_ws=$(i3-msg -t get_workspaces | jq '.[] | select(.focused==true).name' | cut -d"\"" -f2)
+
+sleep 1
+i3-msg "restart"
+sleep 1
+for i in {1..10}; do i3-msg workspace $i, move workspace to output primary; done
+for i in {6..10}; do i3-msg workspace $i, move workspace to output right; done
+i3-msg workspace $currens_ws
+
+# vim: ft=sh

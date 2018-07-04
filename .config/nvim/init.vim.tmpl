@@ -18,6 +18,8 @@
 	Plug 'jreybert/vimagit'
 	Plug 'junegunn/fzf.vim'
 	Plug 'kassio/neoterm'
+	Plug 'majutsushi/tagbar'
+	Plug 'hecal3/vim-leader-guide'
 	Plug 'roxma/nvim-completion-manager'
 	Plug 'sheerun/vim-polyglot'
 	Plug 'tmhedberg/matchit'
@@ -143,7 +145,48 @@
 
 " Key mappings
 
-	let mapleader = ' '
+	let mapleader = '\'
+
+	let g:lmap = {}
+	let g:lmap.f = {
+		\'name': 'Files & Buffers',
+		\'r'   : ['Ranger',  'Ranger'],
+		\'s'   : ['Buffers', 'Switch buffer'],
+		\'f'   : ['Files',   'Open file'],
+	\}
+	
+	let g:lmap['/'] = {
+		\'name': 'Searches',
+		\'w'   : ['call GrepWord()', 'Grep word'],
+	\}
+
+	let g:lmap['q'] = {
+		\'name': 'Quickfix',
+		\'q'   : ['copen', 'Open Quickfix'],
+		\'l'   : ['copen', 'Open LocationList'],
+	\}
+
+	let g:lmap['g'] = {
+		\'name': 'Git',
+		\'s'   : ['Gstatus', 'Status'],
+		\'l'   : ['Glog', 'Log'],
+		\'b'   : ['Gblame', 'Blame'],
+		\'r'   : ['Gbrowse', 'Browse'],
+		\'d'   : ['call GitDiffNewTab()', 'Diff'],
+		\'u'   : ['GitGutterUndoHunk', 'Undo Hunk'],
+	\}
+
+	let g:llmap = {}
+	let g:llmap.f = {
+		\'name': 'Files & Buffers',
+		\'r'   : ['Ranger',  'Ranger'],
+		\'s'   : ['Buffers', 'Switch buffer'],
+		\'f'   : ['Files',   'Open file'],
+	\}
+
+	call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
+	nnoremap <silent> <space> :<c-u>LeaderGuide '<Space>'<CR>
+	vnoremap <silent> <space> :<c-u>LeaderGuideVisual '<Space>'<CR>
 
 	if has('nvim')
 		" Doing <C-w> goes to normal-mode and does a real <C-w>
@@ -151,19 +194,21 @@
 		tnoremap <ESC> <C-\><C-n>
 	endif
 
-	noremap <Leader>e :Files<CR>
-	noremap <Leader>o :Buffers<CR>
-	noremap <Leader>T :Tags<CR>
-	noremap <Leader><space> :Commands<CR>
+	" noremap <Leader>e :Files<CR>
+	" noremap <Leader>o :Buffers<CR>
+	" noremap <Leader>T :Tags<CR>
+	" noremap <Leader>/ :grep "\b<C-r><C-w>\b"
+	" noremap <Leader>j :GoDecls<CR>
 
-	noremap <Leader>tt :Ttoggle<CR>
-	noremap <Leader>tn :Topen<CR>:noautocmd write<CR>:TestNearest<CR>
-	noremap <Leader>tl :Topen<CR>:noautocmd write<CR>:TestLast<CR>
+	" noremap <Leader>tt :Ttoggle<CR>
+	" noremap <Leader>tn :Topen<CR>:noautocmd write<CR>:TestNearest<CR>
+	" noremap <Leader>tl :Topen<CR>:noautocmd write<CR>:TestLast<CR>
 
-	noremap - :Ranger<CR>
+	" noremap - :Ranger<CR>
 
 	noremap <C-w>c :tabnew<CR>
 	noremap <C-w>T :tabe %<CR>
+	noremap <C-w>Q :tabclose<CR>
 
 	" Splits
 	noremap <right> :vertical resize +10<CR>
@@ -172,14 +217,14 @@
 	noremap <down> :resize -5<CR>
 
 	" Quickfix navigation
-	noremap <Leader>q :copen<CR>
+	" noremap <Leader>q :copen<CR>
 	noremap ]q :cnext<CR>zvzz
 	noremap [q :cprevious<CR>zvzz
 	noremap ]Q :clast<CR>zvzz
 	noremap [Q :cfirst<CR>zvzz
 
 	" Locationlist navigation
-	noremap <Leader>l :copen<CR>
+	" noremap <Leader>l :copen<CR>
 	noremap ]l :lnext<CR>zvzz
 	noremap [l :lprevious<CR>zvzz
 	noremap ]L :llast<CR>zvzz
@@ -231,7 +276,7 @@
 		autocmd FileType python setlocal expandtab
 
 		" Go
-		" autocmd Filetype go set foldmethod=syntax 
+		" autocmd Filetype go noremap <S-k> exe GoDoc
 
 		" Sql
 		autocmd FileType sql vnoremap <Enter> :<C-U>call neoterm#exec(join(getline("'<", "'>"))."\n")<CR>
@@ -243,4 +288,14 @@
 		autocmd FileType yml setlocal expandtab
 	augroup END
 
+" Functions
+"
+	function! GrepWord()
+		call feedkeys(':grep "\b' . expand('<cword>') . '\b"')
+	endfunction
+
+	function! GitDiffNewTab()
+		execute 'tabe ' . bufname("%")
+		execute 'Gdiff'
+	endfunction
 " vim: ft=vim

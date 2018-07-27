@@ -176,17 +176,12 @@
 		\'u'   : ['GitGutterUndoHunk', 'Undo Hunk'],
 	\}
 
-	let g:llmap = {}
-	let g:llmap.f = {
-		\'name': 'Files & Buffers',
-		\'r'   : ['Ranger',  'Ranger'],
-		\'s'   : ['Buffers', 'Switch buffer'],
-		\'f'   : ['Files',   'Open file'],
-	\}
 
 	call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
-	nnoremap <silent> <space> :<c-u>LeaderGuide '<Space>'<CR>
-	vnoremap <silent> <space> :<c-u>LeaderGuideVisual '<Space>'<CR>
+	nnoremap <silent> <space> :LeaderGuide '<Space>'<CR>
+	vnoremap <silent> <space> :LeaderGuideVisual '<Space>'<CR>
+	nnoremap <silent> , :LeaderGuide ','<CR>
+	vnoremap <silent> , :LeaderGuideVisual ','<CR>
 
 	if has('nvim')
 		" Doing <C-w> goes to normal-mode and does a real <C-w>
@@ -276,7 +271,7 @@
 		autocmd FileType python setlocal expandtab
 
 		" Go
-		" autocmd Filetype go noremap <S-k> exe GoDoc
+		autocmd Filetype go call GolangBindings()
 
 		" Sql
 		autocmd FileType sql vnoremap <Enter> :<C-U>call neoterm#exec(join(getline("'<", "'>"))."\n")<CR>
@@ -289,7 +284,21 @@
 	augroup END
 
 " Functions
-"
+
+	function! GolangBindings() 
+		let g:llmap = {}
+		let g:llmap.t = {
+			\'name': 'Tests',
+			\'t'   : ['GoTest', 'GoTest'],
+			\'a'   : ['GoTest ./...', 'GoTest ./...'],
+			\'f'   : ['GoTestFunc',  'GoTestFunc'],
+			\'c'   : ['GoTestCompile',  'GoTestCompile'],
+		\}
+		let g:llmap.i = ['GoImplements',  'GoImplements']
+		let g:llmap.c = ['GoCallers',  'GoCallers']
+
+		call leaderGuide#register_prefix_descriptions(",", "g:llmap")
+	endfunction
 	function! GrepWord()
 		call feedkeys(':grep "\b' . expand('<cword>') . '\b"')
 	endfunction

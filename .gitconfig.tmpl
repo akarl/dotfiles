@@ -1,25 +1,25 @@
 [user]
-	name = Andreas Karlsson
-	email = andreas.karlsson87@gmail.com
+    name = Andreas Karlsson
+    email = andreas.karlsson87@gmail.com
 [push]
-	default = simple
+    default = simple
 [core]
-	autocrlf = input
-	editor = nvim
+    autocrlf = input
+    editor = nvim
 [diff]
-	tool = nvimdiff
-	algorithm = patience
+    tool = nvimdiff
+    algorithm = patience
     indentHeuristic =true
 [merge]
-	tool = nvimdiff
+    tool = nvimdiff
 [difftool]
-	prompt = true
+    prompt = true
 [mergetool]
-	prompt = true
-	keepBackup = false
+    prompt = true
+    keepBackup = false
 [difftool "nvimdiff"]
     cmd = nvim -d $BASE $LOCAL
 [mergetool "nvimdiff"]
     cmd = nvim $MERGED
 [help]
-	autocorrect = 15
+    autocorrect = 15

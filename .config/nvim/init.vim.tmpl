@@ -1,310 +1,335 @@
 " Plugins
 
-	if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-	  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
-	    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-	endif
+    if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+        silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+            \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    endif
 
-	call plug#begin('~/.local/share/nvim/plugged')
+    call plug#begin('~/.local/share/nvim/plugged')
 
-	Plug 'Raimondi/delimitMate'
-	Plug 'airblade/vim-gitgutter'
-	Plug 'chriskempson/base16-vim'
-	Plug 'editorconfig/editorconfig-vim'
-	Plug 'fatih/vim-go', { 'for': ['go'], 'do': ':GoInstallBinaries' }
-	Plug 'francoiscabrol/ranger.vim'
-	Plug 'janko-m/vim-test'
-	Plug 'jreybert/vimagit'
-	Plug 'junegunn/fzf.vim'
-	Plug 'kassio/neoterm'
-	Plug 'majutsushi/tagbar'
-	Plug 'hecal3/vim-leader-guide'
-	Plug 'roxma/nvim-completion-manager'
-	Plug 'sheerun/vim-polyglot'
-	Plug 'tmhedberg/matchit'
-	Plug 'tpope/vim-commentary'
-	Plug 'tpope/vim-eunuch'
-	Plug 'tpope/vim-fugitive'
-	Plug 'tpope/vim-repeat'
-	Plug 'tpope/vim-sleuth'
-	Plug 'tpope/vim-surround'
-	Plug 'w0rp/ale'
+    Plug 'Raimondi/delimitMate'
 
-	" Needed for ranger.vim.
-	Plug 'rbgrouleff/bclose.vim'
+    Plug 'airblade/vim-gitgutter'
+    Plug 'calviken/vim-gdscript3'
+    Plug 'chriskempson/base16-vim'
+    Plug 'editorconfig/editorconfig-vim'
+    Plug 'fatih/vim-go', { 'for': ['go'], 'do': ':GoUpdateBinaries' }
+    Plug 'francoiscabrol/ranger.vim'
+    Plug 'hecal3/vim-leader-guide'
+    Plug 'junegunn/fzf.vim'
+    Plug 'kassio/neoterm'
+    Plug 'sheerun/vim-polyglot'
+    Plug 'tmhedberg/matchit'
+    Plug 'tpope/vim-abolish'
+    Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-eunuch'
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-sleuth'
+    Plug 'tpope/vim-surround'
+    Plug 'w0rp/ale'
 
-	call plug#end()
+    " Needed for ranger.vim.
+    Plug 'rbgrouleff/bclose.vim'
 
-	source /usr/share/vim/vimfiles/plugin/fzf.vim
+    Plug 'roxma/nvim-yarp'
+
+    call plug#end()
+
+    source /usr/share/vim/vimfiles/plugin/fzf.vim
 
 " Plugin settings
 
-	let python_highlight_all = 1
+    let python_highlight_all = 1
 
-	let g:ranger_map_keys = 0
-	let g:ranger_replace_netrw = 1
+    let g:ranger_map_keys = 0
+    let g:ranger_replace_netrw = 1
 
-	let test#strategy = 'neoterm'
-	let g:neoterm_autoscroll = 1
+    let g:fzf_buffers_jump = 1
 
-	let g:fzf_buffers_jump = 1
+    " Go
+    let g:go_highlight_functions = 1
+    let g:go_highlight_methods = 1
+    let g:go_highlight_structs = 1
+    let g:go_highlight_operators = 1
+    let g:go_highlight_build_constraints = 1
 
-	" Go
-	let g:go_highlight_functions = 1
-	let g:go_highlight_methods = 1
-	let g:go_highlight_structs = 1
-	let g:go_highlight_operators = 1
-	let g:go_highlight_build_constraints = 1
-	let g:go_metalinter_autosave = 0
-	let g:go_fmt_command = "goimports"
-	let g:go_auto_type_info = 1
-	let g:go_fmt_experimental = 1
+    let g:go_list_type = "locationlist"
 
-	" let g:ale_fix_on_save = 1
-	let g:ale_linters = {
-		\'go': ['gobuild', 'gometalinter --fast'],
-	\}
+    let g:go_gocode_unimported_packages = 1
+    let g:go_gocode_propose_source = 0
+
+
+    let g:go_fmt_autosave = 0
+    let g:go_metalinter_autosave = 0
+
+    let g:ale_fixers = {
+    \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+    \   'go': ['goimports', 'gofmt'],
+    \}
+
+    let g:ale_linters = {
+    \   'go': ['golangci-lint'],
+    \}
+
+    let g:ale_go_gofmt_options = '-s'
+    let g:ale_fix_on_save = 1
+
+    let g:ale_go_golangci_lint_options = "--fast"
+    let g:ale_go_golangci_lint_package = 1
+    let g:ale_open_list = 1
+    let g:ale_list_window_size = 3
+    let g:ale_lint_on_text_changed = 'normal'
+    let g:ale_lint_on_insert_leave = 1
 
 " Colors and highlighting
 
-	filetype plugin indent on
-	syntax on
+    filetype plugin indent on
+    syntax on
 
-	if has('nvim')
-		set scrollback=10000
-	endif
+    if has('nvim')
+            set scrollback=10000
+    endif
 
-	set background=dark
-	set termguicolors
-	colorscheme base16-twilight
+    set background=dark
+    set termguicolors
+    colorscheme base16-twilight
 
-	highlight! link Folded LineNr
-	highlight TabLineSel guibg=#${GREEN} guifg=#${BLACK}
-	highlight StatusLine guibg=#${GREEN} guifg=#${BLACK}
-	highlight StatusLineNC guifg=#${GREEN}
-	highlight CursorLineNr guibg=#${GREEN} guifg=#${BLACK}
-	highlight VertSplit guibg=#${GREEN} guifg=#${BLACK}
+    highlight! link Folded LineNr
+    highlight TabLineSel guibg=#${GREEN} guifg=#${BLACK}
+    highlight StatusLine guibg=#${GREEN} guifg=#${BLACK}
+    highlight StatusLineNC guifg=#${GREEN}
+    highlight CursorLineNr guibg=#${GREEN} guifg=#${BLACK}
+    highlight VertSplit guibg=#${GREEN} guifg=#${BLACK}
+    highlight Whitespace guifg=#6e6e6e
 
-	highlight Search guifg=NONE guibg=NONE gui=bold,underline,italic
+    highlight Search guifg=NONE guibg=NONE gui=bold,underline,italic
 
 " Settings
 
-	set fillchars=stl:-,stlnc:-,vert:\|,fold:-,diff:-
-	set autoread  " Automatically reload files that changed on disk.
-	set backspace=indent,start  " Allow backspacing over start of insert.
-	set breakindent  " Indent wrapped lines at same level as original.
-	set clipboard=unnamed  " Use the system clipboard.
-	set colorcolumn=  " Don't display a color column.
-	set complete=.,b,i,d,t  " CTRL-n completes: current buffer, other buffers, included files, macros, tags.
-	set completeopt=menu,menuone,longest,preview  " Popup menu, even if one match, longest common text.
-	set cursorline  " Show cursorline at cursor.
-	set diffopt+=filler,foldcolumn:0,context:4  " Nice options when showing diffs.
-	set exrc  " Allow project local vimrc files.
-	set fileformat=unix  " Unix file format.
-	set foldenable
-	set foldmethod=indent  " Fold on indent.
-	set formatexpr=LanguageClient_textDocument_rangeFormatting()
-	set grepprg=rg\ --vimgrep
-	set hidden  " Can leave unsaved buffers.
-	set ignorecase  " Searches are case insensitive.
-	set inccommand=nosplit  " Preview replacements in buffer.
-	set incsearch  " Show search matches while typing.
-	set laststatus=2  " Show a  status line even if only one window.
-	set lazyredraw  " Don't redraw when executing macros etc.
-	set linebreak " When wrapping don't wrap in the middle of a word.
-	set listchars=tab:▸\ ,eol:¬,space:- " What to display when running :set list.
-	set more  " Pause lists when whole screen is filled, so they are scrollable.
-	set mouse=a  " Enable mouse support
-	set nobackup  " Don't use backup files.
-	set nocursorcolumn  " Don't show the cursorcolumn.
-	set nohlsearch  " Don't keep the higlight of a search after searching.
-	set number  " Don't show line numbers.
-	set norelativenumber  " Don't show line numbers relative.
-	set nosmartindent  " Smartindent isn't very smart on a lot of languages.
-	set nospell  " Don't show spelling errors.
-	set noswapfile  " Don't use swapfiles.
-	set nowrap  " Don't wrap long lines.
-	set previewheight=20  " Set the hight of the preview window.
-	set scrolloff=5  " Always leave 5 rows at top/bottom from cursor.
-	set secure  " Disable autocmd etc for project local vimrc files.
-	set sessionoptions=blank,buffers,folds,sesdir,tabpages,winsize  " What to save in a session.
-	set shell=/bin/zsh  " Use zsh as the shell.
-	set shiftwidth=4  " Indenting indents 4 spaces.
-	set showbreak=\ \ …  " Show this at beginning of indent.
-	set signcolumn=yes
-	set smartcase  " If search contains a capital letter make the search case sensitive.
-	set softtabstop=4  "A tab counts as 4 spaces.
-	set spellfile=~/.config/nvim/spellfile.utf-8.add  " File to use when saving custom words to spellfile"
-	set tabstop=4  " A tab looks like 4 spaces.
-	set title  " Vim sets terminal window title.
-	set ttimeoutlen=0  " Removes the delay when pressing ESC.
-	set wildignore+=*.pyc,*.git/,tags,__pycache__/,node_modules/  " Ignore these file endings when possible.
-	set wildmenu  " Show matches above commandline when pressing TAB.
-	set wildmode=longest,list,full  " Bash like command autocomplete
+    set fillchars=stl:-,stlnc:-,vert:\|,fold:-,diff:-
+    set autoread  " Automatically reload files that changed on disk.
+    set backspace=indent,start  " Allow backspacing over start of insert.
+    set breakindent  " Indent wrapped lines at same level as original.
+    set clipboard=unnamed  " Use the system clipboard.
+    set colorcolumn=  " Don't display a color column.
+    set complete=.,b,i,d,t  " CTRL-n completes: current buffer, other buffers, included files, macros, tags.
+    set completeopt=menu,menuone,longest,preview  " Popup menu, even if one match, longest common text.
+    set cursorline  " Show cursorline at cursor.
+    set diffopt+=filler,foldcolumn:0,context:4  " Nice options when showing diffs.
+    set exrc  " Allow project local vimrc files.
+    set fileformat=unix  " Unix file format.
+    set foldenable
+    set foldmethod=indent  " Fold on indent.
+    set formatexpr=LanguageClient_textDocument_rangeFormatting()
+    set grepprg=rg\ --vimgrep
+    set hidden  " Can leave unsaved buffers.
+    set ignorecase  " Searches are case insensitive.
+    set inccommand=nosplit  " Preview replacements in buffer.
+    set incsearch  " Show search matches while typing.
+    set laststatus=2  " Show a  status line even if only one window.
+    set lazyredraw  " Don't redraw when executing macros etc.
+    set linebreak " When wrapping don't wrap in the middle of a word.
+    set listchars=tab:▸\ ,eol:¬,space:· " What to display when running :set list.
+    set nolist  " Disable listchars by default.
+    set more  " Pause lists when whole screen is filled, so they are scrollable.
+    set mouse=a  " Enable mouse support
+    set nobackup  " Don't use backup files.
+    set nocursorcolumn  " Don't show the cursorcolumn.
+    set nohlsearch  " Don't keep the higlight of a search after searching.
+    set number  " Don't show line numbers.
+    set norelativenumber  " Don't show line numbers relative.
+    set nosmartindent  " Smartindent isn't very smart on a lot of languages.
+    set nospell  " Don't show spelling errors.
+    set noswapfile  " Don't use swapfiles.
+    set nowrap  " Don't wrap long lines.
+    set previewheight=20  " Set the hight of the preview window.
+    set scrolloff=5  " Always leave 5 rows at top/bottom from cursor.
+    set secure  " Disable autocmd etc for project local vimrc files.
+    set sessionoptions=blank,buffers,folds,sesdir,tabpages,winsize  " What to save in a session.
+    set shell=/bin/zsh  " Use zsh as the shell.
+    set shiftwidth=4  " Indenting indents 4 spaces.
+    set showbreak=\ \ …  " Show this at beginning of indent.
+    set signcolumn=yes
+    set smartcase  " If search contains a capital letter make the search case sensitive.
+    set softtabstop=4  "A tab counts as 4 spaces.
+    set spellfile=~/.config/nvim/spellfile.utf-8.add  " File to use when saving custom words to spellfile"
+    set tabstop=4  " A tab looks like 4 spaces.
+    set title  " Vim sets terminal window title.
+    set ttimeoutlen=0  " Removes the delay when pressing ESC.
+    set wildignore+=*.pyc,*.git/,tags,__pycache__/,node_modules/  " Ignore these file endings when possible.
+    set wildmenu  " Show matches above commandline when pressing TAB.
+    set wildmode=longest,list,full  " Bash like command autocomplete
 
 " Key mappings
 
-	let mapleader = '\'
+    let mapleader = '\'
 
-	let g:lmap = {}
-	let g:lmap.f = {
-		\'name': 'Files & Buffers',
-		\'r'   : ['Ranger',  'Ranger'],
-		\'s'   : ['Buffers', 'Switch buffer'],
-		\'f'   : ['Files',   'Open file'],
-	\}
-	
-	let g:lmap['/'] = {
-		\'name': 'Searches',
-		\'w'   : ['call GrepWord()', 'Grep word'],
-	\}
+    let g:lmap = {}
+    let g:lmap.f = {
+        \'name': 'Files & Buffers',
+        \'r'   : ['Ranger',  'Ranger'],
+        \'s'   : ['Buffers', 'Switch buffer'],
+        \'f'   : ['Files',   'Open file'],
+        \'t'   : ['Tagbar',   'Open Tagbar'],
+    \}
 
-	let g:lmap['q'] = {
-		\'name': 'Quickfix',
-		\'q'   : ['copen', 'Open Quickfix'],
-		\'l'   : ['copen', 'Open LocationList'],
-	\}
+    let g:lmap['/'] = {
+        \'name': 'Searches',
+        \'w'   : ['call GrepWord()', 'Grep word'],
+    \}
 
-	let g:lmap['g'] = {
-		\'name': 'Git',
-		\'s'   : ['Gstatus', 'Status'],
-		\'l'   : ['Glog', 'Log'],
-		\'b'   : ['Gblame', 'Blame'],
-		\'r'   : ['Gbrowse', 'Browse'],
-		\'d'   : ['call GitDiffNewTab()', 'Diff'],
-		\'u'   : ['GitGutterUndoHunk', 'Undo Hunk'],
-	\}
+    let g:lmap['q'] = {
+        \'name': 'Quickfix',
+        \'q'   : ['copen', 'Open Quickfix'],
+        \'l'   : ['copen', 'Open LocationList'],
+    \}
+
+    let g:lmap['g'] = {
+        \'name': 'Git',
+        \'s'   : ['Gstatus', 'Status'],
+        \'l'   : ['Glog', 'Log'],
+        \'b'   : ['Gblame', 'Blame'],
+        \'r'   : ['Gbrowse', 'Browse'],
+        \'d'   : ['call GitDiffNewTab()', 'Diff'],
+        \'u'   : ['GitGutterUndoHunk', 'Undo Hunk'],
+    \}
 
 
-	call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
-	nnoremap <silent> <space> :LeaderGuide '<Space>'<CR>
-	vnoremap <silent> <space> :LeaderGuideVisual '<Space>'<CR>
-	nnoremap <silent> , :LeaderGuide ','<CR>
-	vnoremap <silent> , :LeaderGuideVisual ','<CR>
+    call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
+    nnoremap <silent> <space> :LeaderGuide '<Space>'<CR>
+    vnoremap <silent> <space> :LeaderGuideVisual '<Space>'<CR>
+    nnoremap <silent> , :LeaderGuide ','<CR>
+    vnoremap <silent> , :LeaderGuideVisual ','<CR>
 
-	if has('nvim')
-		" Doing <C-w> goes to normal-mode and does a real <C-w>
-		" tnoremap <C-w> <C-\><C-n><C-w>
-		tnoremap <ESC> <C-\><C-n>
-	endif
+    imap <C-k> <Plug>(neosnippet_expand_or_jump)
+    smap <C-k> <Plug>(neosnippet_expand_or_jump)
+    xmap <C-k> <Plug>(neosnippet_expand_target)
 
-	" noremap <Leader>e :Files<CR>
-	" noremap <Leader>o :Buffers<CR>
-	" noremap <Leader>T :Tags<CR>
-	" noremap <Leader>/ :grep "\b<C-r><C-w>\b"
-	" noremap <Leader>j :GoDecls<CR>
+    if has('nvim')
+            " Doing <C-w> goes to normal-mode and does a real <C-w>
+            " tnoremap <C-w> <C-\><C-n><C-w>
+            tnoremap <ESC> <C-\><C-n>
+    endif
 
-	" noremap <Leader>tt :Ttoggle<CR>
-	" noremap <Leader>tn :Topen<CR>:noautocmd write<CR>:TestNearest<CR>
-	" noremap <Leader>tl :Topen<CR>:noautocmd write<CR>:TestLast<CR>
+    " noremap <Leader>e :Files<CR>
+    " noremap <Leader>o :Buffers<CR>
+    " noremap <Leader>T :Tags<CR>
+    " noremap <Leader>/ :grep "\b<C-r><C-w>\b"
+    " noremap <Leader>j :GoDecls<CR>
 
-	" noremap - :Ranger<CR>
+    " noremap <Leader>tt :Ttoggle<CR>
+    " noremap <Leader>tn :Topen<CR>:noautocmd write<CR>:TestNearest<CR>
+    " noremap <Leader>tl :Topen<CR>:noautocmd write<CR>:TestLast<CR>
 
-	noremap <C-w>c :tabnew<CR>
-	noremap <C-w>T :tabe %<CR>
-	noremap <C-w>Q :tabclose<CR>
+    " noremap - :Ranger<CR>
 
-	" Splits
-	noremap <right> :vertical resize +10<CR>
-	noremap <left> :vertical resize -10<CR>
-	noremap <up> :resize +5<CR>
-	noremap <down> :resize -5<CR>
+    noremap <C-w>c :tabnew<CR>
+    noremap <C-w>T :tabe %<CR>
+    noremap <C-w>Q :tabclose<CR>
 
-	" Quickfix navigation
-	" noremap <Leader>q :copen<CR>
-	noremap ]q :cnext<CR>zvzz
-	noremap [q :cprevious<CR>zvzz
-	noremap ]Q :clast<CR>zvzz
-	noremap [Q :cfirst<CR>zvzz
+    " Splits
+    noremap <right> :vertical resize +10<CR>
+    noremap <left> :vertical resize -10<CR>
+    noremap <up> :resize +5<CR>
+    noremap <down> :resize -5<CR>
 
-	" Locationlist navigation
-	" noremap <Leader>l :copen<CR>
-	noremap ]l :lnext<CR>zvzz
-	noremap [l :lprevious<CR>zvzz
-	noremap ]L :llast<CR>zvzz
-	noremap [L :lfirst<CR>zvzz
+    " Quickfix navigation
+    " noremap <Leader>q :copen<CR>
+    noremap ]q :cnext<CR>zvzz
+    noremap [q :cprevious<CR>zvzz
+    noremap ]Q :clast<CR>zvzz
+    noremap [Q :cfirst<CR>zvzz
 
-	" Tags navigation
-	noremap ]t :tnext<CR>zvzz
-	noremap [t :tprevious<CR>zvzz
-	noremap ]T :tlast<CR>zvzz
-	noremap [T :tfirst<CR>zvzz
+    " Locationlist navigation
+    " noremap <Leader>l :copen<CR>
+    noremap ]l :lnext<CR>zvzz
+    noremap [l :lprevious<CR>zvzz
+    noremap ]L :llast<CR>zvzz
+    noremap [L :lfirst<CR>zvzz
 
-	" Active buffers
-	noremap ]b :bnext<CR>
-	noremap [b :bprevious<CR>
+    " Tags navigation
+    noremap ]t :tnext<CR>zvzz
+    noremap [t :tprevious<CR>zvzz
+    noremap ]T :tlast<CR>zvzz
+    noremap [T :tfirst<CR>zvzz
+
+    " Active buffers
+    noremap ]b :bnext<CR>
+    noremap [b :bprevious<CR>
 
 " Commands
 
-	command! BuildTags :call jobstart("/bin/rm tags; /usr/local/bin/ctags .")
-	command! ReloadVimrc :source $MYVIMRC | e 
-	command! -nargs=1 TabWidth set ts=<args> sw=<args> sts=<args>
+    command! BuildTags :call jobstart("/bin/rm tags; /usr/local/bin/ctags .")
+    command! ReloadVimrc :source $MYVIMRC | e
+    command! -nargs=1 TabWidth set ts=<args> sw=<args> sts=<args>
 
 " Autocommands
 
-	augroup misc
-		autocmd!
+    augroup misc
+        autocmd!
 
-		" Update diff when moving the cursor
-		autocmd CursorHold * if &diff == 1 | diffupdate | endif
+        " Update diff when moving the cursor
+        autocmd CursorHold * if &diff == 1 | diffupdate | endif
 
-		" set autoread won't work in terminal unless this is set.
-		autocmd CursorHold * checktime
+        " set autoread won't work in terminal unless this is set.
+        autocmd CursorHold * checktime
 
-		" Highlight the current word under the cursor
-		autocmd CursorMoved * exe printf('match Search /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+        " Highlight the current word under the cursor
+        autocmd CursorMoved * exe printf('match Search /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
-		" Reset the working directory after opening a file with an
-		" absolute path.
-		autocmd BufEnter * cd\ .
+        " Reset the working directory after opening a file with an
+        " absolute path.
+        autocmd BufEnter * cd\ .
 
-		" Show the cursorline only in active window.
-		autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-		autocmd WinLeave * setlocal nocursorline
-	augroup END
+        " Show the cursorline only in active window.
+        autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+        autocmd WinLeave * setlocal nocursorline
+    augroup END
 
-	augroup filetypes
-		autocmd!
+    augroup filetypes
+        autocmd!
 
-		" Python
-		autocmd FileType python setlocal expandtab
+        " Python
+        autocmd FileType python setlocal expandtab
 
-		" Go
-		autocmd Filetype go call GolangBindings()
+        " Go
+        autocmd Filetype go call GolangBindings()
 
-		" Sql
-		autocmd FileType sql vnoremap <Enter> :<C-U>call neoterm#exec(join(getline("'<", "'>"))."\n")<CR>
+        " Sql
+        autocmd FileType sql vnoremap <Enter> :<C-U>call neoterm#exec(join(getline("'<", "'>"))."\n")<CR>
 
-		" Markdown
-		autocmd BufRead,BufNewFile *.md set filetype=markdown
+        " Markdown
+        autocmd BufRead,BufNewFile *.md set filetype=markdown
+        autocmd BufRead,BufNewFile *.md setlocal expandtab
 
-		" Misc
-		autocmd FileType yml setlocal expandtab
-	augroup END
+        " Misc
+        autocmd FileType yml setlocal expandtab
+    augroup END
 
 " Functions
 
-	function! GolangBindings() 
-		let g:llmap = {}
-		let g:llmap.t = {
-			\'name': 'Tests',
-			\'t'   : ['GoTest', 'GoTest'],
-			\'a'   : ['GoTest ./...', 'GoTest ./...'],
-			\'f'   : ['GoTestFunc',  'GoTestFunc'],
-			\'c'   : ['GoTestCompile',  'GoTestCompile'],
-		\}
-		let g:llmap.i = ['GoImplements',  'GoImplements']
-		let g:llmap.c = ['GoCallers',  'GoCallers']
+    function! GolangBindings()
+        let g:llmap = {}
+        let g:llmap.t = {
+            \'name': 'Tests',
+            \'t'   : ['GoTest', 'GoTest'],
+            \'a'   : ['GoTest ./...', 'GoTest ./...'],
+            \'f'   : ['GoTestFunc',  'GoTestFunc'],
+            \'c'   : ['GoTestCompile',  'GoTestCompile'],
+            \}
+        let g:llmap.i = ['GoImplements',  'GoImplements']
+        let g:llmap.c = ['GoCallers',  'GoCallers']
 
-		call leaderGuide#register_prefix_descriptions(",", "g:llmap")
-	endfunction
-	function! GrepWord()
-		call feedkeys(':grep "\b' . expand('<cword>') . '\b"')
-	endfunction
+        call leaderGuide#register_prefix_descriptions(",", "g:llmap")
+    endfunction
+    function! GrepWord()
+        call feedkeys(':grep "\b' . expand('<cword>') . '\b"')
+    endfunction
 
-	function! GitDiffNewTab()
-		execute 'tabe ' . bufname("%")
-		execute 'Gdiff'
-	endfunction
+    function! GitDiffNewTab()
+        execute 'tabe ' . bufname("%")
+        execute 'Gdiff'
+    endfunction
 " vim: ft=vim

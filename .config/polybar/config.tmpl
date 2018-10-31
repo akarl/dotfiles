@@ -33,7 +33,7 @@ font-3 = Font Awesome 5 Brands:style=Regular:size=10
 
 modules-left = i3
 modules-center =
-modules-right = date keyboard volume battery wired-network wireless-network menu-sys
+modules-right = date keyboard alsa battery wired-network wireless-network menu-sys
 
 tray-position = right
 
@@ -122,8 +122,8 @@ label-connected-underline = #${GREEN}
 label-disconnected = No wifi network
 label-disconnected-underline = #${RED}
 
-[module/volume]
-type = internal/volume
+[module/alsa]
+type = internal/alsa
 master-soundcard=hw:0
 format-volume = <ramp-volume> <label-volume>
 format-muted = <label-muted>

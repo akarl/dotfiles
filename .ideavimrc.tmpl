@@ -1,0 +1,44 @@
+let mapleader = ' '
+
+set incsearch
+set nohlsearch
+set ignorecase
+set smartcase
+set clipboard=autoselect
+set scrolloff=5
+set surround
+
+nnoremap ]e :action GotoNextError<cr>
+nnoremap [e :action GotoPreviousError<cr>
+nnoremap [c :action VcsShowPrevChangeMarker<cr>
+nnoremap ]c :action VcsShowNextChangeMarker<cr>
+
+nnoremap <Leader>f :action GotoFile<cr>
+nnoremap <Leader>d :action GotoClass<cr>
+nnoremap <Leader>/ :action FindModal<cr>
+nnoremap <Leader>r :action Refactorings.QuickListPopupAction<cr>
+nnoremap <Leader>g :action Vcs.QuickListPopupAction<cr>
+nnoremap <Leader><Leader> :action QuickList.Tools<cr>
+nnoremap <C-[> :action QuickList.Goto<cr>
+nnoremap <Leader>t :action ActivateTerminalToolWindow<cr>
+nnoremap <Leader><cr> :action Rerun<cr>
+
+" QuickImplementations " quick definition
+" map <Leader>QuickJavaDoc
+" QuickList.<Name>
+" Debug
+" Find
+" FindModal
+" SearchEverywhere
+" SearchEverywhereActions
+" IncrementalSearch
+" Generate
+" GotoImplementation
+" GotoMenu(Ex)
+" GotoSuperMethod
+" QuickAction(sPopup)
+" RecentFiles
+" Rerun
+" Run
+" RunMenu
+" // Parameter info

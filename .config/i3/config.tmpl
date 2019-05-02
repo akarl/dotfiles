@@ -117,16 +117,17 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 bindsym $mod+Shift+e exec "loginctl lock-session"
+
 bindsym $mod+F1 exec "flameshot gui"
 
 exec --no-startup-id "xss-lock -- sh ~/.config/i3/i3lock.sh"
 exec --no-startup-id "/usr/lib/mate-polkit/polkit-mate-authentication-agent-1"
-exec --no-startup-id "compton"
-exec --no-startup-id "dunst"
 exec --no-startup-id "udiskie -n -a -T"
 exec --no-startup-id "autorandr -c"
 
-exec_always --no-startup-id "killall xbanish; sleep 5; xbanish"
+exec_always --no-startup-id "killall dunst; sleep 1; dunst"
+exec_always --no-startup-id "killall compton; sleep 1; compton"
+exec_always --no-startup-id "killall xbanish; sleep 3; xbanish"
 exec_always --no-startup-id "~/.config/polybar/run.sh"
 exec_always --no-startup-id "~/.fehbg"
 

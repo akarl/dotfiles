@@ -9,13 +9,13 @@
     call plug#begin('~/.local/share/nvim/plugged')
 
     Plug 'Raimondi/delimitMate'
-
     Plug 'airblade/vim-gitgutter'
     Plug 'calviken/vim-gdscript3'
     Plug 'chriskempson/base16-vim'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'fatih/vim-go', { 'for': ['go'], 'do': ':GoUpdateBinaries' }
     Plug 'francoiscabrol/ranger.vim'
+    Plug 'godlygeek/tabular'
     Plug 'hecal3/vim-leader-guide'
     Plug 'junegunn/fzf.vim'
     Plug 'kassio/neoterm'
@@ -70,7 +70,7 @@
     \}
 
     let g:ale_linters = {
-    \   'go': ['golangci-lint'],
+    \   'go': ['golangci-lint', 'golint'],
     \}
 
     let g:ale_go_gofmt_options = '-s'
@@ -80,8 +80,10 @@
     let g:ale_go_golangci_lint_package = 1
     let g:ale_open_list = 1
     let g:ale_list_window_size = 3
-    let g:ale_lint_on_text_changed = 'normal'
+    let g:ale_lint_on_text_changed = "normal"
     let g:ale_lint_on_insert_leave = 1
+    let g:ale_set_loclist = 1
+    let g:ale_set_quickfix = 0
 
 " Colors and highlighting
 

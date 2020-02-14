@@ -32,6 +32,8 @@ export KEYTIMEOUT=1
 export FZF_DEFAULT_OPTS='--height 100%'
 export FZFZ_SUBDIR_LIMIT=0
 
+eval "$(pyenv init -)"
+
 gd() {
   local dir
   dir=$(find $HOME/go/src -path '*/\.*' -prune \

@@ -12,7 +12,7 @@ line-color = #${BLUE}
 monitor = ${env:MONITOR:}
 monitor-fallback = eDP1
 
-background = #${BLACK2}
+background = #${BACKGROUND}
 foreground = #${FOREGROUND}
 
 border-size = 0
@@ -33,7 +33,7 @@ font-3 = Font Awesome 5 Brands:style=Regular:size=10
 
 modules-left = i3
 modules-center =
-modules-right = date keyboard alsa battery wired-network wireless-network menu-sys
+modules-right = date keyboard battery wired-network wireless-network menu-sys
 
 tray-position = right
 
@@ -121,28 +121,6 @@ label-connected =  %essid% %downspeed%
 label-connected-underline = #${GREEN}
 label-disconnected = No wifi network
 label-disconnected-underline = #${RED}
-
-[module/alsa]
-type = internal/alsa
-master-soundcard=hw:0
-format-volume = <ramp-volume> <label-volume>
-format-muted = <label-muted>
-format-volume-underline= #${GREEN}
-format-muted-underline = #${RED}
-
-
-label-volume = %percentage%%
-label-muted =  0%
-
-ramp-volume-0 = 
-ramp-volume-1 = 
-ramp-volume-2 = 
-ramp-headphones-0 = 
-ramp-headphones-1 = 
-
-headphone-mixer = Headphone
-headphone-id = 14
-mapped = false
 
 [module/menu-sys]
 type = custom/menu

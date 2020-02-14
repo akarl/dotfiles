@@ -1,6 +1,10 @@
 [user]
     name = Andreas Karlsson
     email = andreas.karlsson87@gmail.com
+[alias]
+    fixup = commit --amend --no-edit
+    fpush = push --force-with-lease
+    prfix = !git add . && git fixup && git fpush
 [push]
     default = simple
 [core]

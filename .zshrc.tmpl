@@ -34,13 +34,6 @@ export FZFZ_SUBDIR_LIMIT=0
 
 eval "$(pyenv init -)"
 
-gd() {
-  local dir
-  dir=$(find $HOME/go/src -path '*/\.*' -prune \
-                  -o -type d -print 2> /dev/null | fzf +m) &&
-  cd "$dir"
-}
-
 bindkey -e
 zle -N edit-command-line
 zle -N   fzfz-file-widget

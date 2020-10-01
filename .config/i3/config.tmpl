@@ -2,13 +2,13 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:Source Code Pro 10
+font pango:Source Code Variable 12
 
 default_border pixel 1
 
 # Theme colors
 # class                 border			backgr.			text			indicator		child_border
-client.focused          #${BACKGROUND}	#${BACKGROUND}	#${GREEN}		#${RED}			#${GREEN}
+client.focused          #${BACKGROUND}	#${BACKGROUND}	#${GREEN}		#${RED}			#${BLACK2}
 client.focused_inactive #${BACKGROUND}	#${BACKGROUND}	#${FOREGROUND}	#${BACKGROUND}	#${BLACK2}
 client.unfocused        #${BLACK2}		#${BLACK2}		#${FOREGROUND}	#${BLACK2}		#${BLACK2}
 client.urgent           #${RED}			#${BACKGROUND}	#${FOREGROUND}	#${RED}			#${BLACK2}
@@ -17,10 +17,14 @@ client.background		#${BACKGROUND}
 
 hide_edge_borders none
 
+gaps inner 9
+smart_gaps on
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 focus_on_window_activation focus
+focus_follows_mouse no
 
 # start a terminal
 bindsym $mod+Return exec termite
@@ -29,7 +33,7 @@ bindsym $mod+Return exec termite
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+space exec --no-startup-id rofi -show combi
+bindsym $mod+space exec --no-startup-id rofi -show drun
 
 # change focus
 bindsym $mod+h focus left
@@ -122,18 +126,17 @@ bindsym $mod+F1 exec "flameshot gui"
 bindsym $mod+n exec "xbacklight -set 0.1 && redshift -x && redshift -O 2500K"
 bindsym $mod+Shift+n exec "xbacklight -set 100 && redshift -x"
 
-exec --no-startup-id "xss-lock -- sh ~/.config/i3/i3lock.sh"
+exec --no-startup-id "xss-lock -l -- sh ~/.config/i3/i3lock.sh"
 exec --no-startup-id "/usr/lib/mate-polkit/polkit-mate-authentication-agent-1"
 exec --no-startup-id "udiskie -n -a -T"
 exec --no-startup-id "autorandr -c"
 
-exec --no-startup-id "pasystray"
 exec --no-startup-id "start-pulseaudio-x11"
 exec --no-startup-id "blueman-applet"
 
 exec_always --no-startup-id "killall dunst; sleep 1; dunst"
-exec_always --no-startup-id "killall compton; sleep 1; compton"
 exec_always --no-startup-id "killall xbanish; sleep 3; xbanish"
+exec_always --no-startup-id "killall picom; sleep 1; picom"
 exec_always --no-startup-id "~/.config/polybar/run.sh"
 exec_always --no-startup-id "~/.fehbg"
 

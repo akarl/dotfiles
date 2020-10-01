@@ -5,27 +5,6 @@ from os.path import abspath, join, expandvars, dirname, isdir
 from string import Template
 import codecs
 
-# VARS = {
-#     'FOREGROUND': 'a7a7a7',
-#     'BACKGROUND': '1e1e1e',
-#     'BLACK': '1e1e1e',
-#     'BLACK2': '323537',
-#     'RED': 'cf6a4c',
-#     'RED2': 'cf6a4c',
-#     'GREEN': '8f9d6a',
-#     'GREEN2': '8f9d6a',
-#     'YELLOW': 'f9ee98',
-#     'YELLOW2': 'f9ee98',
-#     'BLUE': '7587a6',
-#     'BLUE2': '7587a6',
-#     'MAGENTA': '9b859d',
-#     'MAGENTA2': '9b859d',
-#     'CYAN': 'afc4db',
-#     'CYAN2': 'afc4db',
-#     'WHITE': 'a7a7a7',
-#     'WHITE2': 'ffffff',
-# }
-
 VARS = {
     "FOREGROUND": "abb2bf",
     "BACKGROUND": "282c34",

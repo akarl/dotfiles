@@ -1,0 +1,71 @@
+export TERM=xterm-256color
+
+alias ls='ls --color=auto'
+alias ll='ls --color=auto -o -h --si --time-style=long-iso --group-directories-first'
+
+alias g='git'
+alias vi='/usr/bin/nvim'
+alias open='mimeopen'
+
+export EDITOR=/usr/bin/nvim
+export BROWSER=/usr/bin/firefox
+export PATH=$HOME/bin:$HOME/go/bin:$PATH:$HOME/dev-tools/bin:$HOME/.cargo/bin
+export RIPGREP_CONFIG_PATH=~/.ripgreprc
+export GOPATH=$HOME/go
+
+export DOCKERFILES_REPO_PATH=$HOME/workspace/dockerfiles
+
+export DOTNET_ROOT=/opt/dotnet
+
+# If not running interactively, stop here.
+[[ $- != *i* ]] && return
+
+source /usr/share/bash-completion/bash_completion
+source /usr/share/git/completion/git-prompt.sh
+source /usr/share/git/completion/git-completion.bash
+source /usr/share/fzf/completion.bash
+source /usr/share/fzf/key-bindings.bash
+
+# Add completion to the `g` alias.
+__git_complete g __git_main
+
+bind "set menu-complete-display-prefix on"
+bind 'set show-all-if-ambiguous on'
+bind 'set completion-ignore-case on'
+bind 'set colored-stats on'
+bind 'set blink-matching-paren on'
+bind 'set show-all-if-ambiguous on'
+bind 'set enable-bracketed-paste on'
+bind 'TAB:menu-complete'
+bind '"\e[Z":menu-complete-backward'
+
+# Jump to projects in workspace.
+__workspace_jump__() {
+	cd ~/workspace/$(ls ~/workspace | fzf)
+	clear
+}
+
+bind '"\C-g":"__workspace_jump__\n"'
+
+eval "$(dircolors)"
+
+prompt_jobs() {
+	[[ $(jobs | wc -l) -gt 0 ]] && echo "  "
+}
+
+prompt_git() {
+	GIT_PS1_SHOWDIRTYSTATE=1
+	GIT_PS1_SHOWUNTRACKEDFILES=1
+	GIT_PS1_SHOWUPSTREAM="verbose"
+
+	__git_ps1 '  %s'
+}
+
+_col="$(tput setab 2)$(tput setaf 0)"
+_end="$(tput sgr0)$(tput setaf 2)$(tput sgr0)"
+
+
+PS1='${_col} \w$(prompt_git) ${_end}$(prompt_jobs)\n$ '
+
+# vim: ft=sh
+

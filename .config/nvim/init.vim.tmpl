@@ -1,344 +1,320 @@
 " Plugins
 
-    if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-        silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
-            \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-        autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-    endif
+	if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+		silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+					\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+		autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+	endif
 
-    call plug#begin('~/.local/share/nvim/plugged')
+	call plug#begin('~/.local/share/nvim/plugged')
 
-    Plug 'joshdick/onedark.vim'
-    Plug 'airblade/vim-gitgutter'
-    Plug 'chriskempson/base16-vim'
-    Plug 'editorconfig/editorconfig-vim'
-    Plug 'sheerun/vim-polyglot'
-    Plug 'tmhedberg/matchit'
-    Plug 'tpope/vim-abolish'
-    Plug 'tpope/vim-commentary'
-    Plug 'tpope/vim-eunuch'
-    Plug 'tpope/vim-fugitive'
-    Plug 'tpope/vim-repeat'
-    Plug 'tpope/vim-sleuth'
-    Plug 'tpope/vim-surround'
-    Plug 'janko/vim-test'
-    Plug 'kassio/neoterm'
-    Plug 'sebdah/vim-delve'
-    Plug 'junegunn/fzf'
-    Plug 'junegunn/fzf.vim'
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+	Plug 'joshdick/onedark.vim'
+	Plug 'rakr/vim-one'
+	Plug 'editorconfig/editorconfig-vim'
+	Plug 'sheerun/vim-polyglot'
+	Plug 'tpope/vim-commentary'
+	Plug 'tpope/vim-eunuch'
+	Plug 'tpope/vim-fugitive'
+	Plug 'tpope/vim-repeat'
+	Plug 'tpope/vim-surround'
+	Plug 'janko/vim-test'
+	Plug 'kassio/neoterm'
+	Plug 'airblade/vim-gitgutter'
+	Plug 'neoclide/coc.nvim', {'branch': 'release'}
+	Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+	Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
+	Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+	Plug 'Shougo/neomru.vim', { 'do': ':UpdateRemotePlugins' }
+	Plug 'neoclide/denite-git', { 'do': ':UpdateRemotePlugins' }
+	Plug 'neoclide/coc-denite', { 'do': ':UpdateRemotePlugins' }
+	Plug 'akarl/autoformat.nvim'
+	Plug 'sebdah/vim-delve'
+	Plug 'ayu-theme/ayu-vim' " or other package manager
 
-    call plug#end()
+	call plug#end()
 
-"" Plugin settings
+" Colors
 
-    let g:go_def_mapping_enabled = 0
-    let g:go_fmt_autosave = 0
-    let g:go_mod_fmt_autosave = 1
-    let g:go_asmfmt_autosave = 0
-    let g:go_metalinter_autosave = 0
-    let g:go_code_completion_enabled = 0
-    let g:go_highlight_functions = 1
-    let g:go_highlight_function_calls = 1
-    let g:go_highlight_types = 1
-    let g:go_highlight_fields = 1
+	set termguicolors
+	colorscheme one
+	set background=dark
 
-    let g:neoterm_keep_term_open = 1
-    let g:neoterm_autoscroll = 1
-    let g:neoterm_default_mod = ':botright split'
-    let g:neoterm_autoinsert = 0
+	highlight! link Folded LineNr
+	highlight! link Whitespace LineNr
+	highlight TabLineSel guibg=#${GREEN} guifg=#${BLACK}
+	highlight StatusLine guibg=#${GREEN} guifg=#${BLACK}
+	highlight StatusLineNC guifg=#${BACKGROUND} guibg=#${WHITE}
+	highlight CursorLineNr guibg=#${GREEN} guifg=#${BACKGROUND}
+	highlight VertSplit guifg=#${GREEN}
 
-    let test#strategy = "neoterm"
-    let test#preserve_screen = 0
-    let test#go#test#options = '-race'
-    let test#vim#term_position = "botright"
-
-    let python_highlight_all = 1
-
-    let g:netrw_fastbrowse = 0 " Dont cache file listings.
-
-" Colors and highlighting
-
-    filetype plugin indent on
-    syntax on
-
-    if has('nvim')
-            set scrollback=10000
-    endif
-
-    let g:onedark_termcolors = 1
-    let g:onedark_terminal_italics = 1
-
-    set background=dark
-    set termguicolors
-    colorscheme onedark
-
-    highlight! link Folded LineNr
-    highlight TabLineSel guibg=#${GREEN} guifg=#${BLACK}
-    highlight StatusLine guibg=#${GREEN} guifg=#${BLACK}
-    highlight StatusLineNC guifg=#${GREEN}
-    highlight CursorLineNr guibg=#${GREEN} guifg=#${BLACK}
-    highlight VertSplit guibg=#${GREEN} guifg=#${BLACK}
-    highlight Whitespace guifg=#6e6e6e
-
-    highlight Search guifg=NONE guibg=NONE gui=bold,underline,italic
-
-" Settings
-
-    set fillchars=stl:-,stlnc:-,vert:\|,fold:-,diff:-
-    set updatetime=10
-    set autoread  " Automatically reload files that changed on disk.
-    set backspace=indent,start  " Allow backspacing over start of insert.
-    set breakindent  " Indent wrapped lines at same level as original.
-    set clipboard=unnamedplus  " Use the system clipboard.
-    set colorcolumn=  " Don't display a color column.
-    set cursorline  " Show cursorline at cursor.
-    set diffopt+=filler,foldcolumn:0,context:4  " Nice options when showing diffs.
-    set fileformat=unix  " Unix file format.
-    set foldenable
-    set foldmethod=indent  " Fold on indent.
-    set formatexpr=
-    set grepprg=rg\ --vimgrep
-    set hidden  " Can leave unsaved buffers.
-    set ignorecase  " Searches are case insensitive.
-    set inccommand=nosplit  " Preview replacements in buffer.
-    set incsearch  " Show search matches while typing.
-    set laststatus=2  " Show a  status line even if only one window.
-    set lazyredraw  " Don't redraw when executing macros etc.
-    set linebreak " When wrapping don't wrap in the middle of a word.
-    set listchars=tab:▸\ ,eol:¬,space:· " What to display when running :set list.
-    set nolist  " Disable listchars by default.
-    set mouse=a  " Enable mouse support
-    set nobackup  " Don't use backup files.
-    set nocursorcolumn  " Don't show the cursorcolumn.
-    set nohlsearch  " Don't keep the higlight of a search after searching.
-    set number  " Don't show line numbers.
-    set norelativenumber  " Don't show line numbers relative.
-    set nosmartindent  " Smartindent isn't very smart on a lot of languages.
-    set nospell  " Don't show spelling errors.
-    set noswapfile  " Don't use swapfiles.
-    set nowrap  " Don't wrap long lines.
-    set previewheight=20  " Set the hight of the preview window.
-    set scrolloff=5  " Always leave 5 rows at top/bottom from cursor.
-    set secure  " Disable autocmd etc for project local vimrc files.
-    set sessionoptions=blank,buffers,folds,sesdir,tabpages,winsize  " What to save in a session.
-    set shell=/bin/zsh  " Use zsh as the shell.
-    set showbreak=\ \ …  " Show this at beginning of indent.
-    set signcolumn=auto:9
-    set smartcase  " If search contains a capital letter make the search case sensitive.
-    set shiftwidth=4  " Indenting indents 4 spaces.
-    set softtabstop=4  "A tab counts as 4 spaces.
-    set tabstop=4  " A tab looks like 4 spaces.
-    set spellfile=~/.config/nvim/spellfile.utf-8.add  " File to use when saving custom words to spellfile"
-    set title  " Vim sets terminal window title.
-    set ttimeoutlen=0  " Removes the delay when pressing ESC.
-    set wildignore+=*.pyc,*.git/,tags,__pycache__/,node_modules/  " Ignore these file endings when possible.
-    set wildmenu  " Show matches above commandline when pressing TAB.
-    set wildmode=longest,list,full  " Nice autocomplete menu for commandline.
-    set noequalalways  " Don't make splits equal the window sizes.
-
-" Key mappings
-
-    let mapleader = ' '
-
-    if has('nvim')
-        tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
-    endif
-
-    nmap <silent> <C-]> <Plug>(coc-definition)
-    nmap <silent> gd <Plug>(coc-type-definition)
-    nmap <silent> gi <Plug>(coc-implementation)
-    nmap <silent> gr <Plug>(coc-references)
-    nmap <leader>r :call CocAction("rename")<CR>
-
-    nmap <leader>bb :DlvToggleBreakpoint<CR>
-
-    " Get quick documtentation for item under cursor.
-    nmap <silent> <C-q> :call CocActionAsync('doHover')<CR>
-
-    " Get signature help in insert-mode.
-    imap <silent> <C-q> <C-o>:call CocActionAsync('showSignatureHelp')<CR>
-
-    " Use Ctrl+space to get a fresh completion list.
-    inoremap <silent><expr> <c-space> coc#refresh()
-
-    " Make coc.nvim confirm selected completion and format code on Enter.
-    inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-    noremap <leader>f :FZF<CR>
-    noremap <leader>] :Tags<CR>
-    noremap <leader>o :Buffers<CR>
-
-    " Open folder containing current file in netrw.
-    noremap - :Explore<CR>
-
-    noremap <left> :vertical resize -10<CR>
-    noremap <up> :resize +5<CR>
-    noremap <down> :resize -5<CR>
-
-    " Quickfix navigation
-    " noremap <Leader>q :copen<CR>
-    noremap ]q :cnext<CR>zvzz
-    noremap [q :cprevious<CR>zvzz
-    noremap ]Q :clast<CR>zvzz
-    noremap [Q :cfirst<CR>zvzz
-
-    " Locationlist navigation
-    noremap <Leader>l :copen<CR>
-    noremap ]l :lnext<CR>zvzz
-    noremap [l :lprevious<CR>zvzz
-    noremap ]L :llast<CR>zvzz
-    noremap [L :lfirst<CR>zvzz
-
-    " Tags navigation
-    noremap ]t :tnext<CR>zvzz
-    noremap [t :tprevious<CR>zvzz
-    noremap ]T :tlast<CR>zvzz
-    noremap [T :tfirst<CR>zvzz
-
-    " Active buffers
-    noremap ]b :bnext<CR>
-    noremap [b :bprevious<CR>
-
-    " Errors
-    noremap <leader>e :CocList diagnostics<CR>
-    nmap ]e <Plug>(coc-diagnostic-next-error)
-    nmap [e <Plug>(coc-diagnostic-prev-error)
-
-    noremap <silent> <leader>tn :TestNearest<CR>
-    noremap <silent> <leader>tl :TestLast<CR>
-
-    function! DebugNearest()
-      let g:test#go#runner = 'delve'
-      TestNearest
-      unlet g:test#go#runner
-    endfunction
-
-    command! DebugNearest call DebugNearest()
-    command! DebugLast exec g:last_dlv_cmd
-
-
-    " Using the custom window creation function
-    let g:fzf_layout = { 'window': 'call FloatingFZF()' }
-
-    " Function to create the custom floating window
-    function! FloatingFZF()
-        let buf = nvim_create_buf(v:false, v:true)
-
-        let height = 20
-        let width = float2nr(winwidth(0) * 0.6)
-        let horizontal = float2nr((winwidth(0) - width) / 2)
-        let vertical = 3
-
-        let opts = {
-                    \ 'relative': 'win',
-                    \ 'row': vertical,
-                    \ 'col': horizontal,
-                    \ 'width': width,
-                    \ 'height': height,
-                    \ 'style': 'minimal'
-                    \ }
-
-        " open the new window, floating, and enter to it
-        call nvim_open_win(buf, v:true, opts)
-    endfunction
-
-" Commands
-
-    command! ReloadVimrc :source $MYVIMRC | e
-    command! -nargs=1 TabWidth set ts=<args> sw=<args> sts=<args>
+	highlight Search guifg=NONE guibg=NONE gui=bold,underline
 
 " Autocommands
+	" Automatically install dotfiles on save.
+	autocmd! BufWritePost */dotfiles/*.tmpl silent exec "!./install.py" | source $MYVIMRC
 
-    augroup misc
-        autocmd!
+	" Avoid having a non-relative pwd.
+	autocmd! BufRead * cd .
 
-        " Update diff when moving the cursor
-        autocmd CursorHold * if &diff == 1 | diffupdate | endif
+" Keymaps
+	let mapleader = ' '
 
-        " set autoread won't work in terminal unless this is set.
-        autocmd CursorHold * checktime
+	tnoremap <Esc> <C-\><C-n>
 
-        " Highlight the current word under the cursor
-        autocmd CursorMoved * exe printf('match Search /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+	nnoremap <C-l> :nohlsearch<CR>
+	
+	noremap <Leader>q :copen<CR>
+	noremap ]q :cnext<CR>
+	noremap [q :cprevious<CR>
 
-        " Reset the working directory after opening a file with an
-        " absolute path.
-        autocmd BufEnter * cd\ .
+	noremap ]c :GitGutterNextHunk<CR>
+	noremap [c :GitGutterPrevHunk<CR>
+	nnoremap <C-g> :GitGutterPreviewHunk<CR>
 
-        " Show the cursorline only in active window.
-        autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-        autocmd WinLeave * setlocal nocursorline
-    augroup END
+	" Window sizes.
+	noremap <left> :vertical resize -10<CR>
+	noremap <right> :vertical resize +10<CR>
+	noremap <up> :resize +5<CR>
+	noremap <down> :resize -5<CR>
 
-    augroup filetypes
-        autocmd!
+	" Errors.
 
-        autocmd FileType netrw setl bufhidden=wipe
+" Commands
+	command! GolangCILint :call GolangCILint()
+	command! GoToDefinition <Plug>(coc-type-definition)
+	command! GoToToImplementation <Plug>(coc-implementation)
+	command! GoToReferences <Plug>(coc-references)
 
-        " Python
-        autocmd FileType python setlocal expandtab
-        autocmd FileType sql setlocal expandtab
-        autocmd FileType javascript setlocal tabstop=2 shiftwidth=2
+" VIM options
+	set clipboard=unnamedplus  " Use the system clipboard.
+	set list " Show tabs and trailing spaces.
+	set number " Enable linenumbers.
+	set shiftwidth=4  " Indenting indents 4 spaces.
+	set softtabstop=4  "A tab counts as 4 spaces.
+	set tabstop=4  " A tab looks like 4 spaces.
+	set laststatus=2  " Show a  status line even if only one window.
+	set nobackup  " Don't use backup files.
+	set noswapfile  " Don't use swapfiles.
+	set shell=/bin/bash  " Use bash as the shell.
+	set noequalalways  " Don't make splits equal the window sizes.
+	set wildignore+=*.pyc,*.git/,tags,tags.sh,__pycache__/,node_modules/,dep/
+	set exrc
+	set grepprg=rg\ --vimgrep
+	set inccommand=nosplit  " Preview replacements in buffer.
+	set ignorecase
+	set smartcase  " If search contains a capital letter make the search case sensitive.
+	set wildmode=longest,full  " Nice autocomplete menu for commandline.
+	set fillchars=stl:_,stlnc:_,vert:\|,fold:·,diff:-
+	set hidden
+	set foldenable
+	set foldmethod=indent  " Fold on indent.
+	set cursorline
+	set nowrap
+	set linebreak
+	set breakindent
+	set sidescroll=1
+	set sidescrolloff=5
+	set listchars+=precedes:<,extends:>
 
-        autocmd BufWritePost */dotfiles/*.tmpl exec "silent !./install.py" | source $MYVIMRC
+" Plugin options
+	" Disable most things regarding autocomplete and formatting. We want to
+	" use coc for that instead.
+	let g:go_def_mapping_enabled = 0
+	let g:go_fmt_autosave = 0
+	let g:go_asmfmt_autosave = 0
+	let g:go_def_mapping_enabled = 0
+	let g:go_code_completion_enabled = 0
+	let g:go_gopls_enabled = 0
+	let g:go_template_autocreate = 0
 
-        " Markdown
-        autocmd BufRead,BufNewFile *.md set filetype=markdown
-        autocmd BufRead,BufNewFile *.md setlocal expandtab
+	" Some stuff we do want enabled.
+	let g:go_mod_fmt_autosave = 1
+	let g:go_highlight_functions = 1
+	let g:go_highlight_function_calls = 1
+	let g:go_highlight_types = 1
+	let g:go_highlight_fields = 1
 
-        " Misc
-        autocmd FileType yml setlocal expandtab
-    augroup END
+	let g:neoterm_keep_term_open = 1
+	let g:neoterm_autoscroll = 1
+	let g:neoterm_default_mod = ':botright split'
+	let g:neoterm_autoinsert = 0
 
-    augroup term
-        autocmd!
+	let test#strategy = "neoterm"
+	let test#preserve_screen = 0
+	let test#go#test#options = '-race'
+	let test#vim#term_position = "botright"
 
-        autocmd TermOpen * setlocal nonumber norelativenumber
+" Denite
+	" Keymaps
+	nnoremap <Leader>f :silent Denite buffer file_mru file/rec<CR>
+	nnoremap - :Defx `expand('%:p:h')` -search=`expand('%:p')` <CR>
+	nnoremap <Leader>] :silent Denite outline tag -unique<CR>
+	nnoremap <Leader>* :silent DeniteCursorWord line<CR>
+	nnoremap <Leader>/ :silent Denite grep:::! -start-filter<CR>
+	nnoremap <Leader>g :silent Denite menu:git gitstatus<CR>
 
-    augroup END
+	" Config
+	call denite#custom#option('_', {
+				\ 'split': 'floating',
+				\ 'auto_resize': 1,
+				\ })
 
-    augroup autoformat
-        autocmd!
+	call denite#custom#var('file/rec', 'command',
+				\ ['rg', '--files', '--glob', '!.git', '--color', 'never'])
 
-        autocmd! BufWritePost * exec 'silent ![ -f "tags" ] && ctargs -R'
-        autocmd! BufWritePre *.go call s:autoFormat(expand("<abuf>"), 'goimports -local "$(go list -m)"', 'gofmt -s')
-        autocmd! BufWritePre *.py call s:autoFormat(expand("<abuf>"), 'black -')
-    augroup END
+	call denite#custom#var('grep', {
+				\ 'command': ['rg'],
+				\ 'default_opts': ['-i', '--vimgrep', '--no-heading'],
+				\ 'recursive_opts': [],
+				\ 'pattern_opt': ['--regexp'],
+				\ 'separator': ['--'],
+				\ 'final_opts': [],
+				\ })
 
-" Functions
+	call denite#custom#source(
+				\ 'file_mru', 'matchers', ['matcher/fuzzy', 'matcher/project_files'])
+	call denite#custom#var(
+				\ 'file_mru', 'fnamemodify', ':~:.')
 
-    function! s:autoFormat(bufnr_str, ...)
-        let l:view = winsaveview()
-        let l:bufnr = str2nr(a:bufnr_str)
-        let l:col = col('.')
+	" Custom menus
+	call denite#custom#var('menu', 'menus', {
+				\ 'git': {
+					\ 'description': 'Git',
+					\ 'command_candidates': [
+						\ ['Status', 'Gstatus'],
+						\ ['Diff current file', 'Gdiffsplit'],
+						\ ['Undo hunk', 'GitGutterUndoHunk'],
+						\ ['Stage hunk', 'GitGutterStageHunk'],
+						\ ['Preview hunk', 'GitGutterPreviewHunk'],
+					\ ],
+				\ },
+				\ })
 
-        let l:result = nvim_buf_get_lines(l:bufnr, 0, line('$'), 0)
+	autocmd! FileType denite call s:denite_buffer_config()
+	function! s:denite_buffer_config() abort
+		nnoremap <silent><buffer><expr> <CR>
+					\ denite#do_map('do_action')
+		nnoremap <silent><buffer><expr> d
+					\ denite#do_map('do_action', 'delete')
+		nnoremap <silent><buffer><expr> p
+					\ denite#do_map('do_action', 'preview')
+		nnoremap <silent><buffer><expr> q
+					\ denite#do_map('quit')
+		nnoremap <silent><buffer><expr> i
+					\ denite#do_map('open_filter_buffer')
+	endfunction
 
-        if len(l:result) == 0
-            return
-        endif
+" Defx
+	call defx#custom#option('_', {
+				\ 'split': 'floating',
+				\ })
 
-        for formatter in a:000
-            let l:result = systemlist(formatter . ' 2> /dev/null', l:result)
-        endfor
+	autocmd FileType defx call s:defx_buffer_config()
+	function! s:defx_buffer_config() abort
+		setlocal cursorline
+		nnoremap <silent><buffer><expr> <CR>
+					\ defx#is_directory() ?
+					\ defx#do_action('open_tree', 'toggle') :
+					\ defx#do_action('multi', ['drop', 'quit'])
+		nnoremap <silent><buffer><expr> nd
+					\ defx#do_action('new_directory')
+		nnoremap <silent><buffer><expr> nf
+					\ defx#do_action('new_file')
+		nnoremap <silent><buffer><expr> d
+					\ defx#do_action('remove')
+		nnoremap <silent><buffer><expr> r
+					\ defx#do_action('rename')
+		nnoremap <silent><buffer><expr> -
+					\ defx#do_action('cd', ['..'])
+		nnoremap <silent><buffer><expr> q
+					\ defx#do_action('quit')
+	endfunction
 
-        if len(l:result) == 0
-            return
-        endif
+" Coc
+	" Use denite for jump locations.
+	let g:coc_enable_locationlist = 0
+	autocmd! User CocLocationsChange Denite coc-jump-locations
 
-        let l:offset = len(l:result) - line('$')
+	" C-q shows docs or signature help depending on normal or insert -mode.
+	nmap <silent> <C-q> :call CocActionAsync('doHover')<CR>
+	imap <silent> <C-q> <C-o>:call CocActionAsync('showSignatureHelp')<CR>
 
-        call nvim_buf_set_lines(l:bufnr, 0, line('$'), 0, l:result)
+	" Show and jump to erors.
+	noremap <leader>e :CocList diagnostics<CR>
+	nmap ]e <Plug>(coc-diagnostic-next-error)
+	nmap [e <Plug>(coc-diagnostic-prev-error)
 
-        call winrestview(l:view)
+	" Rename.
+	noremap <leader>r :call CocAction("rename")<CR>
 
-        if l:bufnr != bufnr()
-            return
-        endif
+	" Use enter to confirm first selection on completion.
+	inoremap <silent><expr> <c-space> coc#refresh()
+	inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-        call cursor(line('.') + l:offset, l:col)
-    endfunction
+	" Go to definition, implementation or tag.
+	nmap <silent> <C-]> :silent! call <SID>goto_definition()<CR>
+	nmap <silent> <C-[> <Plug>(coc-implementation)
 
+	function! s:goto_definition() abort
+		if CocAction('jumpDefinition')
+			return v:true
+		endif
+
+		execute("normal! \<C-]>")
+	endfunction
+
+" Vim-test
+	noremap <Leader>tn :TestNearest<CR>
+	noremap <Leader>tl :TestLast<CR>
+
+" Vim-delve
+	command! DebugTest :call s:test_debug()
+	noremap <Leader>bb :DlvToggleBreakpoint<CR>
+
+	function! s:test_debug()
+		let g:delve_new_command = 'enew'
+		let l:args = []
+
+		if exists('g:test#last_position')
+			let l:args = test#go#delve#build_position('nearest', g:test#last_position)
+		else
+			let l:args = test#go#delve#build_position('nearest', {'file': expand("%"), 'col': col('.'), 'line': line('.') })
+		endif
+
+		echomsg printf("%s", l:args)
+
+		tabe expand('%')
+		call delve#dlvTest(l:args[0], printf('-- %s', l:args[2]))
+	endfunction
+
+
+" Autoformat.nvim
+	call autoformat#config('go', ['goimports -local "$(go list -m)"', 'gofumpt -s -extra']) 
+	call autoformat#config('python', ['black -']) 
+
+	autocmd! BufWritePre * :Autoformat
+
+" Tags
+	autocmd! BufWritePost * exec 'silent ![ -f "tags" ] && ctargs -R'
+
+" Golang Linting
+	" GolangCILint lints the project from the current directory and puts the
+	" result inside the quickfix list.
+	function! GolangCILint()
+		cexpr []
+
+		" Run only the typecheck first.
+		let l:errors = system("golangci-lint run --no-config --disable-all -E typecheck --out-format line-number --print-issued-lines=false")
+
+		if l:errors == ""
+			let l:errors = system("golangci-lint run --out-format line-number --print-issued-lines=false")
+		endif
+
+		if l:errors == ""
+			echo "GolangCILint: OK!"
+		else
+			cexpr l:errors
+			copen
+		endif
+	endfunction
 " vim: ft=vim

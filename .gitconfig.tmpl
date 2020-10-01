@@ -25,6 +25,8 @@
 [difftool "nvimdiff"]
     cmd = nvim -d $BASE $LOCAL
 [mergetool "nvimdiff"]
-    cmd = nvim $MERGED
+    cmd = nvim -c "Gvdiffsplit!" "$MERGED"
+[pull]
+	ff = only
 [help]
     autocorrect = 15

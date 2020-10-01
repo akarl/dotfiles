@@ -1,0 +1,54 @@
+// http://manpages.ubuntu.com/manpages/bionic/man5/rofi-theme.5.html
+// https://github.com/adi1090x/rofi
+
+* {
+	spacing: 1em;
+	font: "Source Code Variable 12";
+	text-color: #${FOREGROUND};
+	background-color: #00000000;
+}
+
+window {
+	background-color: #${BACKGROUND}CC;
+	padding: 1em;
+	width: 20em;
+}
+
+inputbar {
+  children: [entry];
+}
+
+prompt {
+}
+
+textbox {
+}
+
+entry {
+  horizontal-align: 0.5;
+}
+
+listview {
+  cycle: false;
+  margin: 0 0 -1px 0;
+  scrollbar: false;
+  columns: 1;
+  dynamic: true;
+  lines: 8;
+}
+
+element {
+}
+element-text {
+    vertical-align:                 0.5;
+}
+
+
+element-icon {
+	size: 2em;
+	padding: 0em 1em 0em 0em;
+}
+
+element selected {
+	text-color: #${GREEN};
+}

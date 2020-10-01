@@ -1,23 +1,24 @@
 i3lock \
+	-i ~/Pictures/starwars1.png \
+	--composite \
 	--nofork \
-	--ignore-empty-password \
-	--show-failed-attempts \
 	--clock \
-	--radius=100 \
+	--radius=150 \
 	--indicator \
-	--line-uses-ring \
+	--insidecolor=00000000 \
 	--insidevercolor=00000000 \
 	--insidewrongcolor=00000000 \
-	--insidecolor=00000000 \
-	--ringvercolor=${FOREGROUND}FF \
-	--ringwrongcolor=${RED}FF \
-	--ringcolor=00000000 \
 	--linecolor=00000000 \
-	--keyhlcolor=${FOREGROUND}FF \
-	--bshlcolor=${RED}FF \
+	--ringcolor=00000000 \
+	--ringvercolor=00000000 \
+	--ringwrongcolor=${RED}FF \
+	--keyhlcolor=${GREEN}FF \
+	--bshlcolor=${FOREGROUND}FF \
 	--separatorcolor=00000000 \
-	--timestr="Andreas" \
-	--timecolor=${FOREGROUND}FF \
-	--datestr="%H:%M" \
-	--datecolor=${FOREGROUND}FF \
-	--color=${BACKGROUND} 
+	--timecolor=${BLACK2}FF \
+	--datecolor=${BLACK2}FF \
+	--verifcolor=${BLACK2}FF \
+	--wrongcolor=${BLACK2}FF \
+	--wrongcolor=${BLACK2}FF \
+
+# vim:ft=sh

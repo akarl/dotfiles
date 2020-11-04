@@ -12,6 +12,7 @@
 	Plug 'rakr/vim-one'
 	Plug 'editorconfig/editorconfig-vim'
 	Plug 'sheerun/vim-polyglot'
+	Plug 'junegunn/vim-easy-align'
 	Plug 'tpope/vim-commentary'
 	Plug 'tpope/vim-eunuch'
 	Plug 'tpope/vim-fugitive'
@@ -287,6 +288,8 @@
 		call delve#dlvTest(l:args[0], printf('-- %s', l:args[2]))
 	endfunction
 
+" Vim-easy-align
+autocmd! FileType markdown vmap <Leader>= :EasyAlign*<Bar><Enter>
 
 " Autoformat.nvim
 	call autoformat#config('go', ['goimports -local "$(go list -m)"', 'gofumpt -s -extra']) 
